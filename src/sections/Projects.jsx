@@ -3,14 +3,14 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Github, ExternalLink } from 'lucide-react';
 
 // ─── Project data ─────────────────────────────────────────────────────────────
-// Top 3 → puzzle pieces. Any beyond index 2 → cards below the puzzle.
+// Pieces 1-5 fill the puzzle. Any beyond index 4 appear as cards below.
 const projects = [
   {
     id: 1,
     title: 'SmartQueue',
-    tagline: 'Production-grade distributed task queue powered by AWS & AI',
+    tagline: 'Distributed task queue powered by AWS & AI',
     description:
-      'A distributed task queue system built on AWS SQS with three priority tiers and a Dead Letter Queue. Features an AI-powered ops assistant (Claude API) for natural language diagnostics, auto-scaling workers (1–8 instances), and a circuit breaker pattern — achieving 9.6 tasks/sec at 100% success rate.',
+      'A distributed task queue on AWS SQS with three priority tiers and a Dead Letter Queue. Features a Claude-powered ops assistant for natural language diagnostics, auto-scaling workers (1–8 instances), and a circuit breaker — achieving 9.6 tasks/sec at 100% success rate.',
     tech: ['FastAPI', 'AWS SQS', 'DynamoDB', 'Docker', 'Claude API', 'GitHub Actions'],
     features: [
       'Priority-aware processing (high / normal / low queues)',
@@ -21,15 +21,15 @@ const projects = [
     ],
     image: 'https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=600&h=400&fit=crop',
     accentStart: '#8b5cf6', accentEnd: '#ec4899',
-    liveUrl: 'https://github.com/Deepak-Darshan/smartqueue',
     githubUrl: 'https://github.com/Deepak-Darshan/smartqueue',
+    liveUrl: 'https://github.com/Deepak-Darshan/smartqueue',
   },
   {
     id: 2,
     title: 'Tether',
-    tagline: 'Swipe-based professional networking app in React Native',
+    tagline: 'Swipe-based professional networking in React Native',
     description:
-      'A mobile-first professional networking platform built with React Native/Expo and a Node.js + PostgreSQL backend. Users swipe to discover profiles, match on mutual interest, and chat — all with secure token storage and full TypeScript support.',
+      'A mobile-first professional networking platform built with React Native/Expo and a Node.js + PostgreSQL backend. Users swipe to discover profiles, match on mutual interest, and message — with secure JWT token storage and full TypeScript support.',
     tech: ['React Native', 'Expo', 'TypeScript', 'Node.js', 'PostgreSQL', 'Drizzle ORM'],
     features: [
       'Swipe-based profile discovery with animated cards',
@@ -40,15 +40,15 @@ const projects = [
     ],
     image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop',
     accentStart: '#3b82f6', accentEnd: '#06b6d4',
-    liveUrl: 'https://github.com/Deepak-Darshan/tether',
     githubUrl: 'https://github.com/Deepak-Darshan/tether',
+    liveUrl: 'https://github.com/Deepak-Darshan/tether',
   },
   {
     id: 3,
     title: 'ViewTrend',
-    tagline: 'AI-powered analytics dashboard for NSW school incidents',
+    tagline: 'AI analytics dashboard for NSW school incidents',
     description:
-      'A Streamlit dashboard that pulls live data from the NSW Government CKAN API, automatically detects statistical anomalies via z-score analysis, and generates plain-English insights and business recommendations using Groq\'s LLaMA 3.3 70B model.',
+      "Streamlit dashboard pulling live data from the NSW Government CKAN API, detecting statistical anomalies via z-score analysis, and generating plain-English insights with Groq's LLaMA 3.3 70B model.",
     tech: ['Python', 'Streamlit', 'Groq API', 'LLaMA 3.3', 'Pandas', 'ckanapi'],
     features: [
       'Live data ingestion from NSW Government CKAN API',
@@ -59,167 +59,309 @@ const projects = [
     ],
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
     accentStart: '#10b981', accentEnd: '#14b8a6',
-    liveUrl: 'https://github.com/Deepak-Darshan/viewTrend',
     githubUrl: 'https://github.com/Deepak-Darshan/viewTrend',
+    liveUrl: 'https://github.com/Deepak-Darshan/viewTrend',
   },
   {
     id: 4,
-    title: 'UDP Reliable Protocol',
-    tagline: 'TCP-like reliability built on top of raw UDP sockets',
+    title: 'Maze Chase',
+    tagline: 'Browser-based maze escape game with intelligent monster AI',
     description:
-      'A from-scratch implementation of a reliable transport protocol over UDP using only Python\'s standard library. Implements sliding window, cumulative ACKs, fast retransmit (3 dup-ACKs), 16-bit checksum error detection, and configurable network simulation for packet loss and corruption.',
-    tech: ['Python', 'UDP Sockets', 'Sliding Window', 'Checksum', 'Network Simulation'],
+      'A browser-based 2D maze escape game where you navigate as an angel through procedurally generated 21×21 mazes, collecting 3 star keys to unlock the exit — while evading a BFS-powered monster that accelerates when hunting you.',
+    tech: ['JavaScript', 'HTML5 Canvas', 'CSS3'],
+    features: [
+      'Procedurally generated mazes via recursive backtracking',
+      'BFS pathfinding monster AI that speeds up 20% when tracking',
+      'Bomb mechanic to destroy walls and create new paths',
+      'Safe zones, checkpoints, power-ups and spike hazards',
+      'Real-time HUD — keys, deaths, time, monster speed',
+    ],
+    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&h=400&fit=crop',
+    accentStart: '#f59e0b', accentEnd: '#ef4444',
+    githubUrl: 'https://github.com/Deepak-Darshan/maze-game',
+    liveUrl: 'https://github.com/Deepak-Darshan/maze-game',
+  },
+  {
+    id: 5,
+    title: 'UDP Reliable Protocol',
+    tagline: 'TCP-like reliability over raw UDP sockets',
+    description:
+      "From-scratch implementation of a reliable transport protocol over UDP using only Python's standard library — sliding window, cumulative ACKs, fast retransmit (3 dup-ACKs), 16-bit checksum, and configurable packet loss/corruption simulation.",
+    tech: ['Python', 'UDP Sockets', 'Sliding Window', 'Checksum', 'Network Sim'],
     features: [
       'Sliding window with cumulative acknowledgements',
-      '16-bit ones-complement checksum for error detection',
+      '16-bit ones-complement checksum error detection',
       'Fast retransmit on 3 duplicate ACKs + timeout retry',
       'Out-of-order segment buffering',
       'Configurable packet loss & corruption simulation',
     ],
     image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&h=400&fit=crop',
-    accentStart: '#f59e0b', accentEnd: '#ef4444',
-    liveUrl: 'https://github.com/Deepak-Darshan/UDP-Reliable-Protocol',
+    accentStart: '#6366f1', accentEnd: '#a855f7',
     githubUrl: 'https://github.com/Deepak-Darshan/UDP-Reliable-Protocol',
+    liveUrl: 'https://github.com/Deepak-Darshan/UDP-Reliable-Protocol',
   },
-  // ─── Add more projects here — they auto-appear as cards below the puzzle ───
+  // ─── Add more projects here — they appear as cards below the puzzle ──────
 ];
 
-// ─── Puzzle geometry (900 × 420, fixed for top 3 projects) ───────────────────
+// ─── 5-piece puzzle geometry: 900 × 480, global coordinates ──────────────────
 //
-//  ┌──────────────────┬─────────────────────┐
-//  │                  │     Piece 2         │
-//  │    Piece 1       │  (top-right,        │
-//  │  (left col,      │   440×210 + tab)    │
-//  │   440×420)       ├─────────────────────┤
-//  │     [tab→]       │     Piece 3         │
-//  │                  │  (bottom-right,     │
-//  │                  │   440×210)          │
-//  └──────────────────┴─────────────────────┘
+//  Row 1 (y: 0→240): 3 equal pieces, 300 px wide each
+//  Row 2 (y: 240→480): 2 pieces — P4: 0→500, P5: 500→900
 //
-//  Tab size: 20 px protrusion, 60 px wide.
-//  All clip-path coords are in each div's LOCAL coordinate system.
+//  All 5 piece divs are full 900×480. clip-path (in global px) defines each
+//  visible shape. CSS clip-path also gates pointer-events, so hover is accurate.
+//
+//  Tab size: T=20 px protrusion, TW=60 px wide.
+//
+//  Connections:
+//    P1 right tab  (x:300→320, y:90→150)  ↔  P2 left blank
+//    P2 right tab  (x:600→620, y:90→150)  ↔  P3 left blank
+//    P1 bottom tab (x:110→170, y:240→260) ↔  P4 top blank-1
+//    P2 bottom tab (x:410→470, y:240→260) ↔  P4 top blank-2
+//    P3 bottom tab (x:710→770, y:240→260) ↔  P5 top blank
+//    P4 right tab  (x:500→520, y:320→380) ↔  P5 left blank
 
 const PW = 900;
-const PH = 420;
+const PH = 480;
 
-// Piece 1: left block (div 460×420). Tab on right at y 75→135.
-const CLIP1 = 'M 0,0 L 440,0 L 440,75 L 460,75 L 460,135 L 440,135 L 440,420 L 0,420 Z';
+// Piece 1 — top-left (0→300, 0→240), right tab + bottom tab
+const CLIP1 =
+  'M 0,0 L 300,0 ' +
+  'L 300,90 L 320,90 L 320,150 L 300,150 ' +   // right tab →
+  'L 300,240 ' +
+  'L 170,240 L 170,260 L 110,260 L 110,240 ' +  // bottom tab ↓
+  'L 0,240 Z';
 
-// Piece 2: top-right (div 460×230). Blank left y 75→135; tab bottom x 195→255.
+// Piece 2 — top-middle (300→600, 0→240), left blank + right tab + bottom tab
 const CLIP2 =
-  'M 0,0 L 460,0 L 460,210 L 255,210 L 255,230 L 195,230 L 195,210' +
-  ' L 0,210 L 0,135 L 20,135 L 20,75 L 0,75 Z';
+  'M 300,0 L 600,0 ' +
+  'L 600,90 L 620,90 L 620,150 L 600,150 ' +   // right tab →
+  'L 600,240 ' +
+  'L 470,240 L 470,260 L 410,260 L 410,240 ' +  // bottom tab ↓
+  'L 300,240 ' +
+  'L 300,150 L 320,150 L 320,90 L 300,90 Z';    // left blank ←
 
-// Piece 3: bottom-right (div 460×210). Blank top x 195→255.
-const CLIP3 = 'M 0,0 L 195,0 L 195,20 L 255,20 L 255,0 L 460,0 L 460,210 L 0,210 Z';
+// Piece 3 — top-right (600→900, 0→240), left blank + bottom tab
+const CLIP3 =
+  'M 600,0 L 900,0 L 900,240 ' +
+  'L 770,240 L 770,260 L 710,260 L 710,240 ' +  // bottom tab ↓
+  'L 600,240 ' +
+  'L 600,150 L 620,150 L 620,90 L 600,90 Z';    // left blank ←
 
-// ─── PuzzlePiece — isolated hover state so parent never re-renders ────────────
-// Performance note: by keeping `hovered` state inside this component, a hover
-// event on one piece does NOT trigger re-renders on the other two pieces or
-// their Framer Motion scroll transforms.
-function PuzzlePiece({ motionStyle, project, imageHeight, darkMode, children }) {
+// Piece 4 — bottom-left (0→500, 240→480), 2× top blanks + right tab
+const CLIP4 =
+  'M 0,240 ' +
+  'L 110,240 L 110,260 L 170,260 L 170,240 ' +  // top blank-1 (P1 tab)
+  'L 410,240 L 410,260 L 470,260 L 470,240 ' +  // top blank-2 (P2 tab)
+  'L 500,240 ' +
+  'L 500,320 L 520,320 L 520,380 L 500,380 ' +  // right tab →
+  'L 500,480 L 0,480 Z';
+
+// Piece 5 — bottom-right (500→900, 240→480), top blank + left blank
+const CLIP5 =
+  'M 500,240 ' +
+  'L 710,240 L 710,260 L 770,260 L 770,240 ' +  // top blank (P3 tab)
+  'L 900,240 L 900,480 L 500,480 ' +
+  'L 500,380 L 520,380 L 520,320 L 500,320 Z';  // left blank (P4 tab)
+
+// Per-piece metadata: scatter start, scroll ranges, transform origin, content layout
+const PIECES = [
+  {
+    clipId: 'pc1', path: CLIP1,
+    transformOrigin: '150px 120px',
+    fromX: -420, fromY: -240, fromR: -22,
+    scrollRange: [0, 0.36],    opRange: [0, 0.16],
+    // image region (absolute within 900×480 div)
+    img: { left: 0, top: 0, width: 300, height: 130 },
+    // content text region
+    txt: { left: 12, top: 138, width: 270 },
+  },
+  {
+    clipId: 'pc2', path: CLIP2,
+    transformOrigin: '450px 120px',
+    fromX: 0, fromY: -380, fromR: 14,
+    scrollRange: [0.04, 0.40], opRange: [0.04, 0.20],
+    img: { left: 300, top: 0, width: 300, height: 130 },
+    txt: { left: 312, top: 136, width: 265 },
+  },
+  {
+    clipId: 'pc3', path: CLIP3,
+    transformOrigin: '750px 120px',
+    fromX: 420, fromY: -240, fromR: -16,
+    scrollRange: [0.08, 0.44], opRange: [0.08, 0.24],
+    img: { left: 600, top: 0, width: 300, height: 130 },
+    txt: { left: 612, top: 136, width: 263 },
+  },
+  {
+    clipId: 'pc4', path: CLIP4,
+    transformOrigin: '250px 360px',
+    fromX: -340, fromY: 330, fromR: 20,
+    scrollRange: [0.06, 0.42], opRange: [0.06, 0.22],
+    img: { left: 0, top: 242, width: 500, height: 118 },
+    txt: { left: 12, top: 366, width: 468 },
+  },
+  {
+    clipId: 'pc5', path: CLIP5,
+    transformOrigin: '700px 360px',
+    fromX: 360, fromY: 330, fromR: -24,
+    scrollRange: [0.11, 0.48], opRange: [0.11, 0.27],
+    img: { left: 500, top: 242, width: 400, height: 118 },
+    txt: { left: 512, top: 366, width: 368 },
+  },
+];
+
+// ─── PuzzlePiece — isolated hover state (no parent re-renders on hover) ───────
+function PuzzlePiece({ meta, motionStyle, project, darkMode }) {
   const [hovered, setHovered] = useState(false);
 
-  const headCol   = darkMode ? '#f8fafc' : '#0f172a';
+  const headCol   = darkMode ? '#f1f5f9' : '#0f172a';
   const subCol    = darkMode ? '#94a3b8' : '#64748b';
   const chipBg    = darkMode ? 'rgba(51,65,85,0.9)' : '#f1f5f9';
   const chipCol   = darkMode ? '#cbd5e1' : '#475569';
-  const overlayBg = darkMode ? 'rgba(8,4,18,0.93)' : 'rgba(255,255,255,0.96)';
+  const overlayBg = darkMode ? 'rgba(6,3,16,0.94)' : 'rgba(255,255,255,0.96)';
   const btnSecBg  = darkMode ? '#334155' : '#f1f5f9';
   const btnSecCol = darkMode ? '#e2e8f0' : '#374151';
 
   return (
     <motion.div
-      style={{ ...motionStyle, willChange: 'transform, opacity' }}
+      style={{
+        position: 'absolute', left: 0, top: 0,
+        width: PW, height: PH,
+        clipPath: `url(#${meta.clipId})`,
+        willChange: 'transform, opacity',
+        transformOrigin: meta.transformOrigin,
+        cursor: 'pointer',
+        ...motionStyle,
+      }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Image strip */}
-      <div style={{ position: 'relative', height: imageHeight, overflow: 'hidden', flexShrink: 0 }}>
-        <img
-          src={project.image}
-          alt={project.title}
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-        />
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: `linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%)`,
-        }} />
-        {/* Accent bar */}
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-          background: `linear-gradient(to right, ${project.accentStart}, ${project.accentEnd})`,
-        }} />
-      </div>
+      {/* Background fill */}
+      <div style={{
+        position: 'absolute',
+        left: meta.img.left, top: meta.img.top,
+        width: meta.img.width, height: meta.img.height + (meta.txt.top - (meta.img.top + meta.img.height)) + 80,
+        background: darkMode ? 'rgba(15,23,42,0.85)' : 'rgba(255,255,255,0.9)',
+      }} />
 
-      {/* Card content — passed as children for size flexibility */}
-      {children({ headCol, subCol, chipBg, chipCol })}
-
-      {/* ── Hover overlay — always in DOM, toggled via opacity + pointer-events ──
-           This is the key perf fix: no mount/unmount, GPU-composited opacity
-           transition, no backdrop-blur recalculation spike.                    */}
-      <div
+      {/* Project image */}
+      <img
+        src={project.image}
+        alt={project.title}
         style={{
-          position: 'absolute', inset: 0,
-          background: overlayBg,
-          opacity: hovered ? 1 : 0,
-          pointerEvents: hovered ? 'auto' : 'none',
-          transition: 'opacity 0.18s ease',
-          display: 'flex', flexDirection: 'column',
-          padding: '18px 20px',
-          overflowY: 'auto',
-          zIndex: 20,
+          position: 'absolute',
+          left: meta.img.left, top: meta.img.top,
+          width: meta.img.width, height: meta.img.height,
+          objectFit: 'cover',
         }}
-      >
-        <p style={{ fontSize: 13, fontWeight: 700, color: headCol, marginBottom: 6 }}>
+      />
+
+      {/* Image gradient overlay */}
+      <div style={{
+        position: 'absolute',
+        left: meta.img.left, top: meta.img.top,
+        width: meta.img.width, height: meta.img.height,
+        background: 'linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.55) 100%)',
+      }} />
+
+      {/* Accent stripe */}
+      <div style={{
+        position: 'absolute',
+        left: meta.img.left, top: meta.img.top,
+        width: meta.img.width, height: 3,
+        background: `linear-gradient(to right, ${project.accentStart}, ${project.accentEnd})`,
+      }} />
+
+      {/* Title + tagline + chips */}
+      <div style={{ position: 'absolute', left: meta.txt.left, top: meta.txt.top, width: meta.txt.width }}>
+        <p style={{ fontSize: 14, fontWeight: 800, color: headCol, margin: '0 0 3px' }}>
           {project.title}
         </p>
-        <p style={{ fontSize: 11, color: subCol, marginBottom: 10, lineHeight: 1.6 }}>
-          {project.description}
+        <p style={{ fontSize: 11, color: subCol, margin: '0 0 6px', lineHeight: 1.4 }}>
+          {project.tagline}
         </p>
-        <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 10px 0' }}>
-          {project.features.map((f, i) => (
-            <li key={i} style={{
-              fontSize: 11, color: subCol,
-              display: 'flex', alignItems: 'flex-start', gap: 6, marginBottom: 4,
-            }}>
-              <span style={{ color: '#a855f7', flexShrink: 0, marginTop: 1 }}>▸</span>
-              {f}
-            </li>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+          {project.tech.slice(0, 3).map((t, i) => (
+            <span key={i} style={{
+              padding: '1px 7px', borderRadius: 999,
+              fontSize: 9, fontWeight: 600,
+              background: chipBg, color: chipCol,
+            }}>{t}</span>
           ))}
-        </ul>
-        <div style={{ display: 'flex', gap: 8, marginTop: 'auto', flexWrap: 'wrap' }}>
-          <a
-            href={project.liveUrl} target="_blank" rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 5,
-              padding: '6px 13px', borderRadius: 8,
-              background: 'linear-gradient(135deg,#8b5cf6,#3b82f6)',
-              fontSize: 11, fontWeight: 700, color: '#fff', textDecoration: 'none',
-            }}
-          >
-            <ExternalLink size={11} /> Live Demo
-          </a>
-          <a
-            href={project.githubUrl} target="_blank" rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 5,
-              padding: '6px 13px', borderRadius: 8,
-              background: btnSecBg, fontSize: 11, fontWeight: 700,
-              color: btnSecCol, textDecoration: 'none',
-            }}
-          >
-            <Github size={11} /> Code
-          </a>
+        </div>
+      </div>
+
+      {/* ── Hover overlay — always in DOM, CSS opacity transition ─────────────
+           Covers the full 900×480 div so clip-path clips it to the piece shape.
+           opacity toggle = no mount/unmount = no repaint spike.               */}
+      <div style={{
+        position: 'absolute', left: 0, top: 0, width: PW, height: PH,
+        background: overlayBg,
+        opacity: hovered ? 1 : 0,
+        pointerEvents: hovered ? 'auto' : 'none',
+        transition: 'opacity 0.16s ease',
+        zIndex: 10,
+      }}>
+        {/* Content centred in the piece's visual area */}
+        <div style={{
+          position: 'absolute',
+          left: meta.img.left + 14,
+          top: meta.img.top + 14,
+          width: meta.img.width - 28,
+          height: (meta.img.height + 120) - 28,
+          display: 'flex', flexDirection: 'column',
+          overflowY: 'auto',
+        }}>
+          <p style={{ fontSize: 13, fontWeight: 800, color: headCol, marginBottom: 5 }}>
+            {project.title}
+          </p>
+          <p style={{ fontSize: 11, color: subCol, marginBottom: 8, lineHeight: 1.55 }}>
+            {project.description}
+          </p>
+          <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 8px', flexShrink: 0 }}>
+            {project.features.slice(0, 4).map((f, i) => (
+              <li key={i} style={{
+                fontSize: 10, color: subCol,
+                display: 'flex', alignItems: 'flex-start', gap: 5, marginBottom: 3,
+              }}>
+                <span style={{ color: project.accentStart, flexShrink: 0, marginTop: 1 }}>▸</span>
+                {f}
+              </li>
+            ))}
+          </ul>
+          <div style={{ display: 'flex', gap: 6, marginTop: 'auto', flexWrap: 'wrap', flexShrink: 0 }}>
+            <a
+              href={project.liveUrl} target="_blank" rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 4,
+                padding: '5px 11px', borderRadius: 7,
+                background: `linear-gradient(135deg, ${project.accentStart}, ${project.accentEnd})`,
+                fontSize: 10, fontWeight: 700, color: '#fff', textDecoration: 'none',
+              }}
+            >
+              <ExternalLink size={10} /> Demo
+            </a>
+            <a
+              href={project.githubUrl} target="_blank" rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 4,
+                padding: '5px 11px', borderRadius: 7,
+                background: btnSecBg, fontSize: 10, fontWeight: 700,
+                color: btnSecCol, textDecoration: 'none',
+              }}
+            >
+              <Github size={10} /> Code
+            </a>
+          </div>
         </div>
       </div>
     </motion.div>
   );
 }
 
-// ─── Extra project card (projects beyond the top 3) ───────────────────────────
+// ─── Extra project card (6th project onwards) ────────────────────────────────
 function ExtraCard({ project, darkMode }) {
   const card   = darkMode ? 'bg-slate-800/50' : 'bg-white/70';
   const border = darkMode ? 'border-slate-700/50' : 'border-slate-200';
@@ -237,10 +379,8 @@ function ExtraCard({ project, darkMode }) {
       <div className="relative h-44 overflow-hidden">
         <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-        <div
-          className="absolute top-0 left-0 right-0 h-0.5"
-          style={{ background: `linear-gradient(to right, ${project.accentStart}, ${project.accentEnd})` }}
-        />
+        <div className="absolute top-0 left-0 right-0 h-0.5"
+          style={{ background: `linear-gradient(to right, ${project.accentStart}, ${project.accentEnd})` }} />
       </div>
       <div className="p-5">
         <h4 className={`text-lg font-bold mb-1 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
@@ -256,16 +396,12 @@ function ExtraCard({ project, darkMode }) {
           )}
         </div>
         <div className="flex gap-3">
-          <a
-            href={project.liveUrl} target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg text-xs font-semibold text-white hover:scale-105 transition-transform"
-          >
+          <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg text-xs font-semibold text-white hover:scale-105 transition-transform">
             <ExternalLink size={12} /> Live Demo
           </a>
-          <a
-            href={project.githubUrl} target="_blank" rel="noopener noreferrer"
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold hover:scale-105 transition-transform ${darkMode ? 'bg-slate-700 text-slate-200' : 'bg-slate-100 text-slate-700'}`}
-          >
+          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold hover:scale-105 transition-transform ${darkMode ? 'bg-slate-700 text-slate-200' : 'bg-slate-100 text-slate-700'}`}>
             <Github size={12} /> Code
           </a>
         </div>
@@ -292,54 +428,46 @@ export default function Projects({ darkMode }) {
     offset: ['start end', 'end start'],
   });
 
-  // Piece 1 — leads, range 0 → 0.4
-  const p1x = useTransform(scrollYProgress, [0, 0.4],  [-350, 0]);
-  const p1y = useTransform(scrollYProgress, [0, 0.4],  [-200, 0]);
-  const p1r = useTransform(scrollYProgress, [0, 0.4],  [-20,  0]);
-  const p1o = useTransform(scrollYProgress, [0, 0.15], [0,    1]);
+  // ── Per-piece scroll transforms (hooks must be at top level) ─────────────
+  const p1x = useTransform(scrollYProgress, PIECES[0].scrollRange, [PIECES[0].fromX, 0]);
+  const p1y = useTransform(scrollYProgress, PIECES[0].scrollRange, [PIECES[0].fromY, 0]);
+  const p1r = useTransform(scrollYProgress, PIECES[0].scrollRange, [PIECES[0].fromR, 0]);
+  const p1o = useTransform(scrollYProgress, PIECES[0].opRange,     [0, 1]);
 
-  // Piece 2 — slight delay, range 0.05 → 0.45
-  const p2x = useTransform(scrollYProgress, [0.05, 0.45], [300,  0]);
-  const p2y = useTransform(scrollYProgress, [0.05, 0.45], [-250, 0]);
-  const p2r = useTransform(scrollYProgress, [0.05, 0.45], [15,   0]);
-  const p2o = useTransform(scrollYProgress, [0.05, 0.22], [0,    1]);
+  const p2x = useTransform(scrollYProgress, PIECES[1].scrollRange, [PIECES[1].fromX, 0]);
+  const p2y = useTransform(scrollYProgress, PIECES[1].scrollRange, [PIECES[1].fromY, 0]);
+  const p2r = useTransform(scrollYProgress, PIECES[1].scrollRange, [PIECES[1].fromR, 0]);
+  const p2o = useTransform(scrollYProgress, PIECES[1].opRange,     [0, 1]);
 
-  // Piece 3 — most delay, range 0.1 → 0.5
-  const p3x = useTransform(scrollYProgress, [0.1, 0.5],  [-100, 0]);
-  const p3y = useTransform(scrollYProgress, [0.1, 0.5],  [350,  0]);
-  const p3r = useTransform(scrollYProgress, [0.1, 0.5],  [25,   0]);
-  const p3o = useTransform(scrollYProgress, [0.1, 0.28], [0,    1]);
+  const p3x = useTransform(scrollYProgress, PIECES[2].scrollRange, [PIECES[2].fromX, 0]);
+  const p3y = useTransform(scrollYProgress, PIECES[2].scrollRange, [PIECES[2].fromY, 0]);
+  const p3r = useTransform(scrollYProgress, PIECES[2].scrollRange, [PIECES[2].fromR, 0]);
+  const p3o = useTransform(scrollYProgress, PIECES[2].opRange,     [0, 1]);
 
-  const scale       = Math.min(1, (winW - 32) / PW);
-  const cardBg      = darkMode ? 'rgba(15,23,42,0.80)' : 'rgba(255,255,255,0.85)';
-  const subCol      = darkMode ? '#94a3b8' : '#64748b';
-  const headCol     = darkMode ? '#f8fafc' : '#0f172a';
+  const p4x = useTransform(scrollYProgress, PIECES[3].scrollRange, [PIECES[3].fromX, 0]);
+  const p4y = useTransform(scrollYProgress, PIECES[3].scrollRange, [PIECES[3].fromY, 0]);
+  const p4r = useTransform(scrollYProgress, PIECES[3].scrollRange, [PIECES[3].fromR, 0]);
+  const p4o = useTransform(scrollYProgress, PIECES[3].opRange,     [0, 1]);
 
-  // Split: top 3 go in the puzzle, the rest become regular cards
-  const puzzleProjects = projects.slice(0, 3);
-  const extraProjects  = projects.slice(3);
+  const p5x = useTransform(scrollYProgress, PIECES[4].scrollRange, [PIECES[4].fromX, 0]);
+  const p5y = useTransform(scrollYProgress, PIECES[4].scrollRange, [PIECES[4].fromY, 0]);
+  const p5r = useTransform(scrollYProgress, PIECES[4].scrollRange, [PIECES[4].fromR, 0]);
+  const p5o = useTransform(scrollYProgress, PIECES[4].opRange,     [0, 1]);
 
-  const pieceBase = (left, top, width, height, clipId, x, y, rotate, opacity) => ({
-    position: 'absolute',
-    left, top, width, height,
-    clipPath: `url(#${clipId})`,
-    background: cardBg,
-    overflow: 'hidden',
-    cursor: 'pointer',
-    x, y, rotate, opacity,
-  });
+  const allMotion = [
+    { x: p1x, y: p1y, rotate: p1r, opacity: p1o },
+    { x: p2x, y: p2y, rotate: p2r, opacity: p2o },
+    { x: p3x, y: p3y, rotate: p3r, opacity: p3o },
+    { x: p4x, y: p4y, rotate: p4r, opacity: p4o },
+    { x: p5x, y: p5y, rotate: p5r, opacity: p5o },
+  ];
 
-  const Chips = ({ tech, chipBg, chipCol }) => (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 8 }}>
-      {tech.slice(0, 3).map((t, i) => (
-        <span key={i} style={{
-          padding: '2px 9px', borderRadius: 999,
-          fontSize: 10, fontWeight: 600,
-          background: chipBg, color: chipCol,
-        }}>{t}</span>
-      ))}
-    </div>
-  );
+  const scale        = Math.min(1, (winW - 32) / PW);
+  const subCol       = darkMode ? '#94a3b8' : '#64748b';
+  const headCol      = darkMode ? '#f8fafc' : '#0f172a';
+
+  const puzzleProjects = projects.slice(0, 5);
+  const extraProjects  = projects.slice(5);
 
   return (
     <section
@@ -347,16 +475,18 @@ export default function Projects({ darkMode }) {
       id="projects"
       style={{ position: 'relative', paddingTop: 96, paddingBottom: 120, width: '100%', overflow: 'hidden' }}
     >
-      {/* Hidden SVG clip-path defs */}
+      {/* ── SVG clip-path defs (hidden) ─────────────────────────────────────── */}
       <svg aria-hidden="true" style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }}>
         <defs>
-          <clipPath id="puzzleClip1"><path d={CLIP1} /></clipPath>
-          <clipPath id="puzzleClip2"><path d={CLIP2} /></clipPath>
-          <clipPath id="puzzleClip3"><path d={CLIP3} /></clipPath>
+          {PIECES.map((p) => (
+            <clipPath key={p.clipId} id={p.clipId}>
+              <path d={p.path} />
+            </clipPath>
+          ))}
         </defs>
       </svg>
 
-      {/* Section header */}
+      {/* ── Section header ───────────────────────────────────────────────────── */}
       <div style={{ textAlign: 'center', marginBottom: 72, paddingLeft: 24, paddingRight: 24 }}>
         <span style={{
           fontSize: 11, fontWeight: 700,
@@ -364,85 +494,31 @@ export default function Projects({ darkMode }) {
         }}>
           What I've Built
         </span>
-        <h3 style={{
-          fontSize: 'clamp(30px,5vw,48px)', fontWeight: 900,
-          margin: '12px 0 0', color: headCol,
-        }}>
+        <h3 style={{ fontSize: 'clamp(30px,5vw,48px)', fontWeight: 900, margin: '12px 0 0', color: headCol }}>
           Featured <span className="shimmer-text">Projects</span>
         </h3>
       </div>
 
-      {/* ── Puzzle (top 3) ──────────────────────────────────────────────────── */}
+      {/* ── Puzzle stage ─────────────────────────────────────────────────────── */}
       <div style={{ display: 'flex', justifyContent: 'center', paddingLeft: 16, paddingRight: 16 }}>
-        {/* Outer box reserves correct scaled layout height */}
+        {/* Outer box reserves correct scaled layout space */}
         <div style={{ width: PW * scale, height: PH * scale, position: 'relative', flexShrink: 0 }}>
-          {/* Inner 900×420 puzzle, CSS-scaled */}
+          {/* Inner 900×480 — CSS-scaled to fit viewport */}
           <div style={{
             position: 'absolute', top: 0, left: 0,
             width: PW, height: PH,
             transform: `scale(${scale})`,
             transformOrigin: 'top left',
           }}>
-
-            {/* ── Piece 1 — left block ── */}
-            <PuzzlePiece
-              motionStyle={pieceBase(0, 0, 460, 420, 'puzzleClip1', p1x, p1y, p1r, p1o)}
-              project={puzzleProjects[0]}
-              imageHeight={200}
-              darkMode={darkMode}
-            >
-              {({ headCol, subCol, chipBg, chipCol }) => (
-                <div style={{ padding: '18px 22px' }}>
-                  <h4 style={{ fontSize: 20, fontWeight: 800, marginBottom: 4, color: headCol }}>
-                    {puzzleProjects[0].title}
-                  </h4>
-                  <p style={{ fontSize: 13, color: subCol, lineHeight: 1.5 }}>
-                    {puzzleProjects[0].tagline}
-                  </p>
-                  <Chips tech={puzzleProjects[0].tech} chipBg={chipBg} chipCol={chipCol} />
-                  <p style={{ fontSize: 11, color: subCol, marginTop: 14, opacity: 0.5 }}>
-                    Hover to explore →
-                  </p>
-                </div>
-              )}
-            </PuzzlePiece>
-
-            {/* ── Piece 2 — top-right block ── */}
-            <PuzzlePiece
-              motionStyle={pieceBase(440, 0, 460, 230, 'puzzleClip2', p2x, p2y, p2r, p2o)}
-              project={puzzleProjects[1]}
-              imageHeight={118}
-              darkMode={darkMode}
-            >
-              {({ headCol, subCol, chipBg, chipCol }) => (
-                <div style={{ padding: '14px 22px' }}>
-                  <h4 style={{ fontSize: 17, fontWeight: 800, marginBottom: 3, color: headCol }}>
-                    {puzzleProjects[1].title}
-                  </h4>
-                  <p style={{ fontSize: 12, color: subCol }}>{puzzleProjects[1].tagline}</p>
-                  <Chips tech={puzzleProjects[1].tech} chipBg={chipBg} chipCol={chipCol} />
-                </div>
-              )}
-            </PuzzlePiece>
-
-            {/* ── Piece 3 — bottom-right block ── */}
-            <PuzzlePiece
-              motionStyle={pieceBase(440, 210, 460, 210, 'puzzleClip3', p3x, p3y, p3r, p3o)}
-              project={puzzleProjects[2]}
-              imageHeight={98}
-              darkMode={darkMode}
-            >
-              {({ headCol, subCol, chipBg, chipCol }) => (
-                <div style={{ padding: '10px 22px' }}>
-                  <h4 style={{ fontSize: 16, fontWeight: 800, marginBottom: 3, color: headCol }}>
-                    {puzzleProjects[2].title}
-                  </h4>
-                  <p style={{ fontSize: 12, color: subCol }}>{puzzleProjects[2].tagline}</p>
-                  <Chips tech={puzzleProjects[2].tech} chipBg={chipBg} chipCol={chipCol} />
-                </div>
-              )}
-            </PuzzlePiece>
-
+            {puzzleProjects.map((project, i) => (
+              <PuzzlePiece
+                key={project.id}
+                meta={PIECES[i]}
+                motionStyle={allMotion[i]}
+                project={project}
+                darkMode={darkMode}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -453,12 +529,10 @@ export default function Projects({ darkMode }) {
         fontSize: 12, color: subCol,
         display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
       }}>
-        <span>Scroll to assemble the puzzle</span>
-        <span style={{ opacity: 0.4 }}>·</span>
-        <span>Hover each piece to explore</span>
+        <span>Scroll to assemble · Hover each piece to explore</span>
       </p>
 
-      {/* ── Extra projects (4th onwards) rendered as regular cards ────────────── */}
+      {/* ── Extra projects (6th onwards) ─────────────────────────────────────── */}
       {extraProjects.length > 0 && (
         <div style={{ maxWidth: 1200, margin: '72px auto 0', paddingLeft: 24, paddingRight: 24 }}>
           <p style={{
