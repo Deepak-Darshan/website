@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Sun, Moon, Menu, X } from 'lucide-react';
 
 const navLinks = [
@@ -67,7 +68,11 @@ export default function Navbar({ darkMode, setDarkMode }) {
               >
                 {label}
                 {isActive && (
-                  <span className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-purple-400 to-blue-400 rounded-full" />
+                  <motion.span
+                    layoutId="nav-pill"
+                    className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-purple-400 to-blue-400 rounded-full"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
                 )}
               </a>
             );
@@ -99,24 +104,37 @@ export default function Navbar({ darkMode, setDarkMode }) {
       </div>
 
       {/* Mobile menu */}
-      {mobileOpen && (
-        <div className={`md:hidden px-6 pb-6 flex flex-col gap-1 ${darkMode ? 'bg-[#0a0514]/95' : 'bg-white/95'} backdrop-blur-xl`}>
-          {navLinks.map(({ label, href }) => (
-            <a
-              key={href}
-              href={href}
-              onClick={() => setMobile(false)}
-              className={`py-3 text-sm font-medium border-b transition-colors ${
-                darkMode
-                  ? 'border-slate-800 text-slate-300 hover:text-purple-400'
-                  : 'border-slate-100 text-slate-600 hover:text-purple-600'
-              }`}
-            >
-              {label}
-            </a>
-          ))}
-        </div>
-      )}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.22, ease: 'easeInOut' }}
+            className={`md:hidden overflow-hidden ${darkMode ? 'bg-[#0a0514]/95' : 'bg-white/95'} backdrop-blur-xl`}
+          >
+            <div className="px-6 pb-6 flex flex-col gap-1">
+              {navLinks.map(({ label, href }, i) => (
+                <motion.a
+                  key={href}
+                  href={href}
+                  onClick={() => setMobile(false)}
+                  initial={{ x: -12, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: i * 0.05, duration: 0.18 }}
+                  className={`py-3 text-sm font-medium border-b transition-colors ${
+                    darkMode
+                      ? 'border-slate-800 text-slate-300 hover:text-purple-400'
+                      : 'border-slate-100 text-slate-600 hover:text-purple-600'
+                  }`}
+                >
+                  {label}
+                </motion.a>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

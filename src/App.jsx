@@ -33,8 +33,8 @@ function App() {
       const y = e.clientY;
       setCursorPos({ x, y });
       const lerp = () => {
-        ringRef.current.x += (x - ringRef.current.x) * 0.18;
-        ringRef.current.y += (y - ringRef.current.y) * 0.18;
+        ringRef.current.x += (x - ringRef.current.x) * 0.12;
+        ringRef.current.y += (y - ringRef.current.y) * 0.12;
         setRingPos({ x: ringRef.current.x, y: ringRef.current.y });
       };
       cancelAnimationFrame(rafRef.current);

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { ArrowDown, Sparkles } from 'lucide-react';
 
 const roles = [
@@ -91,7 +92,7 @@ export default function Hero({ darkMode }) {
         </p>
 
         {/* CTAs */}
-        <div className="flex gap-4 justify-center flex-wrap mb-16">
+        <div className="flex gap-4 justify-center flex-wrap mb-10">
           <a
             href="#projects"
             className="group flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl font-semibold hover:shadow-2xl hover:shadow-purple-500/30 hover:scale-105 transition-all duration-300"
@@ -110,6 +111,28 @@ export default function Hero({ darkMode }) {
             Get in Touch
           </a>
         </div>
+
+        {/* Stats */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+          className="flex items-center justify-center gap-6 md:gap-10 mb-14"
+        >
+          {[
+            { value: '5+',  label: 'Projects' },
+            { value: '18+', label: 'Technologies' },
+            { value: 'AWS', label: 'Cloud Stack' },
+          ].map((stat, i) => (
+            <div key={i} className="flex items-center gap-6 md:gap-10">
+              {i > 0 && <div className={`w-px h-8 ${darkMode ? 'bg-slate-700' : 'bg-slate-300'}`} />}
+              <div className="text-center">
+                <div className={`text-xl md:text-2xl font-black ${darkMode ? 'text-white' : 'text-slate-900'}`}>{stat.value}</div>
+                <div className={`text-xs mt-0.5 ${sub}`}>{stat.label}</div>
+              </div>
+            </div>
+          ))}
+        </motion.div>
 
         {/* Scroll nudge */}
         <div className="flex flex-col items-center gap-1.5 opacity-50 animate-bounce">
