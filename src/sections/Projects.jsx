@@ -580,8 +580,9 @@ export default function Projects({ darkMode }) {
                 // Clamp so the 290px-wide card stays within puzzle bounds
                 const clampedX = Math.max(145, Math.min(PW - 145, anchor.x));
                 const clampedY = Math.max(105, Math.min(PH - 105, anchor.y));
-                const titleCol = darkMode ? '#ffffff' : '#0a0514';
-                const descCol  = darkMode ? 'rgba(255,255,255,0.78)' : 'rgba(10,5,20,0.72)';
+                // Inverted: dark mode → white card, light mode → dark card
+                const titleCol = darkMode ? '#0a0514' : '#ffffff';
+                const descCol  = darkMode ? 'rgba(10,5,20,0.72)' : 'rgba(255,255,255,0.78)';
                 return (
                   <motion.div
                     key={`popup-${hoveredPieceIdx}`}
@@ -600,13 +601,13 @@ export default function Projects({ darkMode }) {
                       zIndex: 60,
                       borderRadius: 18,
                       overflow: 'hidden',
-                      background: darkMode ? 'rgba(8,4,22,0.88)' : 'rgba(255,255,255,0.92)',
+                      background: darkMode ? 'rgba(255,255,255,0.95)' : 'rgba(8,4,22,0.92)',
                       backdropFilter: 'blur(28px)',
                       WebkitBackdropFilter: 'blur(28px)',
                       border: `1px solid ${proj.accentStart}50`,
                       boxShadow: darkMode
-                        ? `0 24px 56px rgba(0,0,0,0.75), 0 0 28px ${proj.accentStart}1a, inset 0 1px 0 rgba(255,255,255,0.08)`
-                        : `0 24px 48px rgba(0,0,0,0.12), 0 0 28px ${proj.accentStart}14, inset 0 1px 0 rgba(255,255,255,0.95)`,
+                        ? `0 24px 56px rgba(0,0,0,0.4), 0 0 28px ${proj.accentStart}1a, inset 0 1px 0 rgba(255,255,255,0.9)`
+                        : `0 24px 56px rgba(0,0,0,0.7), 0 0 28px ${proj.accentStart}1a, inset 0 1px 0 rgba(255,255,255,0.06)`,
                     }}
                   >
                     {/* Accent top stripe */}
