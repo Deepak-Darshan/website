@@ -2,6 +2,38 @@ import { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Github, ExternalLink } from 'lucide-react';
 
+// ─── Language color map ────────────────────────────────────────────────────────
+const LANG_COLORS = {
+  JavaScript: '#f1e05a',
+  TypeScript: '#3178c6',
+  Python:     '#3572A5',
+  Java:       '#b07219',
+  C:          '#555555',
+  HTML:       '#e34c26',
+  CSS:        '#563d7c',
+  Shell:      '#89e051',
+  Go:         '#00ADD8',
+  Rust:       '#dea584',
+};
+
+function getLangColor(lang) {
+  return (lang && LANG_COLORS[lang]) || '#8b949e';
+}
+
+// ─── Time ago helper ───────────────────────────────────────────────────────────
+function timeAgo(dateString) {
+  const diff  = Date.now() - new Date(dateString).getTime();
+  const days  = Math.floor(diff / 86400000);
+  const weeks = Math.floor(days / 7);
+  const months = Math.floor(days / 30);
+  const years  = Math.floor(days / 365);
+  if (years  >= 1) return `${years}y ago`;
+  if (months >= 1) return `${months}mo ago`;
+  if (weeks  >= 1) return `${weeks}w ago`;
+  if (days   >= 1) return `${days}d ago`;
+  return 'today';
+}
+
 // ─── Project data ─────────────────────────────────────────────────────────────
 const projects = [
   {
@@ -235,6 +267,264 @@ const PIECES = [
   },
 ];
 
+// ─── Excluded puzzle project names ────────────────────────────────────────────
+const PUZZLE_NAMES = ['smartqueue', 'tether', 'viewTrend', 'maze-game', 'UDP-Reliable-Protocol'];
+
+// ─── GitHub repos custom hook ─────────────────────────────────────────────────
+function useGitHubRepos(retryCount) {
+  const [repos, setRepos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    fetch('https://api.github.com/users/Deepak-Darshan/repos?sort=pushed&per_page=100&type=public')
+      .then(r => {
+        if (!r.ok) throw new Error(`GitHub API responded with ${r.status}`);
+        return r.json();
+      })
+      .then(data => {
+        if (cancelled) return;
+        const filtered = data.filter(r => !r.fork && !PUZZLE_NAMES.includes(r.name));
+        setRepos(filtered);
+        setLoading(false);
+      })
+      .catch(err => {
+        if (cancelled) return;
+        setError(err.message);
+        setLoading(false);
+      });
+    return () => { cancelled = true; };
+  }, [retryCount]);
+
+  return { repos, loading, error };
+}
+
+// ─── CountUp component ────────────────────────────────────────────────────────
+function CountUp({ target }) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!target) return;
+    const start = performance.now();
+    const duration = 1200;
+    let raf;
+    const tick = (now) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(eased * target));
+      if (progress < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [target]);
+
+  return <>{count}</>;
+}
+
+// ─── SkeletonCard component ───────────────────────────────────────────────────
+function SkeletonCard() {
+  const shimmer = {
+    background: 'linear-gradient(90deg, rgba(255,153,0,0.04) 0%, rgba(255,153,0,0.12) 50%, rgba(255,153,0,0.04) 100%)',
+    backgroundSize: '200% 100%',
+    animation: 'ghSkeletonShimmer 1.6s ease-in-out infinite',
+    borderRadius: 4,
+  };
+  return (
+    <div style={{
+      borderRadius: 14,
+      border: '1px solid rgba(255,255,255,0.08)',
+      background: 'rgba(10,8,32,0.6)',
+      overflow: 'hidden',
+    }}>
+      <div style={{ height: 3, ...shimmer }} />
+      <div style={{ padding: 16 }}>
+        <div style={{ width: 140, height: 14, marginBottom: 12, ...shimmer }} />
+        <div style={{ width: '100%', height: 32, marginBottom: 16, ...shimmer }} />
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{ width: 60, height: 10, ...shimmer }} />
+          <div style={{ width: 40, height: 10, ...shimmer }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── RepoCard component ───────────────────────────────────────────────────────
+function RepoCard({ repo, index, darkMode, headCol, subCol }) {
+  const [hovered, setHovered] = useState(false);
+  const langColor = getLangColor(repo.language);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.4, ease: 'easeOut', delay: Math.min(index * 0.05, 0.4) }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onClick={() => window.open(repo.html_url, '_blank')}
+      style={{
+        position: 'relative',
+        overflow: 'hidden',
+        borderRadius: 14,
+        border: `1px solid ${hovered ? `${langColor}55` : 'rgba(255,255,255,0.08)'}`,
+        background: darkMode ? 'rgba(10,8,32,0.6)' : 'rgba(255,255,255,0.7)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'column',
+        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
+        boxShadow: hovered ? `0 20px 40px rgba(0,0,0,0.4), 0 0 0 1px ${langColor}18` : 'none',
+        transition: 'transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease',
+      }}
+    >
+      {/* Accent bar */}
+      <div style={{ height: 3, background: `linear-gradient(to right, ${langColor}, ${langColor}55)`, flexShrink: 0 }} />
+
+      {/* Top row */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '16px 16px 0' }}>
+        <div style={{ flex: 1, minWidth: 0, marginRight: 8 }}>
+          <div style={{ fontSize: 14, fontWeight: 600, color: headCol, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {repo.name}
+          </div>
+          {repo.homepage && (
+            <a
+              href={repo.homepage}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={e => e.stopPropagation()}
+              style={{ fontSize: 9, color: '#10b981', textDecoration: 'none', display: 'inline-block', marginTop: 2 }}
+            >
+              ↗ live
+            </a>
+          )}
+        </div>
+        {repo.stargazers_count > 0 && (
+          <div style={{
+            background: 'rgba(255,153,0,0.10)',
+            border: '1px solid rgba(255,153,0,0.22)',
+            borderRadius: 20,
+            padding: '2px 8px',
+            fontSize: 10,
+            color: '#ff9900',
+            whiteSpace: 'nowrap',
+            flexShrink: 0,
+          }}>
+            ★ {repo.stargazers_count}
+          </div>
+        )}
+      </div>
+
+      {/* Description */}
+      <div style={{ padding: '8px 16px 0', flexGrow: 1 }}>
+        <p style={{
+          fontSize: 12,
+          lineHeight: 1.6,
+          color: subCol,
+          margin: 0,
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+          fontStyle: repo.description ? 'normal' : 'italic',
+        }}>
+          {repo.description || 'No description'}
+        </p>
+      </div>
+
+      {/* Topics */}
+      {repo.topics && repo.topics.length > 0 && (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, padding: '8px 16px 0' }}>
+          {repo.topics.slice(0, 3).map(t => (
+            <span key={t} style={{
+              background: 'rgba(96,160,255,0.08)',
+              border: '1px solid rgba(96,160,255,0.22)',
+              borderRadius: 20,
+              padding: '2px 7px',
+              fontSize: 9,
+              color: '#60a0ff',
+              fontWeight: 500,
+            }}>
+              {t}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* Bottom row */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px 14px', marginTop: 'auto' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          {repo.language && (
+            <>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: langColor, flexShrink: 0 }} />
+              <span style={{ fontSize: 10, color: subCol }}>{repo.language}</span>
+            </>
+          )}
+        </div>
+        <span style={{ fontSize: 9, color: subCol }}>{timeAgo(repo.pushed_at)}</span>
+      </div>
+
+      {/* Hover overlay with action buttons */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        background: 'linear-gradient(135deg, transparent, rgba(255,153,0,0.04), transparent)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 8,
+        opacity: hovered ? 1 : 0,
+        transition: 'opacity 0.2s ease',
+        pointerEvents: hovered ? 'auto' : 'none',
+      }}>
+        <button
+          onClick={e => { e.stopPropagation(); window.open(repo.html_url, '_blank'); }}
+          style={{
+            background: 'rgba(255,153,0,0.15)',
+            border: '1px solid rgba(255,153,0,0.35)',
+            borderRadius: 8,
+            padding: '6px 14px',
+            fontSize: 11,
+            color: '#ff9900',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 5,
+            fontFamily: 'inherit',
+          }}
+        >
+          <Github size={12} /> View Code
+        </button>
+        {repo.homepage && (
+          <button
+            onClick={e => { e.stopPropagation(); window.open(repo.homepage, '_blank'); }}
+            style={{
+              background: 'rgba(255,153,0,0.15)',
+              border: '1px solid rgba(255,153,0,0.35)',
+              borderRadius: 8,
+              padding: '6px 14px',
+              fontSize: 11,
+              color: '#ff9900',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 5,
+              fontFamily: 'inherit',
+            }}
+          >
+            <ExternalLink size={12} /> Open
+          </button>
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
 // ─── PuzzlePiece — hover state isolated so siblings never re-render ───────────
 function PuzzlePiece({ meta, motionX, motionY, motionR, motionO, project, darkMode, assembled, onAssembledEnter, onAssembledLeave }) {
   const [hovered, setHovered] = useState(false);
@@ -451,6 +741,9 @@ function ExtraCard({ project, darkMode }) {
   );
 }
 
+// ─── Filter options ───────────────────────────────────────────────────────────
+const FEED_FILTERS = ['All', 'Python', 'JavaScript', 'TypeScript', 'AWS', 'Most Starred', 'Recently Updated'];
+
 // ─── Main component ───────────────────────────────────────────────────────────
 export default function Projects({ darkMode }) {
   const sectionRef = useRef(null);
@@ -515,9 +808,74 @@ export default function Projects({ darkMode }) {
   const handlePopoverEnter = () => { clearTimeout(hoverTimer.current); };
   const handlePopoverLeave = () => { hoverTimer.current = setTimeout(() => setHoveredPieceIdx(null), 140); };
 
-  // Outer perimeter of the complete puzzle rectangle (0,0 → PW,PH)
-  const PERIMETER = 2 * (PW + PH); // 2800 px
+  // ── GitHub feed state ───────────────────────────────────────────────────────
+  const [retryCount,   setRetryCount]   = useState(0);
+  const { repos, loading, error }       = useGitHubRepos(retryCount);
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [searchTerm,   setSearchTerm]   = useState('');
+  const [visibleCount, setVisibleCount] = useState(9);
+  const [searchFocused, setSearchFocused] = useState(false);
 
+  // Reset visible count when filter or search changes
+  useEffect(() => { setVisibleCount(9); }, [activeFilter, searchTerm]);
+
+  // Inject keyframes needed by the feed section
+  useEffect(() => {
+    const id = 'gh-feed-styles';
+    if (document.getElementById(id)) return;
+    const el = document.createElement('style');
+    el.id = id;
+    el.textContent = `
+      @keyframes ghSkeletonShimmer {
+        0%   { background-position: -200% 0; }
+        100% { background-position:  200% 0; }
+      }
+      @keyframes ghDotPulse {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.3; }
+      }
+    `;
+    document.head.appendChild(el);
+    return () => { const s = document.getElementById(id); if (s) s.remove(); };
+  }, []);
+
+  // ── Computed filtered repos ─────────────────────────────────────────────────
+  let filteredRepos = [...repos];
+
+  if (activeFilter === 'Most Starred') {
+    filteredRepos.sort((a, b) => b.stargazers_count - a.stargazers_count);
+  } else if (activeFilter === 'Recently Updated') {
+    filteredRepos.sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
+  } else if (activeFilter === 'AWS') {
+    filteredRepos = filteredRepos.filter(r => {
+      const hay = `${r.name} ${r.description || ''}`.toLowerCase();
+      const topics = r.topics || [];
+      return hay.includes('aws') || hay.includes('sqs') || hay.includes('lambda') ||
+             hay.includes('dynamodb') || topics.includes('aws');
+    });
+  } else if (activeFilter !== 'All') {
+    filteredRepos = filteredRepos.filter(r => r.language === activeFilter);
+  }
+
+  if (searchTerm.trim()) {
+    const term = searchTerm.toLowerCase();
+    filteredRepos = filteredRepos.filter(r =>
+      r.name.toLowerCase().includes(term) ||
+      (r.description && r.description.toLowerCase().includes(term))
+    );
+  }
+
+  // ── Stats ───────────────────────────────────────────────────────────────────
+  const uniqueLangs = new Set(repos.map(r => r.language).filter(Boolean)).size;
+  const totalStars  = repos.reduce((s, r) => s + r.stargazers_count, 0);
+  const langCounts  = repos.reduce((acc, r) => {
+    if (r.language) acc[r.language] = (acc[r.language] || 0) + 1;
+    return acc;
+  }, {});
+  const topLang = Object.entries(langCounts).sort(([, a], [, b]) => b - a)[0]?.[0] || '—';
+
+  // ── Shared style values ─────────────────────────────────────────────────────
+  const PERIMETER = 2 * (PW + PH); // 2800 px
   const scale          = Math.min(1, (winW - 32) / PW);
   const headCol        = darkMode ? '#f8fafc' : '#0f172a';
   const subCol         = darkMode ? '#94a3b8' : '#64748b';
@@ -714,6 +1072,289 @@ export default function Projects({ darkMode }) {
       }}>
         Scroll to assemble · Hover each piece to explore
       </p>
+
+      {/* ── GitHub Repository Feed ──────────────────────────────────────────── */}
+      <div
+        id="github-feed"
+        style={{ paddingTop: 80, paddingBottom: 40, maxWidth: 1200, margin: '0 auto', paddingLeft: 24, paddingRight: 24 }}
+      >
+        {/* ── Part 1: Section header ── */}
+        <div style={{ textAlign: 'center', marginBottom: 48 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.45, delay: 0 }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 12 }}
+          >
+            <div style={{
+              width: 5, height: 5, borderRadius: '50%', background: '#10b981',
+              animation: 'ghDotPulse 1.5s ease-in-out infinite',
+              flexShrink: 0,
+            }} />
+            <span style={{
+              fontSize: 10, fontWeight: 700, letterSpacing: '0.15em',
+              textTransform: 'uppercase', color: subCol,
+            }}>
+              Live from GitHub
+            </span>
+          </motion.div>
+
+          <motion.h3
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.45, delay: 0.1 }}
+            style={{
+              fontSize: 'clamp(28px,4vw,42px)', fontWeight: 900, margin: '0 0 10px',
+              color: headCol, letterSpacing: '-0.03em',
+            }}
+          >
+            All{' '}<span className="shimmer-text">Deployments</span>
+          </motion.h3>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.45, delay: 0.2 }}
+            style={{ fontSize: 13, color: subCol, margin: 0 }}
+          >
+            Every repo. Auto-updating. No redeploy needed.
+          </motion.p>
+        </div>
+
+        {/* ── Part 2: Stats bar ── */}
+        {!loading && !error && (
+          <div style={{
+            display: 'flex', gap: 12, justifyContent: 'center',
+            flexWrap: 'wrap', marginBottom: 40,
+          }}>
+            {[
+              { value: repos.length, label: 'Repositories', isNum: true },
+              { value: uniqueLangs,  label: 'Languages',    isNum: true },
+              { value: totalStars,   label: 'Total Stars',  isNum: true },
+              { value: topLang,      label: 'Top Language', isNum: false },
+            ].map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ scale: 0.8, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.07 }}
+                style={{
+                  background: 'rgba(255,153,0,0.06)',
+                  border: '1px solid rgba(255,153,0,0.15)',
+                  borderRadius: 12,
+                  padding: '16px 24px',
+                  textAlign: 'center',
+                  minWidth: 110,
+                }}
+              >
+                <div style={{ fontSize: 28, fontWeight: 700, color: '#ff9900', lineHeight: 1 }}>
+                  {stat.isNum ? <CountUp target={stat.value} /> : stat.value}
+                </div>
+                <div style={{
+                  fontSize: 10, textTransform: 'uppercase',
+                  letterSpacing: '0.1em', color: subCol, marginTop: 5,
+                }}>
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
+
+        {/* ── Part 3: Filter + Search bar ── */}
+        <div style={{
+          display: 'flex', gap: 10, flexWrap: 'wrap',
+          justifyContent: 'center', marginBottom: 32,
+        }}>
+          <input
+            type="text"
+            placeholder="Search repos..."
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            onFocus={() => setSearchFocused(true)}
+            onBlur={() => setSearchFocused(false)}
+            style={{
+              background: 'rgba(255,255,255,0.04)',
+              border: `1px solid ${searchFocused ? 'rgba(255,153,0,0.5)' : 'rgba(255,153,0,0.2)'}`,
+              borderRadius: 8,
+              padding: '8px 14px',
+              fontSize: 12,
+              color: headCol,
+              fontFamily: 'monospace',
+              outline: 'none',
+              width: 200,
+              transition: 'border-color 0.2s',
+            }}
+          />
+          {FEED_FILTERS.map(f => (
+            <button
+              key={f}
+              onClick={() => setActiveFilter(f)}
+              style={{
+                fontSize: 10,
+                fontWeight: 600,
+                padding: '5px 14px',
+                borderRadius: 20,
+                letterSpacing: '0.08em',
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                transition: 'all 0.18s',
+                background: activeFilter === f ? 'rgba(255,153,0,0.15)' : 'rgba(255,255,255,0.04)',
+                border: `1px solid ${activeFilter === f ? 'rgba(255,153,0,0.4)' : 'rgba(255,255,255,0.10)'}`,
+                color: activeFilter === f ? '#ff9900' : subCol,
+              }}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+
+        {/* ── Part 4: Content area ── */}
+
+        {/* Loading skeletons */}
+        {loading && (
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gap: 16,
+          }}>
+            {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
+          </div>
+        )}
+
+        {/* Error state */}
+        {!loading && error && (
+          <div style={{ textAlign: 'center', padding: '40px 0' }}>
+            <div style={{
+              display: 'inline-block',
+              background: 'rgba(239,68,68,0.08)',
+              border: '1px solid rgba(239,68,68,0.2)',
+              borderRadius: 12,
+              padding: '28px 36px',
+            }}>
+              <div style={{ fontSize: 24, color: '#ef4444', marginBottom: 10 }}>✕</div>
+              <p style={{ fontSize: 14, color: headCol, margin: '0 0 6px', fontWeight: 600 }}>
+                Failed to reach GitHub API
+              </p>
+              <p style={{ fontSize: 12, color: subCol, margin: '0 0 18px' }}>{error}</p>
+              <button
+                onClick={() => setRetryCount(c => c + 1)}
+                style={{
+                  background: 'rgba(255,153,0,0.12)',
+                  border: '1px solid rgba(255,153,0,0.3)',
+                  borderRadius: 8,
+                  padding: '7px 20px',
+                  fontSize: 12,
+                  color: '#ff9900',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                }}
+              >
+                Retry
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Repo grid */}
+        {!loading && !error && (
+          <>
+            {filteredRepos.length === 0 ? (
+              /* Empty state */
+              <div style={{ textAlign: 'center', padding: '60px 0' }}>
+                <p style={{ fontSize: 14, color: subCol, marginBottom: 16 }}>
+                  <span className="cursor-blink" style={{ color: '#ff9900', marginRight: 6 }}>_</span>
+                  No repos match this filter
+                </p>
+                <button
+                  onClick={() => { setActiveFilter('All'); setSearchTerm(''); }}
+                  style={{
+                    background: 'rgba(255,153,0,0.10)',
+                    border: '1px solid rgba(255,153,0,0.25)',
+                    borderRadius: 8,
+                    padding: '7px 18px',
+                    fontSize: 12,
+                    color: '#ff9900',
+                    cursor: 'pointer',
+                    fontFamily: 'inherit',
+                  }}
+                >
+                  Clear filters
+                </button>
+              </div>
+            ) : (
+              <>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                  gap: 16,
+                }}>
+                  {filteredRepos.slice(0, visibleCount).map((repo, i) => (
+                    <RepoCard
+                      key={repo.id}
+                      repo={repo}
+                      index={i}
+                      darkMode={darkMode}
+                      headCol={headCol}
+                      subCol={subCol}
+                    />
+                  ))}
+                </div>
+
+                {/* Load more */}
+                {visibleCount < filteredRepos.length && (
+                  <div style={{ textAlign: 'center', marginTop: 32 }}>
+                    <button
+                      onClick={() => setVisibleCount(v => v + 9)}
+                      style={{
+                        background: 'transparent',
+                        border: '1px solid rgba(255,153,0,0.3)',
+                        borderRadius: 10,
+                        padding: '10px 28px',
+                        fontSize: 12,
+                        color: '#ff9900',
+                        cursor: 'pointer',
+                        fontFamily: 'inherit',
+                        transition: 'background 0.2s',
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,153,0,0.08)'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                    >
+                      Load more deployments ({filteredRepos.length - visibleCount} remaining)
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </>
+        )}
+
+        {/* Section footer */}
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          gap: 10, marginTop: 44, flexWrap: 'wrap',
+        }}>
+          <div style={{
+            width: 5, height: 5, borderRadius: '50%', background: '#10b981',
+            animation: 'ghDotPulse 1.5s ease-in-out infinite', flexShrink: 0,
+          }} />
+          <span style={{ fontSize: 10, color: subCol }}>
+            Synced with GitHub · Updates on every page load
+          </span>
+          <a
+            href="https://github.com/Deepak-Darshan"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ fontSize: 10, color: '#ff9900', textDecoration: 'none' }}
+          >
+            View full profile →
+          </a>
+        </div>
+      </div>
 
       {/* Extra projects (6th+) */}
       {extraProjects.length > 0 && (
