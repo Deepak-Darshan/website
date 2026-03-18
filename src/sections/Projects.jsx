@@ -175,20 +175,21 @@ const POLY5 = poly(
   [500,400],[500+T,400],[500+T,330],[500,330],  // left blank ←
 );
 
-// Per-piece config: clip polygon, scatter start, scroll ranges, image/text layout
+// Per-piece config: clip polygon, SVG outline points, scatter, scroll ranges, layout
+// svgPoints mirrors the polygon coords as "x,y x,y …" for the <polygon> stroke outline
 const PIECES = [
   {
     poly: POLY1,
+    svgPoints: `0,0 300,0 300,95 ${300+T},95 ${300+T},165 300,165 300,250 175,250 175,${250+T} 105,${250+T} 105,250 0,250`,
     transformOrigin: '150px 125px',
     fromX: -440, fromY: -260, fromR: -22,
     scrollRange: [0,    0.36], opRange: [0,    0.16],
-    // image rect within the 900×500 canvas
     img: { x: 0,   y: 0,   w: 300, h: 140 },
-    // text block position
     txt: { x: 14,  y: 148, w: 268 },
   },
   {
     poly: POLY2,
+    svgPoints: `300,0 600,0 600,95 ${600+T},95 ${600+T},165 600,165 600,250 475,250 475,${250+T} 405,${250+T} 405,250 300,250 300,165 ${300+T},165 ${300+T},95 300,95`,
     transformOrigin: '450px 125px',
     fromX: 0,    fromY: -400, fromR: 15,
     scrollRange: [0.04, 0.40], opRange: [0.04, 0.20],
@@ -197,6 +198,7 @@ const PIECES = [
   },
   {
     poly: POLY3,
+    svgPoints: `600,0 900,0 900,250 775,250 775,${250+T} 705,${250+T} 705,250 600,250 600,165 ${600+T},165 ${600+T},95 600,95`,
     transformOrigin: '750px 125px',
     fromX: 440,  fromY: -260, fromR: -16,
     scrollRange: [0.08, 0.44], opRange: [0.08, 0.24],
@@ -205,6 +207,7 @@ const PIECES = [
   },
   {
     poly: POLY4,
+    svgPoints: `0,250 105,250 105,${250+T} 175,${250+T} 175,250 405,250 405,${250+T} 475,${250+T} 475,250 500,250 500,330 ${500+T},330 ${500+T},400 500,400 500,500 0,500`,
     transformOrigin: '250px 375px',
     fromX: -360, fromY: 340,  fromR: 20,
     scrollRange: [0.06, 0.42], opRange: [0.06, 0.22],
@@ -213,6 +216,7 @@ const PIECES = [
   },
   {
     poly: POLY5,
+    svgPoints: `500,250 705,250 705,${250+T} 775,${250+T} 775,250 900,250 900,500 500,500 500,400 ${500+T},400 ${500+T},330 500,330`,
     transformOrigin: '700px 375px',
     fromX: 360,  fromY: 340,  fromR: -24,
     scrollRange: [0.11, 0.48], opRange: [0.11, 0.27],
@@ -243,8 +247,13 @@ function PuzzlePiece({ meta, motionX, motionY, motionR, motionO, project, darkMo
         clipPath: meta.poly,
         // background on the div itself fills the clipped shape (incl. tab bumps)
         background: cardBg,
-        // drop-shadow follows the clip shape → tabs/blanks are visually outlined
-        filter: `drop-shadow(0 0 1.5px ${project.accentStart}99) drop-shadow(0 6px 18px rgba(0,0,0,0.45))`,
+        // drop-shadow follows clip-path — creates a glowing halo around the piece shape
+        // including the tab bumps, making each piece look distinct
+        filter: [
+          `drop-shadow(0 0 3px rgba(255,255,255,0.55))`,
+          `drop-shadow(0 0 8px ${project.accentStart}cc)`,
+          `drop-shadow(0 8px 24px rgba(0,0,0,0.6))`,
+        ].join(' '),
         willChange: 'transform, opacity',
         transformOrigin: meta.transformOrigin,
         cursor: 'pointer',
@@ -299,6 +308,18 @@ function PuzzlePiece({ meta, motionX, motionY, motionR, motionO, project, darkMo
           ))}
         </div>
       </div>
+
+      {/* ── Piece outline — SVG polygon stroke drawn along the boundary ──────────
+           Lives inside the clipped div so it is also clipped at the edge.
+           Half the strokeWidth (outer half) is clipped away → clean inner border.
+           Two layers: white subtle + accent colour for contrast on any background. */}
+      <svg
+        style={{ position: 'absolute', top: 0, left: 0, width: PW, height: PH, pointerEvents: 'none', zIndex: 6 }}
+        aria-hidden="true"
+      >
+        <polygon points={meta.svgPoints} fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth={6} />
+        <polygon points={meta.svgPoints} fill="none" stroke={project.accentStart} strokeWidth={2} strokeOpacity={0.7} />
+      </svg>
 
       {/* ── Hover overlay — always in DOM, toggled via CSS opacity only ──────────
            The overlay is 900×500 and gets clipped by the parent's clip-path,
@@ -465,6 +486,15 @@ export default function Projects({ darkMode }) {
     { x: p5x, y: p5y, r: p5r, o: p5o },
   ];
 
+  // Detect when all pieces have snapped together (last piece finishes at 0.48)
+  const [assembled, setAssembled] = useState(false);
+  useEffect(() => {
+    return scrollYProgress.on('change', (v) => setAssembled(v >= 0.48));
+  }, [scrollYProgress]);
+
+  // Outer perimeter of the complete puzzle rectangle (0,0 → PW,PH)
+  const PERIMETER = 2 * (PW + PH); // 2800 px
+
   const scale          = Math.min(1, (winW - 32) / PW);
   const headCol        = darkMode ? '#f8fafc' : '#0f172a';
   const subCol         = darkMode ? '#94a3b8' : '#64748b';
@@ -510,6 +540,53 @@ export default function Projects({ darkMode }) {
                 darkMode={darkMode}
               />
             ))}
+
+            {/* ── Perimeter glow — fires when all pieces are assembled ─────────────
+                 Layer 1: dim static border fades in (shows the complete rectangle).
+                 Layer 2: bright 200 px segment travels around the perimeter in a
+                          loop — the "running light" animation.
+                 Both use the same SVG <rect> path so the glow hugs the puzzle edge. */}
+            <svg
+              style={{ position: 'absolute', top: 0, left: 0, width: PW, height: PH, pointerEvents: 'none', zIndex: 40, overflow: 'visible' }}
+              aria-hidden="true"
+            >
+              <defs>
+                <filter id="perimeterGlow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+
+              {/* Layer 1 — static dim border, fades in when assembled */}
+              <motion.rect
+                x={1} y={1} width={PW - 2} height={PH - 2}
+                fill="none"
+                stroke="rgba(168,85,247,0.45)"
+                strokeWidth={2}
+                animate={{ opacity: assembled ? 1 : 0 }}
+                transition={{ duration: 0.5 }}
+              />
+
+              {/* Layer 2 — traveling bright spot, loops while assembled */}
+              {assembled && (
+                <motion.rect
+                  key="traveler"
+                  x={1} y={1} width={PW - 2} height={PH - 2}
+                  fill="none"
+                  stroke="#d946ef"
+                  strokeWidth={5}
+                  strokeLinecap="round"
+                  strokeDasharray={`200 ${PERIMETER - 200}`}
+                  filter="url(#perimeterGlow)"
+                  animate={{ strokeDashoffset: [0, -PERIMETER] }}
+                  transition={{ duration: 2.8, ease: 'linear', repeat: Infinity }}
+                />
+              )}
+            </svg>
           </div>
         </div>
       </div>
