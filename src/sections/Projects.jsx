@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Github, ExternalLink } from 'lucide-react';
 
 // ─── Project data ─────────────────────────────────────────────────────────────
@@ -187,6 +187,7 @@ const PIECES = [
     img: { x: 0,   y: 0,   w: 300, h: 140 },
     // txt safe: right tab protrudes outward — full x:0→300 available at y:148
     txt: { x: 14,  y: 148, w: 272, maxH: 96 },
+    popup: { x: 150, y: 125 },
   },
   {
     poly: POLY2,
@@ -197,6 +198,7 @@ const PIECES = [
     img: { x: 300, y: 0,   w: 300, h: 140 },
     // left blank indent: x:300→328 at y:95–165 → push txt x past x:328
     txt: { x: 336, y: 148, w: 250, maxH: 96 },
+    popup: { x: 450, y: 125 },
   },
   {
     poly: POLY3,
@@ -207,6 +209,7 @@ const PIECES = [
     img: { x: 600, y: 0,   w: 300, h: 140 },
     // left blank indent: x:600→628 at y:95–165 → push txt x past x:628
     txt: { x: 636, y: 148, w: 250, maxH: 96 },
+    popup: { x: 750, y: 125 },
   },
   {
     poly: POLY4,
@@ -217,6 +220,7 @@ const PIECES = [
     img: { x: 0,   y: 252, w: 500, h: 126 },
     // right tab protrudes outward — txt ends at x:482, safely within x:0→500
     txt: { x: 14,  y: 384, w: 468, maxH: 108 },
+    popup: { x: 250, y: 375 },
   },
   {
     poly: POLY5,
@@ -227,11 +231,12 @@ const PIECES = [
     img: { x: 500, y: 252, w: 400, h: 126 },
     // left blank indent: x:500→528 at y:330–400 → push txt y past y:400
     txt: { x: 514, y: 408, w: 368, maxH: 84 },
+    popup: { x: 700, y: 375 },
   },
 ];
 
 // ─── PuzzlePiece — hover state isolated so siblings never re-render ───────────
-function PuzzlePiece({ meta, motionX, motionY, motionR, motionO, project, darkMode }) {
+function PuzzlePiece({ meta, motionX, motionY, motionR, motionO, project, darkMode, assembled, onAssembledEnter, onAssembledLeave }) {
   const [hovered, setHovered] = useState(false);
 
   const cardBg    = darkMode ? '#0f172a' : '#ffffff';
@@ -264,8 +269,8 @@ function PuzzlePiece({ meta, motionX, motionY, motionR, motionO, project, darkMo
         cursor: 'pointer',
         x: motionX, y: motionY, rotate: motionR, opacity: motionO,
       }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseEnter={() => { setHovered(true);  if (assembled) onAssembledEnter(); }}
+      onMouseLeave={() => { setHovered(false); if (assembled) onAssembledLeave(); }}
     >
       {/* Project image — covers the piece's main body (not the tab bumps) */}
       <img
@@ -334,11 +339,12 @@ function PuzzlePiece({ meta, motionX, motionY, motionR, motionO, project, darkMo
            The overlay is 900×500 and gets clipped by the parent's clip-path,
            so it fills exactly the puzzle piece shape on hover.
            No mount/unmount = no repaint spike.                                 */}
+      {/* When assembled the floating glass popup is used instead — hide this overlay */}
       <div style={{
         position: 'absolute', left: 0, top: 0, width: PW, height: PH,
         background: overlayBg,
-        opacity: hovered ? 1 : 0,
-        pointerEvents: hovered ? 'auto' : 'none',
+        opacity: (!assembled && hovered) ? 1 : 0,
+        pointerEvents: (!assembled && hovered) ? 'auto' : 'none',
         transition: 'opacity 0.16s ease',
         zIndex: 10,
       }}>
@@ -501,6 +507,14 @@ export default function Projects({ darkMode }) {
     return scrollYProgress.on('change', (v) => setAssembled(v >= 0.48));
   }, [scrollYProgress]);
 
+  // Assembled-state popup — track which piece is hovered
+  const [hoveredPieceIdx, setHoveredPieceIdx] = useState(null);
+  const hoverTimer = useRef(null);
+  const handlePieceEnter  = (i) => { clearTimeout(hoverTimer.current); setHoveredPieceIdx(i); };
+  const handlePieceLeave  = ()  => { hoverTimer.current = setTimeout(() => setHoveredPieceIdx(null), 140); };
+  const handlePopoverEnter = () => { clearTimeout(hoverTimer.current); };
+  const handlePopoverLeave = () => { hoverTimer.current = setTimeout(() => setHoveredPieceIdx(null), 140); };
+
   // Outer perimeter of the complete puzzle rectangle (0,0 → PW,PH)
   const PERIMETER = 2 * (PW + PH); // 2800 px
 
@@ -547,8 +561,104 @@ export default function Projects({ darkMode }) {
                 motionO={motionValues[i].o}
                 project={project}
                 darkMode={darkMode}
+                assembled={assembled}
+                onAssembledEnter={() => handlePieceEnter(i)}
+                onAssembledLeave={handlePieceLeave}
               />
             ))}
+
+            {/* ── Assembled glass popup ────────────────────────────────────────────
+                 Lives as a sibling of the piece divs (not inside any clipped div)
+                 so it renders outside the clip-path boundary at full quality.
+                 A 140 ms hover-timeout bridges the gap when the cursor moves
+                 from the piece to the popup link button.                        */}
+            <AnimatePresence>
+              {assembled && hoveredPieceIdx !== null && (() => {
+                const proj = PIECES[hoveredPieceIdx] && puzzleProjects[hoveredPieceIdx];
+                const anchor = PIECES[hoveredPieceIdx].popup;
+                if (!proj) return null;
+                // Clamp so the 220px-wide card never bleeds past the puzzle edges
+                const clampedX = Math.max(110, Math.min(PW - 110, anchor.x));
+                const clampedY = Math.max(90,  Math.min(PH - 90,  anchor.y));
+                return (
+                  <motion.div
+                    key={`popup-${hoveredPieceIdx}`}
+                    initial={{ opacity: 0, scale: 0.90, y: 10 }}
+                    animate={{ opacity: 1, scale: 1,    y: 0  }}
+                    exit={{    opacity: 0, scale: 0.90, y: 10 }}
+                    transition={{ duration: 0.18, ease: 'easeOut' }}
+                    onMouseEnter={handlePopoverEnter}
+                    onMouseLeave={handlePopoverLeave}
+                    style={{
+                      position: 'absolute',
+                      left: clampedX,
+                      top: clampedY,
+                      transform: 'translate(-50%, -50%)',
+                      width: 220,
+                      zIndex: 60,
+                      borderRadius: 16,
+                      overflow: 'hidden',
+                      background: darkMode ? 'rgba(8,4,22,0.86)' : 'rgba(255,255,255,0.90)',
+                      backdropFilter: 'blur(28px)',
+                      WebkitBackdropFilter: 'blur(28px)',
+                      border: darkMode
+                        ? '1px solid rgba(168,85,247,0.28)'
+                        : '1px solid rgba(168,85,247,0.25)',
+                      boxShadow: darkMode
+                        ? '0 20px 48px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.07)'
+                        : '0 20px 40px rgba(0,0,0,0.14), inset 0 1px 0 rgba(255,255,255,0.9)',
+                    }}
+                  >
+                    {/* Accent top stripe */}
+                    <div style={{
+                      height: 3,
+                      background: `linear-gradient(to right, ${proj.accentStart}, ${proj.accentEnd})`,
+                    }} />
+
+                    <div style={{ padding: '14px 16px 16px' }}>
+                      {/* Title */}
+                      <p style={{
+                        fontSize: 13, fontWeight: 800, letterSpacing: '-0.02em',
+                        color: darkMode ? '#f8fafc' : '#0f172a',
+                        margin: '0 0 6px',
+                      }}>
+                        {proj.title}
+                      </p>
+
+                      {/* Description — capped at 4 lines */}
+                      <p style={{
+                        fontSize: 10.5,
+                        color: darkMode ? '#94a3b8' : '#64748b',
+                        lineHeight: 1.6,
+                        margin: '0 0 14px',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 4,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                      }}>
+                        {proj.description}
+                      </p>
+
+                      {/* GitHub link */}
+                      <a
+                        href={proj.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: 'inline-flex', alignItems: 'center', gap: 5,
+                          padding: '5px 12px', borderRadius: 8,
+                          background: `linear-gradient(135deg, ${proj.accentStart}, ${proj.accentEnd})`,
+                          fontSize: 10, fontWeight: 700, color: '#fff',
+                          textDecoration: 'none', letterSpacing: '0.01em',
+                        }}
+                      >
+                        <Github size={10} /> View on GitHub
+                      </a>
+                    </div>
+                  </motion.div>
+                );
+              })()}
+            </AnimatePresence>
 
             {/* ── Perimeter glow — fires when all pieces are assembled ─────────────
                  Layer 1: dim static border fades in (shows the complete rectangle).
