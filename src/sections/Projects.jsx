@@ -577,9 +577,11 @@ export default function Projects({ darkMode }) {
                 const proj = PIECES[hoveredPieceIdx] && puzzleProjects[hoveredPieceIdx];
                 const anchor = PIECES[hoveredPieceIdx].popup;
                 if (!proj) return null;
-                // Clamp so the 220px-wide card never bleeds past the puzzle edges
-                const clampedX = Math.max(110, Math.min(PW - 110, anchor.x));
-                const clampedY = Math.max(90,  Math.min(PH - 90,  anchor.y));
+                // Clamp so the 290px-wide card stays within puzzle bounds
+                const clampedX = Math.max(145, Math.min(PW - 145, anchor.x));
+                const clampedY = Math.max(105, Math.min(PH - 105, anchor.y));
+                const titleCol = darkMode ? '#ffffff' : '#0a0514';
+                const descCol  = darkMode ? 'rgba(255,255,255,0.78)' : 'rgba(10,5,20,0.72)';
                 return (
                   <motion.div
                     key={`popup-${hoveredPieceIdx}`}
@@ -594,19 +596,17 @@ export default function Projects({ darkMode }) {
                       left: clampedX,
                       top: clampedY,
                       transform: 'translate(-50%, -50%)',
-                      width: 220,
+                      width: 290,
                       zIndex: 60,
-                      borderRadius: 16,
+                      borderRadius: 18,
                       overflow: 'hidden',
-                      background: darkMode ? 'rgba(8,4,22,0.86)' : 'rgba(255,255,255,0.90)',
+                      background: darkMode ? 'rgba(8,4,22,0.88)' : 'rgba(255,255,255,0.92)',
                       backdropFilter: 'blur(28px)',
                       WebkitBackdropFilter: 'blur(28px)',
-                      border: darkMode
-                        ? '1px solid rgba(168,85,247,0.28)'
-                        : '1px solid rgba(168,85,247,0.25)',
+                      border: `1px solid ${proj.accentStart}50`,
                       boxShadow: darkMode
-                        ? '0 20px 48px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.07)'
-                        : '0 20px 40px rgba(0,0,0,0.14), inset 0 1px 0 rgba(255,255,255,0.9)',
+                        ? `0 24px 56px rgba(0,0,0,0.75), 0 0 28px ${proj.accentStart}1a, inset 0 1px 0 rgba(255,255,255,0.08)`
+                        : `0 24px 48px rgba(0,0,0,0.12), 0 0 28px ${proj.accentStart}14, inset 0 1px 0 rgba(255,255,255,0.95)`,
                     }}
                   >
                     {/* Accent top stripe */}
@@ -615,26 +615,22 @@ export default function Projects({ darkMode }) {
                       background: `linear-gradient(to right, ${proj.accentStart}, ${proj.accentEnd})`,
                     }} />
 
-                    <div style={{ padding: '14px 16px 16px' }}>
+                    <div style={{ padding: '16px 18px 18px' }}>
                       {/* Title */}
                       <p style={{
-                        fontSize: 13, fontWeight: 800, letterSpacing: '-0.02em',
-                        color: darkMode ? '#f8fafc' : '#0f172a',
-                        margin: '0 0 6px',
+                        fontSize: 14, fontWeight: 800, letterSpacing: '-0.025em',
+                        color: titleCol,
+                        margin: '0 0 8px',
                       }}>
                         {proj.title}
                       </p>
 
-                      {/* Description — capped at 4 lines */}
+                      {/* Full description — no line clamp */}
                       <p style={{
-                        fontSize: 10.5,
-                        color: darkMode ? '#94a3b8' : '#64748b',
-                        lineHeight: 1.6,
-                        margin: '0 0 14px',
-                        display: '-webkit-box',
-                        WebkitLineClamp: 4,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden',
+                        fontSize: 11,
+                        color: descCol,
+                        lineHeight: 1.65,
+                        margin: '0 0 16px',
                       }}>
                         {proj.description}
                       </p>
@@ -646,13 +642,13 @@ export default function Projects({ darkMode }) {
                         rel="noopener noreferrer"
                         style={{
                           display: 'inline-flex', alignItems: 'center', gap: 5,
-                          padding: '5px 12px', borderRadius: 8,
+                          padding: '6px 14px', borderRadius: 8,
                           background: `linear-gradient(135deg, ${proj.accentStart}, ${proj.accentEnd})`,
-                          fontSize: 10, fontWeight: 700, color: '#fff',
+                          fontSize: 11, fontWeight: 700, color: '#fff',
                           textDecoration: 'none', letterSpacing: '0.01em',
                         }}
                       >
-                        <Github size={10} /> View on GitHub
+                        <Github size={11} /> View on GitHub
                       </a>
                     </div>
                   </motion.div>
