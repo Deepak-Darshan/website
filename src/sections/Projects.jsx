@@ -185,7 +185,8 @@ const PIECES = [
     fromX: -440, fromY: -260, fromR: -22,
     scrollRange: [0,    0.36], opRange: [0,    0.16],
     img: { x: 0,   y: 0,   w: 300, h: 140 },
-    txt: { x: 14,  y: 148, w: 268 },
+    // txt safe: right tab protrudes outward — full x:0→300 available at y:148
+    txt: { x: 14,  y: 148, w: 272, maxH: 96 },
   },
   {
     poly: POLY2,
@@ -194,7 +195,8 @@ const PIECES = [
     fromX: 0,    fromY: -400, fromR: 15,
     scrollRange: [0.04, 0.40], opRange: [0.04, 0.20],
     img: { x: 300, y: 0,   w: 300, h: 140 },
-    txt: { x: 314, y: 148, w: 265 },
+    // left blank indent: x:300→328 at y:95–165 → push txt x past x:328
+    txt: { x: 336, y: 148, w: 250, maxH: 96 },
   },
   {
     poly: POLY3,
@@ -203,7 +205,8 @@ const PIECES = [
     fromX: 440,  fromY: -260, fromR: -16,
     scrollRange: [0.08, 0.44], opRange: [0.08, 0.24],
     img: { x: 600, y: 0,   w: 300, h: 140 },
-    txt: { x: 614, y: 148, w: 262 },
+    // left blank indent: x:600→628 at y:95–165 → push txt x past x:628
+    txt: { x: 636, y: 148, w: 250, maxH: 96 },
   },
   {
     poly: POLY4,
@@ -212,7 +215,8 @@ const PIECES = [
     fromX: -360, fromY: 340,  fromR: 20,
     scrollRange: [0.06, 0.42], opRange: [0.06, 0.22],
     img: { x: 0,   y: 252, w: 500, h: 126 },
-    txt: { x: 14,  y: 384, w: 468 },
+    // right tab protrudes outward — txt ends at x:482, safely within x:0→500
+    txt: { x: 14,  y: 384, w: 468, maxH: 108 },
   },
   {
     poly: POLY5,
@@ -221,7 +225,8 @@ const PIECES = [
     fromX: 360,  fromY: 340,  fromR: -24,
     scrollRange: [0.11, 0.48], opRange: [0.11, 0.27],
     img: { x: 500, y: 252, w: 400, h: 126 },
-    txt: { x: 514, y: 384, w: 368 },
+    // left blank indent: x:500→528 at y:330–400 → push txt y past y:400
+    txt: { x: 514, y: 408, w: 368, maxH: 84 },
   },
 ];
 
@@ -291,14 +296,18 @@ function PuzzlePiece({ meta, motionX, motionY, motionR, motionO, project, darkMo
       }} />
 
       {/* Title + tagline + tech chips */}
-      <div style={{ position: 'absolute', left: meta.txt.x, top: meta.txt.y, width: meta.txt.w }}>
+      <div style={{
+        position: 'absolute', left: meta.txt.x, top: meta.txt.y,
+        width: meta.txt.w, maxHeight: meta.txt.maxH,
+        overflow: 'hidden', textAlign: 'center',
+      }}>
         <p style={{ fontSize: 14, fontWeight: 800, color: headCol, margin: '0 0 3px', lineHeight: 1.2 }}>
           {project.title}
         </p>
         <p style={{ fontSize: 11, color: subCol, margin: '0 0 7px', lineHeight: 1.4 }}>
           {project.tagline}
         </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3, justifyContent: 'center' }}>
           {project.tech.slice(0, 3).map((t, i) => (
             <span key={i} style={{
               padding: '1px 7px', borderRadius: 999,
@@ -583,7 +592,7 @@ export default function Projects({ darkMode }) {
                   strokeDasharray={`200 ${PERIMETER - 200}`}
                   filter="url(#perimeterGlow)"
                   animate={{ strokeDashoffset: [0, -PERIMETER] }}
-                  transition={{ duration: 2.8, ease: 'linear', repeat: Infinity }}
+                  transition={{ duration: 1.4, ease: 'linear', repeat: Infinity }}
                 />
               )}
             </svg>
