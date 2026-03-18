@@ -7,8 +7,8 @@ const contacts = [
     label: 'Email',
     value: 'deepakdarshanj@yahoo.com',
     href: 'mailto:deepakdarshanj@yahoo.com',
-    gradient: 'from-purple-500 to-pink-500',
-    glow: 'hover:shadow-purple-500/25',
+    gradient: 'from-[#ff9900] to-[#ea580c]',
+    glow: 'hover:shadow-orange-500/25',
   },
   {
     icon: Github,
@@ -68,7 +68,7 @@ export default function Contact({ darkMode }) {
               </div>
               <span className={`text-xs font-semibold uppercase tracking-widest mb-1 ${sub}`}>{c.label}</span>
               <span className="font-semibold text-sm break-all">{c.value}</span>
-              <ArrowUpRight className={`w-4 h-4 mt-3 ${sub} group-hover:text-purple-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all`} />
+              <ArrowUpRight className={`w-4 h-4 mt-3 ${sub} group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all`} />
             </motion.a>
           ))}
         </div>
@@ -80,18 +80,19 @@ export default function Contact({ darkMode }) {
           viewport={{ once: true }}
           className={`rounded-3xl p-8 md:p-10 text-center border ${
             darkMode
-              ? 'bg-gradient-to-br from-purple-500/10 via-pink-500/5 to-blue-500/10 border-purple-500/20'
+              ? 'bg-gradient-to-br from-[#ff9900]/8 via-[#60a0ff]/5 to-[#a78bfa]/8 border-[#ff9900]/20'
               : 'bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 border-purple-200'
           }`}
         >
-          <Zap className="w-8 h-8 mx-auto mb-4 text-purple-400" />
+          <Zap className="w-8 h-8 mx-auto mb-4" style={{ color: '#ff9900' }} />
           <h4 className="text-2xl font-bold mb-2">Ready to collaborate?</h4>
           <p className={`${sub} mb-7 max-w-sm mx-auto`}>
             Drop me an email and let's make something great together.
           </p>
           <a
             href="mailto:deepakdarshanj@yahoo.com"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl font-semibold hover:shadow-xl hover:shadow-purple-500/30 hover:scale-105 transition-all duration-300"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300"
+            style={{ background: 'linear-gradient(to right, #ff9900, #60a0ff)', color: '#fff' }}
           >
             <Mail className="w-4 h-4" />
             Say Hello

@@ -48,7 +48,7 @@ function App() {
   }, []);
 
   const bgGradient = darkMode
-    ? 'from-[#0a0514] via-[#0f0a1e] to-[#090d1a]'
+    ? 'from-[#06040f] via-[#080618] to-[#060410]'
     : 'from-blue-50 via-purple-50 to-pink-50';
 
   const textColor = darkMode ? 'text-white' : 'text-slate-900';
@@ -79,7 +79,7 @@ function App() {
         <div
           className="absolute w-[700px] h-[700px] rounded-full blur-3xl"
           style={{
-            background: darkMode ? 'radial-gradient(circle, rgba(124,58,237,0.12), transparent 70%)' : 'radial-gradient(circle, rgba(124,58,237,0.08), transparent 70%)',
+            background: darkMode ? 'radial-gradient(circle, rgba(255,153,0,0.08), transparent 70%)' : 'radial-gradient(circle, rgba(255,153,0,0.06), transparent 70%)',
             top: '-15%',
             left: '-10%',
             transform: `translateY(${scrollY * 0.07}px)`,
@@ -88,7 +88,7 @@ function App() {
         <div
           className="absolute w-[600px] h-[600px] rounded-full blur-3xl"
           style={{
-            background: darkMode ? 'radial-gradient(circle, rgba(59,130,246,0.1), transparent 70%)' : 'radial-gradient(circle, rgba(59,130,246,0.06), transparent 70%)',
+            background: darkMode ? 'radial-gradient(circle, rgba(96,160,255,0.08), transparent 70%)' : 'radial-gradient(circle, rgba(96,160,255,0.05), transparent 70%)',
             bottom: '10%',
             right: '-5%',
             transform: `translateY(${-scrollY * 0.05}px)`,
@@ -97,7 +97,7 @@ function App() {
         <div
           className="absolute w-[450px] h-[450px] rounded-full blur-3xl"
           style={{
-            background: darkMode ? 'radial-gradient(circle, rgba(236,72,153,0.08), transparent 70%)' : 'radial-gradient(circle, rgba(236,72,153,0.05), transparent 70%)',
+            background: darkMode ? 'radial-gradient(circle, rgba(167,139,250,0.06), transparent 70%)' : 'radial-gradient(circle, rgba(167,139,250,0.04), transparent 70%)',
             top: '45%',
             left: '35%',
             transform: `translateY(${scrollY * 0.03}px)`,

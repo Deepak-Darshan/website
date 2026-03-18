@@ -3,7 +3,7 @@ import { Github, Linkedin, Mail, Heart } from 'lucide-react';
 export default function Footer({ darkMode }) {
   const sub    = darkMode ? 'text-slate-500' : 'text-slate-400';
   const border = darkMode ? 'border-slate-800' : 'border-slate-200';
-  const hover  = `hover:text-purple-400 transition-colors`;
+  const hover  = 'hover-accent transition-colors';
 
   return (
     <footer className={`w-full py-8 border-t ${border}`}>

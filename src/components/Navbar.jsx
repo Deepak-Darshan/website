@@ -32,7 +32,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
 
   const navBg = scrolled
     ? darkMode
-      ? 'bg-[#0a0514]/85 backdrop-blur-xl shadow-lg shadow-purple-900/10 border-b border-slate-800/60'
+      ? 'bg-[#06040f]/90 backdrop-blur-xl shadow-lg shadow-purple-900/10 border-b border-slate-800/60'
       : 'bg-white/85 backdrop-blur-xl shadow-lg shadow-slate-200/40 border-b border-slate-200/60'
     : 'bg-transparent border-b border-transparent';
 
@@ -41,10 +41,13 @@ export default function Navbar({ darkMode, setDarkMode }) {
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo */}
         <a href="#home" className="flex items-baseline gap-2 group">
-          <span className="text-2xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
+          <span
+            className="text-2xl font-black bg-clip-text text-transparent"
+            style={{ background: 'linear-gradient(to right, #ff9900, #60a0ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+          >
             DD
           </span>
-          <span className={`text-xs font-mono ${darkMode ? 'text-slate-500' : 'text-slate-400'} group-hover:text-purple-400 transition-colors`}>
+          <span className={`text-xs font-mono ${darkMode ? 'text-slate-500' : 'text-slate-400'} hover-accent transition-colors`}>
             /dev
           </span>
         </a>
@@ -60,17 +63,19 @@ export default function Navbar({ darkMode, setDarkMode }) {
                 href={href}
                 className={`relative text-sm font-medium transition-colors duration-200 ${
                   isActive
-                    ? 'text-purple-400'
+                    ? ''
                     : darkMode
                     ? 'text-slate-400 hover:text-white'
                     : 'text-slate-500 hover:text-slate-900'
                 }`}
+                style={isActive ? { color: '#ff9900' } : undefined}
               >
                 {label}
                 {isActive && (
                   <motion.span
                     layoutId="nav-pill"
-                    className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-purple-400 to-blue-400 rounded-full"
+                    className="absolute -bottom-1 left-0 right-0 h-px rounded-full"
+                    style={{ background: 'linear-gradient(to right, #ff9900, #60a0ff)' }}
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -111,7 +116,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.22, ease: 'easeInOut' }}
-            className={`md:hidden overflow-hidden ${darkMode ? 'bg-[#0a0514]/95' : 'bg-white/95'} backdrop-blur-xl`}
+            className={`md:hidden overflow-hidden ${darkMode ? 'bg-[#06040f]/95' : 'bg-white/95'} backdrop-blur-xl`}
           >
             <div className="px-6 pb-6 flex flex-col gap-1">
               {navLinks.map(({ label, href }, i) => (
@@ -124,8 +129,8 @@ export default function Navbar({ darkMode, setDarkMode }) {
                   transition={{ delay: i * 0.05, duration: 0.18 }}
                   className={`py-3 text-sm font-medium border-b transition-colors ${
                     darkMode
-                      ? 'border-slate-800 text-slate-300 hover:text-purple-400'
-                      : 'border-slate-100 text-slate-600 hover:text-purple-600'
+                      ? 'border-slate-800 text-slate-300 hover-accent'
+                      : 'border-slate-100 text-slate-600 hover-accent'
                   }`}
                 >
                   {label}
