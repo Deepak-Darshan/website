@@ -273,7 +273,8 @@ const PUZZLE_NAMES = ['smartqueue', 'tether', 'viewTrend', 'maze-game', 'UDP-Rel
 // ─── Collaborative repos you contribute to but don't own ─────────────────────
 // Add any shared / friend's repo here as "owner/repo-name"
 const COLLAB_REPOS = [
-  // e.g. 'friendsusername/project-name',
+  'RyanYoon2005/Ghostie_data-collection',
+  'RyanYoon2005/Ghostie_data-retrieval',
 ];
 
 // ─── GitHub repos custom hook ─────────────────────────────────────────────────
