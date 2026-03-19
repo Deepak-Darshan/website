@@ -270,6 +270,12 @@ const PIECES = [
 // ─── Excluded puzzle project names ────────────────────────────────────────────
 const PUZZLE_NAMES = ['smartqueue', 'tether', 'viewTrend', 'maze-game', 'UDP-Reliable-Protocol'];
 
+// ─── Collaborative repos you contribute to but don't own ─────────────────────
+// Add any shared / friend's repo here as "owner/repo-name"
+const COLLAB_REPOS = [
+  // e.g. 'friendsusername/project-name',
+];
+
 // ─── GitHub repos custom hook ─────────────────────────────────────────────────
 function useGitHubRepos(retryCount) {
   const [repos, setRepos] = useState([]);
@@ -280,15 +286,26 @@ function useGitHubRepos(retryCount) {
     let cancelled = false;
     setLoading(true);
     setError(null);
-    fetch('https://api.github.com/users/Deepak-Darshan/repos?sort=pushed&per_page=100&type=public')
-      .then(r => {
-        if (!r.ok) throw new Error(`GitHub API responded with ${r.status}`);
-        return r.json();
-      })
-      .then(data => {
+
+    const ownedFetch = fetch('https://api.github.com/users/Deepak-Darshan/repos?sort=pushed&per_page=100&type=public')
+      .then(r => { if (!r.ok) throw new Error(`GitHub API responded with ${r.status}`); return r.json(); });
+
+    const collabFetches = COLLAB_REPOS.map(slug =>
+      fetch(`https://api.github.com/repos/${slug}`)
+        .then(r => r.ok ? r.json() : null)
+        .catch(() => null)
+    );
+
+    Promise.all([ownedFetch, ...collabFetches])
+      .then(([owned, ...collabs]) => {
         if (cancelled) return;
-        const filtered = data.filter(r => !r.fork && !PUZZLE_NAMES.includes(r.name));
-        setRepos(filtered);
+        const ownedFiltered = owned.filter(r => !r.fork && !PUZZLE_NAMES.includes(r.name));
+        const collabFiltered = collabs.filter(Boolean);
+        // Merge, deduplicate by id, sort by pushed_at
+        const merged = [...ownedFiltered, ...collabFiltered];
+        const unique = Array.from(new Map(merged.map(r => [r.id, r])).values());
+        unique.sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
+        setRepos(unique);
         setLoading(false);
       })
       .catch(err => {
@@ -296,6 +313,7 @@ function useGitHubRepos(retryCount) {
         setError(err.message);
         setLoading(false);
       });
+
     return () => { cancelled = true; };
   }, [retryCount]);
 
