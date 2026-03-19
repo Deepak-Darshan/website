@@ -747,6 +747,7 @@ const FEED_FILTERS = ['All', 'Python', 'JavaScript', 'TypeScript', 'AWS', 'Most 
 // ─── Main component ───────────────────────────────────────────────────────────
 export default function Projects({ darkMode }) {
   const sectionRef = useRef(null);
+  const puzzleRef  = useRef(null);
   const [winW, setWinW] = useState(typeof window !== 'undefined' ? window.innerWidth : 1280);
 
   useEffect(() => {
@@ -755,8 +756,11 @@ export default function Projects({ darkMode }) {
     return () => window.removeEventListener('resize', fn);
   }, []);
 
+  // Track scroll only against the puzzle area so the animation completes
+  // when the puzzle section reaches the viewport top — not half-way through
+  // the much taller section that now includes the GitHub feed below.
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: puzzleRef,
     offset: ['start end', 'end start'],
   });
 
@@ -888,6 +892,11 @@ export default function Projects({ darkMode }) {
       id="projects"
       style={{ position: 'relative', paddingTop: 96, paddingBottom: 120, width: '100%', overflow: 'hidden' }}
     >
+      {/* puzzleRef wraps only the header + puzzle stage so scroll progress is
+          relative to this area and the pieces are fully assembled by the time
+          the section top reaches the viewport top (via nav link or scroll). */}
+      <div ref={puzzleRef}>
+
       {/* Section header */}
       <div style={{ textAlign: 'center', marginBottom: 72, paddingLeft: 24, paddingRight: 24 }}>
         <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#a855f7' }}>
@@ -1064,6 +1073,8 @@ export default function Projects({ darkMode }) {
           </div>
         </div>
       </div>
+
+      </div>{/* end puzzleRef */}
 
       {/* Hint */}
       <p style={{
