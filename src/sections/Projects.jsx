@@ -73,6 +73,7 @@ const projects = [
       'Dark mode UI throughout',
     ],
     image: tetherImg,
+    imagePosition: 'center bottom',
     accentStart: '#3b82f6', accentEnd: '#06b6d4',
     githubUrl: 'https://github.com/Deepak-Darshan/tether',
     liveUrl: 'https://github.com/Deepak-Darshan/tether',
@@ -111,6 +112,7 @@ const projects = [
       'Responsive dashboard with dark mode',
     ],
     image: gamerStatsImg,
+    imagePosition: 'center bottom',
     accentStart: '#f59e0b', accentEnd: '#ef4444',
     githubUrl: 'https://github.com/Deepak-Darshan/gamerstats',
     liveUrl: 'https://github.com/Deepak-Darshan/gamerstats',
@@ -791,6 +793,7 @@ function PuzzlePiece({ meta, motionX, motionY, motionR, motionO, project, darkMo
           left: meta.img.x, top: meta.img.y,
           width: meta.img.w, height: meta.img.h,
           objectFit: 'cover',
+          objectPosition: project.imagePosition || 'center top',
         }}
       />
 
