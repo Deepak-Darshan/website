@@ -95,22 +95,22 @@ const projects = [
   },
   {
     id: 4,
-    title: 'Maze Chase',
-    tagline: 'Browser maze escape game with intelligent monster AI',
+    title: 'GamerStats',
+    tagline: 'Real-time gaming stats and leaderboard tracker',
     description:
-      'A browser-based 2D maze escape game where you navigate as an angel through procedurally generated 21×21 mazes, collecting 3 star keys to unlock the exit — while evading a BFS-powered monster that accelerates 20% when hunting you.',
-    tech: ['JavaScript', 'HTML5 Canvas', 'CSS3'],
+      'A real-time gaming statistics dashboard that aggregates player data, tracks performance metrics across sessions, and renders live leaderboards — giving competitive gamers actionable insights into their gameplay.',
+    tech: ['JavaScript', 'React', 'Node.js', 'WebSocket', 'MongoDB'],
     features: [
-      'Procedurally generated mazes via recursive backtracking',
-      'BFS pathfinding monster AI that speeds up when tracking',
-      'Bomb mechanic to destroy walls and open new paths',
-      'Safe zones, checkpoints, power-ups and spike hazards',
-      'Real-time HUD — keys, deaths, time, monster speed',
+      'Live leaderboard with real-time score updates',
+      'Per-session performance breakdown and trend charts',
+      'Cross-platform player profile aggregation',
+      'WebSocket-powered live data feed',
+      'Responsive dashboard with dark mode',
     ],
-    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&h=400&fit=crop',
     accentStart: '#f59e0b', accentEnd: '#ef4444',
-    githubUrl: 'https://github.com/Deepak-Darshan/maze-game',
-    liveUrl: 'https://github.com/Deepak-Darshan/maze-game',
+    githubUrl: 'https://github.com/Deepak-Darshan/gamerstats',
+    liveUrl: 'https://github.com/Deepak-Darshan/gamerstats',
   },
   {
     id: 5,
@@ -268,14 +268,32 @@ const PIECES = [
 ];
 
 // ─── Excluded puzzle project names ────────────────────────────────────────────
-const PUZZLE_NAMES = ['smartqueue', 'tether', 'viewTrend', 'maze-game', 'UDP-Reliable-Protocol'];
+const PUZZLE_NAMES = ['smartqueue', 'tether', 'viewTrend', 'gamerstats', 'UDP-Reliable-Protocol'];
 
 // ─── Collaborative repos you contribute to but don't own ─────────────────────
 // Add any shared / friend's repo here as "owner/repo-name"
 const COLLAB_REPOS = [
   'RyanYoon2005/Ghostie_data-collection',
   'RyanYoon2005/Ghostie_data-retrieval',
+  'RyanYoon2005/Ghostie_analytical-model',
 ];
+
+// ─── Folder groups in All Deployments ────────────────────────────────────────
+// Repos listed here are pulled out of the main grid and rendered as a group.
+const FOLDER_GROUPS = [
+  {
+    name: 'Hospitality Search Engine',
+    slugs: new Set([
+      'RyanYoon2005/Ghostie_data-collection',
+      'RyanYoon2005/Ghostie_data-retrieval',
+      'RyanYoon2005/Ghostie_analytical-model',
+    ]),
+  },
+];
+
+function repoSlug(repo) {
+  return `${repo.owner.login}/${repo.name}`;
+}
 
 // ─── GitHub repos custom hook ─────────────────────────────────────────────────
 function useGitHubRepos(retryCount) {
@@ -541,6 +559,76 @@ function RepoCard({ repo, index, darkMode, headCol, subCol }) {
         )}
       </div>
     </motion.div>
+  );
+}
+
+// ─── FolderGroup — collapsible group of repo cards in the feed ───────────────
+function FolderGroup({ name, repos, darkMode, headCol, subCol, startIndex }) {
+  const [open, setOpen] = useState(true);
+
+  return (
+    <div style={{ gridColumn: '1 / -1' }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 10,
+          width: '100%',
+          background: 'rgba(255,153,0,0.05)',
+          border: '1px solid rgba(255,153,0,0.18)',
+          borderRadius: open ? '12px 12px 0 0' : 12,
+          padding: '12px 18px',
+          cursor: 'pointer',
+          fontFamily: 'inherit',
+          transition: 'background 0.2s, border-radius 0.2s',
+        }}
+        onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,153,0,0.09)'}
+        onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,153,0,0.05)'}
+      >
+        <span style={{ fontSize: 16 }}>📁</span>
+        <span style={{ fontSize: 13, fontWeight: 700, color: headCol, flex: 1, textAlign: 'left' }}>
+          {name}
+        </span>
+        <span style={{
+          fontSize: 10, color: subCol,
+          background: 'rgba(255,153,0,0.10)',
+          border: '1px solid rgba(255,153,0,0.2)',
+          borderRadius: 20,
+          padding: '2px 8px',
+          marginRight: 8,
+        }}>
+          {repos.length} repo{repos.length !== 1 ? 's' : ''}
+        </span>
+        <span style={{ fontSize: 12, color: subCol, transition: 'transform 0.2s', display: 'inline-block', transform: open ? 'rotate(0deg)' : 'rotate(-90deg)' }}>
+          ▾
+        </span>
+      </button>
+
+      {open && (
+        <div style={{
+          border: '1px solid rgba(255,153,0,0.18)',
+          borderTop: 'none',
+          borderRadius: '0 0 12px 12px',
+          padding: 16,
+          background: 'rgba(255,153,0,0.02)',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gap: 12,
+        }}>
+          {repos.map((repo, i) => (
+            <RepoCard
+              key={repo.id}
+              repo={repo}
+              index={startIndex + i}
+              darkMode={darkMode}
+              headCol={headCol}
+              subCol={subCol}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -1291,9 +1379,26 @@ export default function Projects({ darkMode }) {
         )}
 
         {/* Repo grid */}
-        {!loading && !error && (
-          <>
-            {filteredRepos.length === 0 ? (
+        {!loading && !error && (() => {
+          // Separate folder repos from regular repos (only when no active filter/search)
+          const isFiltered = activeFilter !== 'All' || searchTerm.trim();
+          const folderSlugSet = new Set(FOLDER_GROUPS.flatMap(g => [...g.slugs]));
+
+          const regularRepos = isFiltered
+            ? filteredRepos
+            : filteredRepos.filter(r => !folderSlugSet.has(repoSlug(r)));
+
+          const folderData = isFiltered
+            ? []
+            : FOLDER_GROUPS.map(group => ({
+                ...group,
+                repos: filteredRepos.filter(r => group.slugs.has(repoSlug(r))),
+              })).filter(g => g.repos.length > 0);
+
+          const visibleRegular = regularRepos.slice(0, visibleCount);
+
+          if (filteredRepos.length === 0) {
+            return (
               /* Empty state */
               <div style={{ textAlign: 'center', padding: '60px 0' }}>
                 <p style={{ fontSize: 14, color: subCol, marginBottom: 16 }}>
@@ -1316,52 +1421,68 @@ export default function Projects({ darkMode }) {
                   Clear filters
                 </button>
               </div>
-            ) : (
-              <>
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                  gap: 16,
-                }}>
-                  {filteredRepos.slice(0, visibleCount).map((repo, i) => (
-                    <RepoCard
-                      key={repo.id}
-                      repo={repo}
-                      index={i}
-                      darkMode={darkMode}
-                      headCol={headCol}
-                      subCol={subCol}
-                    />
-                  ))}
-                </div>
+            );
+          }
 
-                {/* Load more */}
-                {visibleCount < filteredRepos.length && (
-                  <div style={{ textAlign: 'center', marginTop: 32 }}>
-                    <button
-                      onClick={() => setVisibleCount(v => v + 9)}
-                      style={{
-                        background: 'transparent',
-                        border: '1px solid rgba(255,153,0,0.3)',
-                        borderRadius: 10,
-                        padding: '10px 28px',
-                        fontSize: 12,
-                        color: '#ff9900',
-                        cursor: 'pointer',
-                        fontFamily: 'inherit',
-                        transition: 'background 0.2s',
-                      }}
-                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,153,0,0.08)'}
-                      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                    >
-                      Load more deployments ({filteredRepos.length - visibleCount} remaining)
-                    </button>
-                  </div>
-                )}
-              </>
-            )}
-          </>
-        )}
+          return (
+            <>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                gap: 16,
+              }}>
+                {/* Folder groups (shown when no active filter/search) */}
+                {folderData.map((group, gi) => (
+                  <FolderGroup
+                    key={group.name}
+                    name={group.name}
+                    repos={group.repos}
+                    darkMode={darkMode}
+                    headCol={headCol}
+                    subCol={subCol}
+                    startIndex={gi * 10}
+                  />
+                ))}
+
+                {/* Regular repo cards */}
+                {visibleRegular.map((repo, i) => (
+                  <RepoCard
+                    key={repo.id}
+                    repo={repo}
+                    index={i}
+                    darkMode={darkMode}
+                    headCol={headCol}
+                    subCol={subCol}
+                  />
+                ))}
+              </div>
+
+              {/* Load more */}
+              {visibleCount < regularRepos.length && (
+                <div style={{ textAlign: 'center', marginTop: 32 }}>
+                  <button
+                    onClick={() => setVisibleCount(v => v + 9)}
+                    style={{
+                      background: 'transparent',
+                      border: '1px solid rgba(255,153,0,0.3)',
+                      borderRadius: 10,
+                      padding: '10px 28px',
+                      fontSize: 12,
+                      color: '#ff9900',
+                      cursor: 'pointer',
+                      fontFamily: 'inherit',
+                      transition: 'background 0.2s',
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,153,0,0.08)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  >
+                    Load more deployments ({regularRepos.length - visibleCount} remaining)
+                  </button>
+                </div>
+              )}
+            </>
+          );
+        })()}
 
         {/* Section footer */}
         <div style={{
