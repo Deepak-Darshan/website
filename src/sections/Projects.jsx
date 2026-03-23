@@ -73,7 +73,7 @@ const projects = [
       'Dark mode UI throughout',
     ],
     image: tetherImg,
-    imagePosition: 'center top',
+    imagePosition: 'center 20%',
     accentStart: '#3b82f6', accentEnd: '#06b6d4',
     githubUrl: 'https://github.com/Deepak-Darshan/tether',
     liveUrl: 'https://github.com/Deepak-Darshan/tether',
@@ -518,55 +518,61 @@ function RepoCard({ repo, index, darkMode, headCol, subCol }) {
         <span style={{ fontSize: 9, color: subCol }}>{timeAgo(repo.pushed_at)}</span>
       </div>
 
-      {/* Hover overlay with action buttons */}
+      {/* Top-right corner action buttons — appear on hover */}
       <div style={{
         position: 'absolute',
-        inset: 0,
-        background: 'linear-gradient(135deg, transparent, rgba(255,153,0,0.04), transparent)',
+        top: 10,
+        right: 10,
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 8,
+        gap: 5,
         opacity: hovered ? 1 : 0,
-        transition: 'opacity 0.2s ease',
+        transform: hovered ? 'translateY(0)' : 'translateY(-4px)',
+        transition: 'opacity 0.2s ease, transform 0.2s ease',
         pointerEvents: hovered ? 'auto' : 'none',
+        zIndex: 10,
       }}>
         <button
           onClick={e => { e.stopPropagation(); window.open(repo.html_url, '_blank'); }}
           style={{
-            background: 'rgba(255,153,0,0.15)',
-            border: '1px solid rgba(255,153,0,0.35)',
-            borderRadius: 8,
-            padding: '6px 14px',
-            fontSize: 11,
+            background: 'rgba(10,8,32,0.85)',
+            border: '1px solid rgba(255,153,0,0.4)',
+            borderRadius: 7,
+            padding: '4px 10px',
+            fontSize: 10,
+            fontWeight: 600,
             color: '#ff9900',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
-            gap: 5,
+            gap: 4,
             fontFamily: 'inherit',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
           }}
         >
-          <Github size={12} /> View Code
+          <Github size={11} /> View Code
         </button>
         {repo.homepage && (
           <button
             onClick={e => { e.stopPropagation(); window.open(repo.homepage, '_blank'); }}
             style={{
-              background: 'rgba(255,153,0,0.15)',
-              border: '1px solid rgba(255,153,0,0.35)',
-              borderRadius: 8,
-              padding: '6px 14px',
-              fontSize: 11,
+              background: 'rgba(10,8,32,0.85)',
+              border: '1px solid rgba(255,153,0,0.4)',
+              borderRadius: 7,
+              padding: '4px 10px',
+              fontSize: 10,
+              fontWeight: 600,
               color: '#ff9900',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              gap: 5,
+              gap: 4,
               fontFamily: 'inherit',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
             }}
           >
-            <ExternalLink size={12} /> Open
+            <ExternalLink size={11} /> Open
           </button>
         )}
       </div>
