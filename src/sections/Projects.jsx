@@ -1,6 +1,9 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Github, ExternalLink } from 'lucide-react';
+import tetherImg from '../photos/Tether.PNG';
+import viewTrendImg from '../photos/ViewTrend.png';
+import gamerStatsImg from '../photos/GamerStats.png';
 
 // ─── Language color map ────────────────────────────────────────────────────────
 const LANG_COLORS = {
@@ -69,7 +72,7 @@ const projects = [
       'Full profile CRUD with Zod validation',
       'Dark mode UI throughout',
     ],
-    image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop',
+    image: tetherImg,
     accentStart: '#3b82f6', accentEnd: '#06b6d4',
     githubUrl: 'https://github.com/Deepak-Darshan/tether',
     liveUrl: 'https://github.com/Deepak-Darshan/tether',
@@ -88,7 +91,7 @@ const projects = [
       'Interactive trend and category visualisations',
       'Smart CSV fallback when API is unavailable',
     ],
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
+    image: viewTrendImg,
     accentStart: '#10b981', accentEnd: '#14b8a6',
     githubUrl: 'https://github.com/Deepak-Darshan/viewTrend',
     liveUrl: 'https://github.com/Deepak-Darshan/viewTrend',
@@ -107,7 +110,7 @@ const projects = [
       'WebSocket-powered live data feed',
       'Responsive dashboard with dark mode',
     ],
-    image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&h=400&fit=crop',
+    image: gamerStatsImg,
     accentStart: '#f59e0b', accentEnd: '#ef4444',
     githubUrl: 'https://github.com/Deepak-Darshan/gamerstats',
     liveUrl: 'https://github.com/Deepak-Darshan/gamerstats',
