@@ -283,6 +283,13 @@ const COLLAB_REPOS = [
 const FOLDER_GROUPS = [
   {
     name: 'Hospitality Search Engine',
+    connected: true,
+    repoOrder: [
+      'RyanYoon2005/Ghostie_data-collection',
+      'RyanYoon2005/Ghostie_data-retrieval',
+      'RyanYoon2005/Ghostie_analytical-model',
+    ],
+    stepLabels: ['Collect', 'Retrieve', 'Analyse'],
     slugs: new Set([
       'RyanYoon2005/Ghostie_data-collection',
       'RyanYoon2005/Ghostie_data-retrieval',
@@ -318,7 +325,7 @@ function useGitHubRepos(retryCount) {
     Promise.all([ownedFetch, ...collabFetches])
       .then(([owned, ...collabs]) => {
         if (cancelled) return;
-        const ownedFiltered = owned.filter(r => !r.fork && !PUZZLE_NAMES.includes(r.name));
+        const ownedFiltered = owned.filter(r => !r.fork);
         const collabFiltered = collabs.filter(Boolean);
         // Merge, deduplicate by id, sort by pushed_at
         const merged = [...ownedFiltered, ...collabFiltered];
@@ -563,8 +570,13 @@ function RepoCard({ repo, index, darkMode, headCol, subCol }) {
 }
 
 // ─── FolderGroup — collapsible group of repo cards in the feed ───────────────
-function FolderGroup({ name, repos, darkMode, headCol, subCol, startIndex }) {
+function FolderGroup({ name, repos, connected, repoOrder, stepLabels, darkMode, headCol, subCol, startIndex }) {
   const [open, setOpen] = useState(true);
+
+  // Sort repos according to repoOrder when connected pipeline is used
+  const orderedRepos = connected && repoOrder
+    ? repoOrder.map(slug => repos.find(r => repoSlug(r) === slug)).filter(Boolean)
+    : repos;
 
   return (
     <div style={{ gridColumn: '1 / -1' }}>
@@ -590,6 +602,17 @@ function FolderGroup({ name, repos, darkMode, headCol, subCol, startIndex }) {
         <span style={{ fontSize: 13, fontWeight: 700, color: headCol, flex: 1, textAlign: 'left' }}>
           {name}
         </span>
+        {connected && (
+          <span style={{
+            fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase',
+            color: 'rgba(255,153,0,0.6)',
+            background: 'rgba(255,153,0,0.06)',
+            border: '1px solid rgba(255,153,0,0.15)',
+            borderRadius: 20, padding: '2px 8px', marginRight: 6,
+          }}>
+            pipeline
+          </span>
+        )}
         <span style={{
           fontSize: 10, color: subCol,
           background: 'rgba(255,153,0,0.10)',
@@ -610,22 +633,109 @@ function FolderGroup({ name, repos, darkMode, headCol, subCol, startIndex }) {
           border: '1px solid rgba(255,153,0,0.18)',
           borderTop: 'none',
           borderRadius: '0 0 12px 12px',
-          padding: 16,
+          padding: '20px 16px 16px',
           background: 'rgba(255,153,0,0.02)',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-          gap: 12,
         }}>
-          {repos.map((repo, i) => (
-            <RepoCard
-              key={repo.id}
-              repo={repo}
-              index={startIndex + i}
-              darkMode={darkMode}
-              headCol={headCol}
-              subCol={subCol}
-            />
-          ))}
+          {connected ? (
+            <>
+              {/* Pipeline divider label */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
+                <div style={{ flex: 1, height: 1, background: 'rgba(255,153,0,0.12)' }} />
+                <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,153,0,0.45)' }}>
+                  data pipeline
+                </span>
+                <div style={{ flex: 1, height: 1, background: 'rgba(255,153,0,0.12)' }} />
+              </div>
+
+              {/* Cards + connectors */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'center' }}>
+                {orderedRepos.flatMap((repo, i) => {
+                  const stepLabel = stepLabels && stepLabels[i];
+                  const items = [
+                    <div
+                      key={repo.id}
+                      style={{ flex: '1 1 220px', maxWidth: 320, paddingTop: 32, position: 'relative' }}
+                    >
+                      {/* Step badge */}
+                      <div style={{
+                        position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
+                        display: 'inline-flex', alignItems: 'center', gap: 5,
+                        background: 'rgba(255,153,0,0.12)',
+                        border: '1px solid rgba(255,153,0,0.35)',
+                        borderRadius: 20, padding: '3px 10px',
+                        whiteSpace: 'nowrap',
+                      }}>
+                        <span style={{ fontSize: 11, fontWeight: 800, color: '#ff9900' }}>
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
+                        {stepLabel && (
+                          <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,153,0,0.75)' }}>
+                            {stepLabel}
+                          </span>
+                        )}
+                      </div>
+                      <RepoCard
+                        repo={repo}
+                        index={startIndex + i}
+                        darkMode={darkMode}
+                        headCol={headCol}
+                        subCol={subCol}
+                      />
+                    </div>,
+                  ];
+
+                  if (i < orderedRepos.length - 1) {
+                    items.push(
+                      <div
+                        key={`connector-${i}`}
+                        style={{
+                          flex: '0 0 auto',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          padding: '32px 6px 0',
+                          minWidth: 36,
+                        }}
+                      >
+                        {/* Dashed line + arrowhead */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                          <div style={{
+                            width: 20, height: 2,
+                            background: 'repeating-linear-gradient(to right, rgba(255,153,0,0.6) 0px, rgba(255,153,0,0.6) 4px, transparent 4px, transparent 8px)',
+                          }} />
+                          <div style={{
+                            width: 0, height: 0,
+                            borderTop: '5px solid transparent',
+                            borderBottom: '5px solid transparent',
+                            borderLeft: '7px solid rgba(255,153,0,0.7)',
+                          }} />
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  return items;
+                })}
+              </div>
+            </>
+          ) : (
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+              gap: 12,
+            }}>
+              {repos.map((repo, i) => (
+                <RepoCard
+                  key={repo.id}
+                  repo={repo}
+                  index={startIndex + i}
+                  darkMode={darkMode}
+                  headCol={headCol}
+                  subCol={subCol}
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -1437,6 +1547,9 @@ export default function Projects({ darkMode }) {
                     key={group.name}
                     name={group.name}
                     repos={group.repos}
+                    connected={group.connected}
+                    repoOrder={group.repoOrder}
+                    stepLabels={group.stepLabels}
                     darkMode={darkMode}
                     headCol={headCol}
                     subCol={subCol}
