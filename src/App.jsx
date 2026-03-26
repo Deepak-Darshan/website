@@ -64,13 +64,13 @@ function App() {
 
       {/* Background layer */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {/* Refined grid — tighter cells for a more intricate infrastructure feel */}
+        {/* Refined grid — amber tint to match primary palette */}
         {darkMode && (
           <div
             className="absolute inset-0"
             style={{
               backgroundImage:
-                'linear-gradient(rgba(168,85,247,0.028) 1px, transparent 1px), linear-gradient(90deg, rgba(168,85,247,0.028) 1px, transparent 1px)',
+                'linear-gradient(rgba(255,153,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,153,0,0.03) 1px, transparent 1px)',
               backgroundSize: '52px 52px',
             }}
           />
@@ -118,6 +118,18 @@ function App() {
             left: '35%',
             filter: 'blur(72px)',
             transform: `translateY(${scrollY * 0.03}px)`,
+          }}
+        />
+
+        {/* Orb 4 — mid-right amber, parallax */}
+        <div
+          className="absolute rounded-full blur-3xl"
+          style={{
+            width: 500, height: 500,
+            background: 'radial-gradient(circle, rgba(255,153,0,0.05), transparent 70%)',
+            top: '60%',
+            right: '20%',
+            transform: `translateY(${-scrollY * 0.04}px)`,
           }}
         />
       </div>

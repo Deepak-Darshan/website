@@ -37,7 +37,7 @@ const zone2Cards = [
   },
 ];
 
-function SkillCard({ card, chipDark, chipLight, badgeDark, badgeLight, darkMode, delay }) {
+function SkillCard({ card, chipDark, chipLight, badgeDark, badgeLight, darkMode, delay, chipGlow, isZone2 }) {
   const cardBg = darkMode
     ? 'bg-[rgba(255,255,255,0.025)]'
     : 'bg-white/88';
@@ -52,18 +52,27 @@ function SkillCard({ card, chipDark, chipLight, badgeDark, badgeLight, darkMode,
     ? { background: badgeDark.bg, color: badgeDark.color }
     : { background: badgeLight.bg, color: badgeLight.color };
 
+  const normalShadow = darkMode
+    ? 'inset 0 1px 0 rgba(255,255,255,0.06), 0 2px 16px rgba(0,0,0,0.3)'
+    : 'inset 0 1px 0 rgba(255,255,255,0.95), 0 4px 20px rgba(0,0,0,0.06)';
+
+  const hoverShadow = darkMode
+    ? isZone2
+      ? 'inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,153,0,0.12)'
+      : 'inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 40px rgba(0,0,0,0.5)'
+    : normalShadow;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ delay, duration: 0.5, ease: 'easeOut' }}
-      className={`group gradient-border ${cardBg} backdrop-blur-xl rounded-2xl p-7 border ${border} hover:shadow-2xl hover:-translate-y-1 ${card.glow} transition-all duration-[220ms]`}
-      style={darkMode ? {
-        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), 0 1px 3px rgba(0,0,0,0.2)',
-      } : {
-        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.95), 0 4px 20px rgba(0,0,0,0.06)',
-      }}
+      whileHover={{ y: -4 }}
+      className={`group gradient-border ${cardBg} backdrop-blur-xl rounded-2xl p-7 border ${border} ${card.glow} transition-shadow duration-[220ms]`}
+      style={{ boxShadow: normalShadow }}
+      onMouseEnter={(e) => { e.currentTarget.style.boxShadow = hoverShadow; }}
+      onMouseLeave={(e) => { e.currentTarget.style.boxShadow = normalShadow; }}
     >
       {/* Icon */}
       <div
@@ -84,13 +93,14 @@ function SkillCard({ card, chipDark, chipLight, badgeDark, badgeLight, darkMode,
       {/* Chips */}
       <div className="flex flex-wrap gap-2">
         {card.items.map((skill, i) => (
-          <span
+          <motion.span
             key={i}
-            className="skill-chip px-3 py-1 text-xs rounded-full font-medium"
-            style={chipStyle}
+            className="px-3 py-1 text-xs rounded-full font-medium"
+            style={{ ...chipStyle, transition: 'all 0.15s ease' }}
+            whileHover={{ scale: 1.08, boxShadow: chipGlow }}
           >
             {skill}
-          </span>
+          </motion.span>
         ))}
       </div>
     </motion.div>
@@ -154,51 +164,35 @@ export default function Skills({ darkMode }) {
                 badgeLight={z1BadgeLight}
                 darkMode={darkMode}
                 delay={idx * 0.1}
+                chipGlow="0 0 12px rgba(167,139,250,0.2)"
+                isZone2={false}
               />
             ))}
           </div>
         </div>
 
         {/* ── GLOWING HORIZON DIVIDER ──────────────────────────── */}
-        <div className="relative my-14 flex items-center">
-          {/* Left arm */}
-          <div
-            className="flex-1 h-px"
-            style={{ background: darkMode ? 'linear-gradient(to right, transparent, rgba(255,153,0,0.55))' : 'linear-gradient(to right, transparent, rgba(255,153,0,0.35))' }}
-          />
-
-          {/* Center jewel */}
-          <div className="relative mx-5 flex-shrink-0" style={{ width: 12, height: 12 }}>
-            <div
-              className="absolute inset-0 rounded-full"
-              style={{
-                background: 'linear-gradient(135deg, #ff9900, #60a0ff)',
-                boxShadow: darkMode
-                  ? '0 0 14px rgba(255,153,0,0.85), 0 0 32px rgba(96,160,255,0.4)'
-                  : '0 0 8px rgba(255,153,0,0.5)',
-              }}
-            />
+        <div style={{ position: 'relative', marginTop: 40, marginBottom: 40 }}>
+          <div style={{
+            height: 1,
+            background: 'linear-gradient(to right, transparent, rgba(255,153,0,0.5), rgba(96,160,255,0.35), transparent)',
+          }} />
+          <div style={{
+            position: 'absolute',
+            top: -8,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            background: darkMode ? '#06040f' : '#eff6ff',
+            padding: '0 16px',
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: 'rgba(255,153,0,0.6)',
+            whiteSpace: 'nowrap',
+          }}>
+            HORIZON
           </div>
-
-          {/* Right arm */}
-          <div
-            className="flex-1 h-px"
-            style={{ background: darkMode ? 'linear-gradient(to left, transparent, rgba(96,160,255,0.55))' : 'linear-gradient(to left, transparent, rgba(96,160,255,0.35))' }}
-          />
-
-          {/* Bloom — dark mode only */}
-          {darkMode && (
-            <div
-              className="absolute inset-x-0 pointer-events-none"
-              style={{
-                top: '50%',
-                transform: 'translateY(-50%)',
-                height: 40,
-                background: 'linear-gradient(to right, transparent, rgba(255,153,0,0.04), rgba(96,160,255,0.03), rgba(255,153,0,0.04), transparent)',
-                filter: 'blur(8px)',
-              }}
-            />
-          )}
         </div>
 
         {/* ── ZONE 2: CLOUD LAYER — BACKEND & INFRASTRUCTURE ───── */}
@@ -230,6 +224,8 @@ export default function Skills({ darkMode }) {
                 badgeLight={z2BadgeLight}
                 darkMode={darkMode}
                 delay={idx * 0.1 + 0.15}
+                chipGlow="0 0 12px rgba(255,153,0,0.2)"
+                isZone2={true}
               />
             ))}
           </div>

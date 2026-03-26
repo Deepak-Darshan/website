@@ -1,16 +1,14 @@
 import { Github, Linkedin, Mail, Heart } from 'lucide-react';
 
 export default function Footer({ darkMode }) {
-  const sub    = darkMode ? 'text-slate-500' : 'text-slate-400';
-  const hover  = 'hover-accent transition-all duration-150 hover:scale-110';
+  const sub = darkMode ? 'text-slate-500' : 'text-slate-400';
 
   return (
     <footer
       className="w-full py-10"
       style={{
-        borderTop: darkMode
-          ? '1px solid rgba(255,255,255,0.055)'
-          : '1px solid rgba(203,213,225,0.7)',
+        borderTop: '1px solid rgba(255,153,0,0.12)',
+        boxShadow: '0 -1px 20px rgba(255,153,0,0.05)',
       }}
     >
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-5">
@@ -25,13 +23,38 @@ export default function Footer({ darkMode }) {
         </p>
 
         <div className={`flex items-center gap-5 ${sub}`}>
-          <a href="mailto:deepakdarshanj@yahoo.com" className={hover} aria-label="Email">
+          <a
+            href="mailto:deepakdarshanj@yahoo.com"
+            className="hover-accent"
+            aria-label="Email"
+            style={{ transition: 'all 0.18s ease' }}
+            onMouseEnter={(e) => { e.currentTarget.style.filter = 'drop-shadow(0 0 6px rgba(255,153,0,0.6))'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.filter = ''; }}
+          >
             <Mail className="w-[17px] h-[17px]" />
           </a>
-          <a href="https://github.com/Deepak-Darshan" target="_blank" rel="noopener noreferrer" className={hover} aria-label="GitHub">
+          <a
+            href="https://github.com/Deepak-Darshan"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover-accent"
+            aria-label="GitHub"
+            style={{ transition: 'all 0.18s ease' }}
+            onMouseEnter={(e) => { e.currentTarget.style.filter = 'drop-shadow(0 0 6px rgba(255,153,0,0.6))'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.filter = ''; }}
+          >
             <Github className="w-[17px] h-[17px]" />
           </a>
-          <a href="https://www.linkedin.com/in/deepak-darshan-jagadish-267b5b213" target="_blank" rel="noopener noreferrer" className={hover} aria-label="LinkedIn">
+          <a
+            href="https://www.linkedin.com/in/deepak-darshan-jagadish-267b5b213"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover-accent"
+            aria-label="LinkedIn"
+            style={{ transition: 'all 0.18s ease' }}
+            onMouseEnter={(e) => { e.currentTarget.style.filter = 'drop-shadow(0 0 6px rgba(255,153,0,0.6))'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.filter = ''; }}
+          >
             <Linkedin className="w-[17px] h-[17px]" />
           </a>
         </div>

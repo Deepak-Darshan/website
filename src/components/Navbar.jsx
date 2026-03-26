@@ -30,26 +30,35 @@ export default function Navbar({ darkMode, setDarkMode }) {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const navBg = scrolled
-    ? darkMode
-      ? 'bg-[#06040f]/95 backdrop-blur-2xl shadow-[0_1px_0_rgba(255,255,255,0.04),0_8px_40px_rgba(0,0,0,0.55)] border-b border-white/[0.045]'
-      : 'bg-white/93 backdrop-blur-2xl shadow-[0_1px_0_rgba(255,255,255,0.9),0_4px_24px_rgba(0,0,0,0.07)] border-b border-slate-200/55'
-    : 'bg-transparent border-b border-transparent';
+  const navLightScrolled = scrolled && !darkMode
+    ? 'bg-white/93 backdrop-blur-2xl shadow-[0_1px_0_rgba(255,255,255,0.9),0_4px_24px_rgba(0,0,0,0.07)] border-b border-slate-200/55'
+    : '';
+  const navBase = !scrolled ? 'bg-transparent border-b border-transparent' : '';
+
+  const navInlineStyle = scrolled && darkMode ? {
+    background: 'rgba(6,4,15,0.92)',
+    backdropFilter: 'blur(24px)',
+    borderBottom: '1px solid rgba(255,153,0,0.1)',
+    boxShadow: '0 4px 32px rgba(0,0,0,0.5)',
+  } : undefined;
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${navBg}`}>
+    <nav
+      className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${navBase} ${navLightScrolled}`}
+      style={navInlineStyle}
+    >
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo */}
         <a href="#home" className="flex items-baseline gap-2 group">
           <span
-            className="text-[1.6rem] font-black"
+            className="text-3xl font-black"
             style={{
               background: 'linear-gradient(135deg, #ff9900 15%, #60a0ff 85%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
               filter: 'drop-shadow(0 0 10px rgba(255,153,0,0.25))',
-              letterSpacing: '-0.05em',
+              letterSpacing: '-0.04em',
             }}
           >
             DD
@@ -86,9 +95,9 @@ export default function Navbar({ darkMode, setDarkMode }) {
                     layoutId="nav-pill"
                     className="absolute -bottom-1 left-0 right-0 rounded-full"
                     style={{
-                      height: 2,
+                      height: '2px',
                       background: 'linear-gradient(to right, #ff9900, #60a0ff)',
-                      boxShadow: '0 0 6px rgba(255,153,0,0.55)',
+                      boxShadow: '0 0 8px rgba(255,153,0,0.6)',
                     }}
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />

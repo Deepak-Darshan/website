@@ -9,6 +9,7 @@ const contacts = [
     href: 'mailto:deepakdarshanj@yahoo.com',
     gradient: 'from-[#ff9900] to-[#ea580c]',
     glowColor: 'rgba(255,153,0,0.22)',
+    iconGlow: '0 6px 12px rgba(255,153,0,0.3)',
   },
   {
     icon: Github,
@@ -17,6 +18,7 @@ const contacts = [
     href: 'https://github.com/Deepak-Darshan',
     gradient: 'from-slate-600 to-slate-800',
     glowColor: 'rgba(148,163,184,0.16)',
+    iconGlow: '0 6px 12px rgba(71,85,105,0.3)',
   },
   {
     icon: Linkedin,
@@ -25,6 +27,7 @@ const contacts = [
     href: 'https://www.linkedin.com/in/deepak-darshan-jagadish-267b5b213',
     gradient: 'from-blue-500 to-blue-700',
     glowColor: 'rgba(59,130,246,0.2)',
+    iconGlow: '0 6px 12px rgba(59,130,246,0.3)',
   },
 ];
 
@@ -32,6 +35,10 @@ export default function Contact({ darkMode }) {
   const card   = darkMode ? 'bg-[rgba(255,255,255,0.025)]' : 'bg-white/88';
   const border = darkMode ? 'border-white/[0.065]' : 'border-slate-200/80';
   const sub    = darkMode ? 'text-slate-400' : 'text-slate-600';
+
+  const cardNormalShadow = darkMode
+    ? 'inset 0 1px 0 rgba(255,255,255,0.06), 0 2px 16px rgba(0,0,0,0.3)'
+    : 'inset 0 1px 0 rgba(255,255,255,0.95), 0 4px 20px rgba(0,0,0,0.06)';
 
   return (
     <section id="contact" className="relative py-28 px-6 w-full">
@@ -62,25 +69,19 @@ export default function Contact({ darkMode }) {
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1, duration: 0.45 }}
               className={`group gradient-border ${card} backdrop-blur-xl rounded-2xl p-7 border ${border} transition-all duration-[220ms] flex flex-col items-center text-center hover:-translate-y-3`}
-              style={darkMode ? {
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), 0 1px 3px rgba(0,0,0,0.2)',
-              } : {
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.95), 0 4px 20px rgba(0,0,0,0.06)',
-              }}
+              style={{ boxShadow: cardNormalShadow }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.boxShadow = darkMode
-                  ? `inset 0 1px 0 rgba(255,255,255,0.06), 0 24px 52px ${c.glowColor}, 0 8px 20px rgba(0,0,0,0.25)`
+                  ? `inset 0 1px 0 rgba(255,255,255,0.06), 0 12px 40px rgba(0,0,0,0.5), 0 24px 52px ${c.glowColor}`
                   : `inset 0 1px 0 rgba(255,255,255,0.95), 0 16px 40px ${c.glowColor}, 0 4px 12px rgba(0,0,0,0.06)`;
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = darkMode
-                  ? 'inset 0 1px 0 rgba(255,255,255,0.06), 0 1px 3px rgba(0,0,0,0.2)'
-                  : 'inset 0 1px 0 rgba(255,255,255,0.95), 0 4px 20px rgba(0,0,0,0.06)';
+                e.currentTarget.style.boxShadow = cardNormalShadow;
               }}
             >
               <div
                 className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${c.gradient} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-200`}
-                style={{ boxShadow: '0 6px 16px rgba(0,0,0,0.25)' }}
+                style={{ boxShadow: c.iconGlow }}
               >
                 <c.icon className="w-6 h-6 text-white" />
               </div>
@@ -98,14 +99,16 @@ export default function Contact({ darkMode }) {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className={`relative overflow-hidden rounded-3xl p-10 md:p-12 text-center border ${
+          className={`relative overflow-hidden p-10 md:p-12 text-center ${
             darkMode
-              ? 'border-[#ff9900]/14'
-              : 'bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 border-purple-200'
+              ? ''
+              : 'bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 border border-purple-200 rounded-3xl'
           }`}
           style={darkMode ? {
-            background: 'linear-gradient(135deg, rgba(255,153,0,0.08) 0%, rgba(8,6,24,0.95) 40%, rgba(167,139,250,0.07) 100%)',
-            boxShadow: 'inset 0 1px 0 rgba(255,153,0,0.1), inset 0 -1px 0 rgba(167,139,250,0.08), 0 24px 64px rgba(255,153,0,0.07)',
+            background: 'linear-gradient(135deg, rgba(255,153,0,0.08), rgba(96,160,255,0.04), rgba(167,139,250,0.08))',
+            border: '1px solid rgba(255,153,0,0.15)',
+            borderRadius: 24,
+            boxShadow: 'inset 0 1px 0 rgba(255,153,0,0.1), 0 4px 32px rgba(0,0,0,0.3)',
           } : {}}
         >
           {/* Ambient glow orb inside banner (dark only) */}
@@ -134,8 +137,29 @@ export default function Contact({ darkMode }) {
           </p>
           <a
             href="mailto:deepakdarshanj@yahoo.com"
-            className="btn-say-hello relative z-10 inline-flex items-center gap-2.5 px-10 py-4 rounded-xl font-semibold"
-            style={{ background: 'linear-gradient(135deg, #ff9900, #60a0ff)', color: '#fff' }}
+            className="relative z-10"
+            style={{
+              background: 'linear-gradient(135deg, #ff9900, #60a0ff)',
+              padding: '14px 36px',
+              borderRadius: 12,
+              fontWeight: 700,
+              fontSize: 15,
+              color: 'white',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              boxShadow: '0 4px 24px rgba(255,153,0,0.3)',
+              transition: 'all 0.2s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.boxShadow = '0 8px 40px rgba(255,153,0,0.45)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = '';
+              e.currentTarget.style.boxShadow = '0 4px 24px rgba(255,153,0,0.3)';
+            }}
           >
             <Mail className="w-4 h-4" />
             Say Hello

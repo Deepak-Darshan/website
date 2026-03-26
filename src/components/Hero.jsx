@@ -265,18 +265,18 @@ export default function Hero({ darkMode }) {
       {/* ── HERO CONTENT ───────────────────────────────────────── */}
       <div className="max-w-4xl w-full text-center z-10 relative mx-auto" style={{ paddingBottom: 130 }}>
 
-        {/* Availability badge — premium pill with ring pulse */}
+        {/* Availability badge */}
         <div className="mb-10 inline-flex items-center">
           <span
-            className={`relative flex items-center gap-2.5 px-5 py-2.5 rounded-full text-sm font-medium border ${
-              darkMode
-                ? 'text-emerald-400 border-emerald-500/18'
-                : 'bg-emerald-50 text-emerald-600 border-emerald-200/80'
+            className={`relative flex items-center gap-2.5 px-5 py-2.5 rounded-full text-sm font-medium ${
+              darkMode ? 'text-emerald-400' : 'bg-emerald-50 text-emerald-600'
             }`}
             style={darkMode ? {
               background: 'rgba(16,185,129,0.07)',
-              boxShadow: 'inset 0 1px 0 rgba(16,185,129,0.08), 0 0 24px rgba(16,185,129,0.05)',
+              border: '1px solid rgba(16,185,129,0.3)',
+              boxShadow: '0 0 20px rgba(16,185,129,0.15)',
             } : {
+              border: '1px solid rgba(16,185,129,0.4)',
               boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.8)',
             }}
           >
@@ -289,7 +289,10 @@ export default function Hero({ darkMode }) {
         </div>
 
         {/* Name — monumental */}
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-[0.92]">
+        <h1
+          className="font-black mb-6 leading-[0.92]"
+          style={{ fontSize: 'clamp(64px, 10vw, 96px)', textShadow: '0 0 80px rgba(255,153,0,0.15)' }}
+        >
           <span style={{ color: darkMode ? '#e2e8f0' : '#0f172a' }}>Hi, I'm </span>
           <span className="shimmer-text">Deepak</span>
         </h1>
@@ -309,49 +312,98 @@ export default function Hero({ darkMode }) {
           <span style={{ color: '#ff9900' }} className="font-medium">scalable infrastructure</span>.
         </p>
 
-        {/* CTAs — premium */}
+        {/* CTAs — premium inline styles */}
         <div className="flex gap-4 justify-center flex-wrap mb-10">
           <a
             href="#projects"
-            className="group btn-primary flex items-center gap-2 px-8 py-4 rounded-xl font-semibold"
-            style={{ background: 'linear-gradient(135deg, #ff9900, #60a0ff)', color: '#fff' }}
+            className="group"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '14px 32px',
+              background: 'linear-gradient(135deg, #ff9900, #60a0ff)',
+              borderRadius: 12,
+              fontWeight: 700,
+              fontSize: 15,
+              color: 'white',
+              border: 'none',
+              cursor: 'pointer',
+              position: 'relative',
+              overflow: 'hidden',
+              boxShadow: '0 4px 24px rgba(255,153,0,0.3)',
+              transition: 'all 0.2s ease',
+              textDecoration: 'none',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.04)';
+              e.currentTarget.style.boxShadow = '0 8px 40px rgba(255,153,0,0.45)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = '';
+              e.currentTarget.style.boxShadow = '0 4px 24px rgba(255,153,0,0.3)';
+            }}
           >
             <Sparkles className="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" />
             View Projects
           </a>
           <a
             href="#contact"
-            className="btn-ghost px-8 py-4 rounded-xl font-semibold"
             style={{
-              background: darkMode ? 'rgba(255,153,0,0.05)' : 'rgba(255,153,0,0.06)',
-              border: '1.5px solid rgba(255,153,0,0.22)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              background: darkMode ? 'rgba(255,153,0,0.04)' : 'rgba(255,153,0,0.06)',
+              border: '2px solid rgba(255,153,0,0.25)',
+              backdropFilter: 'blur(8px)',
+              borderRadius: 12,
+              padding: '14px 32px',
+              fontWeight: 700,
+              fontSize: 15,
               color: darkMode ? '#e2e8f0' : '#374151',
+              textDecoration: 'none',
+              transition: 'all 0.2s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(255,153,0,0.5)';
+              e.currentTarget.style.background = darkMode ? 'rgba(255,153,0,0.08)' : 'rgba(255,153,0,0.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(255,153,0,0.25)';
+              e.currentTarget.style.background = darkMode ? 'rgba(255,153,0,0.04)' : 'rgba(255,153,0,0.06)';
             }}
           >
             Get in Touch
           </a>
         </div>
 
-        {/* Stats */}
+        {/* Stats — mini card treatment */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.5 }}
-          className="flex items-center justify-center gap-6 md:gap-10 mb-16"
+          className="flex items-center justify-center gap-4 md:gap-6 mb-16"
         >
           {[
             { value: '5+',  label: 'Projects' },
             { value: '18+', label: 'Technologies' },
             { value: 'AWS', label: 'Cloud Stack' },
           ].map((stat, i) => (
-            <div key={i} className="flex items-center gap-6 md:gap-10">
+            <div key={i} className="flex items-center gap-4 md:gap-6">
               {i > 0 && (
                 <div
                   className="w-px h-9"
-                  style={{ background: darkMode ? 'rgba(112,144,176,0.25)' : '#cbd5e1' }}
+                  style={{ background: darkMode ? 'rgba(112,144,176,0.2)' : '#cbd5e1' }}
                 />
               )}
-              <div className="text-center">
+              <div
+                className="text-center"
+                style={{
+                  background: 'rgba(255,153,0,0.05)',
+                  border: '1px solid rgba(255,153,0,0.1)',
+                  borderRadius: 12,
+                  padding: '12px 20px',
+                }}
+              >
                 <div
                   className="text-xl md:text-2xl font-black"
                   style={{ color: darkMode ? '#e2e8f0' : '#0f172a' }}
