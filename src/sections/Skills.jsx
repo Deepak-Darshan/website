@@ -38,8 +38,13 @@ const zone2Cards = [
 ];
 
 function SkillCard({ card, chipDark, chipLight, badgeDark, badgeLight, darkMode, delay }) {
-  const cardBg   = darkMode ? 'bg-slate-800/40' : 'bg-white/70';
-  const border   = darkMode ? 'border-slate-700/50' : 'border-slate-200';
+  const cardBg = darkMode
+    ? 'bg-[rgba(255,255,255,0.025)]'
+    : 'bg-white/88';
+  const border = darkMode
+    ? 'border-white/[0.065]'
+    : 'border-slate-200/80';
+
   const chipStyle = darkMode
     ? { background: chipDark.bg, color: chipDark.color }
     : { background: chipLight.bg, color: chipLight.color };
@@ -53,17 +58,25 @@ function SkillCard({ card, chipDark, chipLight, badgeDark, badgeLight, darkMode,
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ delay, duration: 0.5, ease: 'easeOut' }}
-      className={`group gradient-border ${cardBg} backdrop-blur-lg rounded-2xl p-6 border ${border} hover:shadow-xl ${card.glow} transition-all duration-300`}
+      className={`group gradient-border ${cardBg} backdrop-blur-xl rounded-2xl p-7 border ${border} hover:shadow-2xl hover:-translate-y-1 ${card.glow} transition-all duration-[220ms]`}
+      style={darkMode ? {
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), 0 1px 3px rgba(0,0,0,0.2)',
+      } : {
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.95), 0 4px 20px rgba(0,0,0,0.06)',
+      }}
     >
       {/* Icon */}
-      <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${card.iconGradient} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
+      <div
+        className={`w-11 h-11 rounded-xl bg-gradient-to-br ${card.iconGradient} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-200`}
+        style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}
+      >
         <card.icon className="w-5 h-5 text-white" />
       </div>
 
       {/* Title + count */}
       <div className="flex items-center justify-between mb-4">
         <h4 className="text-base font-bold">{card.title}</h4>
-        <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={badgeStyle}>
+        <span className="text-xs px-2.5 py-0.5 rounded-full font-semibold" style={badgeStyle}>
           {card.items.length}
         </span>
       </div>
@@ -73,7 +86,7 @@ function SkillCard({ card, chipDark, chipLight, badgeDark, badgeLight, darkMode,
         {card.items.map((skill, i) => (
           <span
             key={i}
-            className="px-2.5 py-1 text-xs rounded-full font-medium transition-all hover:scale-105"
+            className="skill-chip px-3 py-1 text-xs rounded-full font-medium"
             style={chipStyle}
           >
             {skill}
@@ -99,12 +112,12 @@ export default function Skills({ darkMode }) {
   const z2BadgeLight = { bg: '#fff7ed', color: '#ea580c' };
 
   return (
-    <section id="skills" className="relative py-24 px-6 w-full">
+    <section id="skills" className="relative py-28 px-6 w-full">
       <div className="max-w-7xl mx-auto w-full">
 
         {/* Header */}
-        <div className="text-center mb-16">
-          <span className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: '#ff9900' }}>
+        <div className="text-center mb-20">
+          <span className="text-xs font-semibold uppercase tracking-[0.22em]" style={{ color: '#ff9900' }}>
             What I Work With
           </span>
           <h3 className="text-4xl md:text-5xl font-black mt-3">
@@ -114,18 +127,20 @@ export default function Skills({ darkMode }) {
 
         {/* ── ZONE 1: GROUND LEVEL — FRONTEND ─────────────────── */}
         <div className="mb-4">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="h-px flex-1" style={{ background: darkMode ? 'rgba(167,139,250,0.2)' : '#e5e7eb' }} />
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] px-3 py-1 rounded-full"
+          <div className="flex items-center gap-4 mb-8">
+            <div className="h-px flex-1" style={{ background: darkMode ? 'linear-gradient(to right, transparent, rgba(167,139,250,0.25))' : 'linear-gradient(to right, transparent, #e5e7eb)' }} />
+            <span
+              className="text-[0.68rem] font-bold uppercase tracking-[0.22em] px-4 py-1.5 rounded-full whitespace-nowrap"
               style={{
                 color: '#a78bfa',
-                background: darkMode ? 'rgba(167,139,250,0.08)' : '#f5f3ff',
-                border: darkMode ? '1px solid rgba(167,139,250,0.15)' : '1px solid #ddd6fe',
+                background: darkMode ? 'rgba(167,139,250,0.09)' : '#f5f3ff',
+                border: darkMode ? '1px solid rgba(167,139,250,0.18)' : '1px solid #ddd6fe',
+                boxShadow: darkMode ? 'inset 0 1px 0 rgba(167,139,250,0.1)' : 'none',
               }}
             >
               Ground Level — Frontend
             </span>
-            <div className="h-px flex-1" style={{ background: darkMode ? 'rgba(167,139,250,0.2)' : '#e5e7eb' }} />
+            <div className="h-px flex-1" style={{ background: darkMode ? 'linear-gradient(to left, transparent, rgba(167,139,250,0.25))' : 'linear-gradient(to left, transparent, #e5e7eb)' }} />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -145,33 +160,63 @@ export default function Skills({ darkMode }) {
         </div>
 
         {/* ── GLOWING HORIZON DIVIDER ──────────────────────────── */}
-        <div className="relative my-10">
-          <div className="h-px w-full" style={{
-            background: darkMode
-              ? 'linear-gradient(to right, transparent, rgba(255,153,0,0.4), rgba(96,160,255,0.3), rgba(255,153,0,0.4), transparent)'
-              : 'linear-gradient(to right, transparent, rgba(255,153,0,0.3), rgba(96,160,255,0.2), rgba(255,153,0,0.3), transparent)',
-          }} />
-          <div className="absolute inset-0 h-px blur-sm" style={{
-            background: darkMode
-              ? 'linear-gradient(to right, transparent, rgba(255,153,0,0.3), rgba(96,160,255,0.2), rgba(255,153,0,0.3), transparent)'
-              : 'none',
-          }} />
+        <div className="relative my-14 flex items-center">
+          {/* Left arm */}
+          <div
+            className="flex-1 h-px"
+            style={{ background: darkMode ? 'linear-gradient(to right, transparent, rgba(255,153,0,0.55))' : 'linear-gradient(to right, transparent, rgba(255,153,0,0.35))' }}
+          />
+
+          {/* Center jewel */}
+          <div className="relative mx-5 flex-shrink-0" style={{ width: 12, height: 12 }}>
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: 'linear-gradient(135deg, #ff9900, #60a0ff)',
+                boxShadow: darkMode
+                  ? '0 0 14px rgba(255,153,0,0.85), 0 0 32px rgba(96,160,255,0.4)'
+                  : '0 0 8px rgba(255,153,0,0.5)',
+              }}
+            />
+          </div>
+
+          {/* Right arm */}
+          <div
+            className="flex-1 h-px"
+            style={{ background: darkMode ? 'linear-gradient(to left, transparent, rgba(96,160,255,0.55))' : 'linear-gradient(to left, transparent, rgba(96,160,255,0.35))' }}
+          />
+
+          {/* Bloom — dark mode only */}
+          {darkMode && (
+            <div
+              className="absolute inset-x-0 pointer-events-none"
+              style={{
+                top: '50%',
+                transform: 'translateY(-50%)',
+                height: 40,
+                background: 'linear-gradient(to right, transparent, rgba(255,153,0,0.04), rgba(96,160,255,0.03), rgba(255,153,0,0.04), transparent)',
+                filter: 'blur(8px)',
+              }}
+            />
+          )}
         </div>
 
         {/* ── ZONE 2: CLOUD LAYER — BACKEND & INFRASTRUCTURE ───── */}
         <div className="mt-4">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="h-px flex-1" style={{ background: darkMode ? 'rgba(255,153,0,0.2)' : '#e5e7eb' }} />
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] px-3 py-1 rounded-full"
+          <div className="flex items-center gap-4 mb-8">
+            <div className="h-px flex-1" style={{ background: darkMode ? 'linear-gradient(to right, transparent, rgba(255,153,0,0.25))' : 'linear-gradient(to right, transparent, #e5e7eb)' }} />
+            <span
+              className="text-[0.68rem] font-bold uppercase tracking-[0.22em] px-4 py-1.5 rounded-full whitespace-nowrap"
               style={{
                 color: '#ff9900',
-                background: darkMode ? 'rgba(255,153,0,0.08)' : '#fff7ed',
-                border: darkMode ? '1px solid rgba(255,153,0,0.15)' : '1px solid #fed7aa',
+                background: darkMode ? 'rgba(255,153,0,0.09)' : '#fff7ed',
+                border: darkMode ? '1px solid rgba(255,153,0,0.18)' : '1px solid #fed7aa',
+                boxShadow: darkMode ? 'inset 0 1px 0 rgba(255,153,0,0.1)' : 'none',
               }}
             >
               Cloud Layer — Backend &amp; Infrastructure
             </span>
-            <div className="h-px flex-1" style={{ background: darkMode ? 'rgba(255,153,0,0.2)' : '#e5e7eb' }} />
+            <div className="h-px flex-1" style={{ background: darkMode ? 'linear-gradient(to left, transparent, rgba(255,153,0,0.25))' : 'linear-gradient(to left, transparent, #e5e7eb)' }} />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

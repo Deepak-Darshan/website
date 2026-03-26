@@ -32,8 +32,8 @@ export default function Navbar({ darkMode, setDarkMode }) {
 
   const navBg = scrolled
     ? darkMode
-      ? 'bg-[#06040f]/90 backdrop-blur-xl shadow-lg shadow-purple-900/10 border-b border-slate-800/60'
-      : 'bg-white/85 backdrop-blur-xl shadow-lg shadow-slate-200/40 border-b border-slate-200/60'
+      ? 'bg-[#06040f]/95 backdrop-blur-2xl shadow-[0_1px_0_rgba(255,255,255,0.04),0_8px_40px_rgba(0,0,0,0.55)] border-b border-white/[0.045]'
+      : 'bg-white/93 backdrop-blur-2xl shadow-[0_1px_0_rgba(255,255,255,0.9),0_4px_24px_rgba(0,0,0,0.07)] border-b border-slate-200/55'
     : 'bg-transparent border-b border-transparent';
 
   return (
@@ -42,12 +42,22 @@ export default function Navbar({ darkMode, setDarkMode }) {
         {/* Logo */}
         <a href="#home" className="flex items-baseline gap-2 group">
           <span
-            className="text-2xl font-black bg-clip-text text-transparent"
-            style={{ background: 'linear-gradient(to right, #ff9900, #60a0ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+            className="text-[1.6rem] font-black"
+            style={{
+              background: 'linear-gradient(135deg, #ff9900 15%, #60a0ff 85%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              filter: 'drop-shadow(0 0 10px rgba(255,153,0,0.25))',
+              letterSpacing: '-0.05em',
+            }}
           >
             DD
           </span>
-          <span className={`text-xs font-mono ${darkMode ? 'text-slate-500' : 'text-slate-400'} hover-accent transition-colors`}>
+          <span
+            className="text-xs font-mono hover-accent transition-colors"
+            style={{ color: darkMode ? '#4a5568' : '#94a3b8' }}
+          >
             /dev
           </span>
         </a>
@@ -61,7 +71,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
               <a
                 key={href}
                 href={href}
-                className={`relative text-sm font-medium transition-colors duration-200 ${
+                className={`relative text-sm font-medium transition-colors duration-150 ${
                   isActive
                     ? ''
                     : darkMode
@@ -74,8 +84,12 @@ export default function Navbar({ darkMode, setDarkMode }) {
                 {isActive && (
                   <motion.span
                     layoutId="nav-pill"
-                    className="absolute -bottom-1 left-0 right-0 h-px rounded-full"
-                    style={{ background: 'linear-gradient(to right, #ff9900, #60a0ff)' }}
+                    className="absolute -bottom-1 left-0 right-0 rounded-full"
+                    style={{
+                      height: 2,
+                      background: 'linear-gradient(to right, #ff9900, #60a0ff)',
+                      boxShadow: '0 0 6px rgba(255,153,0,0.55)',
+                    }}
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -88,11 +102,12 @@ export default function Navbar({ darkMode, setDarkMode }) {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setDarkMode(!darkMode)}
-            className={`p-2 rounded-lg transition-all ${
+            className={`p-2 rounded-lg transition-all duration-150 ${
               darkMode
-                ? 'bg-slate-800 hover:bg-slate-700 text-yellow-300'
-                : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                ? 'text-yellow-300 border border-white/[0.07]'
+                : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
             }`}
+            style={darkMode ? { background: 'rgba(255,255,255,0.05)' } : undefined}
             aria-label="Toggle theme"
           >
             {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -100,7 +115,8 @@ export default function Navbar({ darkMode, setDarkMode }) {
 
           <button
             onClick={() => setMobile(!mobileOpen)}
-            className={`md:hidden p-2 rounded-lg transition-all ${darkMode ? 'bg-slate-800 hover:bg-slate-700' : 'bg-slate-100 hover:bg-slate-200'}`}
+            className={`md:hidden p-2 rounded-lg transition-all duration-150 ${darkMode ? 'border border-white/[0.07]' : 'bg-slate-100 hover:bg-slate-200'}`}
+            style={darkMode ? { background: 'rgba(255,255,255,0.05)' } : undefined}
             aria-label="Toggle menu"
           >
             {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -116,7 +132,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.22, ease: 'easeInOut' }}
-            className={`md:hidden overflow-hidden ${darkMode ? 'bg-[#06040f]/95' : 'bg-white/95'} backdrop-blur-xl`}
+            className={`md:hidden overflow-hidden ${darkMode ? 'bg-[#06040f]/97' : 'bg-white/97'} backdrop-blur-2xl`}
           >
             <div className="px-6 pb-6 flex flex-col gap-1">
               {navLinks.map(({ label, href }, i) => (
@@ -129,7 +145,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
                   transition={{ delay: i * 0.05, duration: 0.18 }}
                   className={`py-3 text-sm font-medium border-b transition-colors ${
                     darkMode
-                      ? 'border-slate-800 text-slate-300 hover-accent'
+                      ? 'border-white/[0.06] text-slate-300 hover-accent'
                       : 'border-slate-100 text-slate-600 hover-accent'
                   }`}
                 >

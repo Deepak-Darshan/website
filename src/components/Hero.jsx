@@ -247,25 +247,49 @@ export default function Hero({ darkMode }) {
           {/* Horizon glow */}
           <rect x={0} y={106} width={1400} height={14} fill="url(#horiGlow)" />
         </svg>
+
+        {/* Gradient fade — blends skyline seamlessly into the next section */}
+        <div style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 60,
+          background: darkMode
+            ? 'linear-gradient(to bottom, transparent, #06040f)'
+            : 'linear-gradient(to bottom, transparent, #eef2f9)',
+          pointerEvents: 'none',
+        }} />
       </div>
 
       {/* ── HERO CONTENT ───────────────────────────────────────── */}
       <div className="max-w-4xl w-full text-center z-10 relative mx-auto" style={{ paddingBottom: 130 }}>
 
-        {/* Availability badge */}
-        <div className="mb-8 inline-flex items-center">
-          <span className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm border ${
-            darkMode
-              ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-              : 'bg-emerald-50 text-emerald-600 border-emerald-200'
-          }`}>
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+        {/* Availability badge — premium pill with ring pulse */}
+        <div className="mb-10 inline-flex items-center">
+          <span
+            className={`relative flex items-center gap-2.5 px-5 py-2.5 rounded-full text-sm font-medium border ${
+              darkMode
+                ? 'text-emerald-400 border-emerald-500/18'
+                : 'bg-emerald-50 text-emerald-600 border-emerald-200/80'
+            }`}
+            style={darkMode ? {
+              background: 'rgba(16,185,129,0.07)',
+              boxShadow: 'inset 0 1px 0 rgba(16,185,129,0.08), 0 0 24px rgba(16,185,129,0.05)',
+            } : {
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.8)',
+            }}
+          >
+            <span className="relative flex items-center justify-center w-2 h-2">
+              <span className="badge-ring absolute inline-flex rounded-full w-full h-full bg-emerald-400" />
+              <span className="relative inline-flex rounded-full w-2 h-2 bg-emerald-400" />
+            </span>
             Available for Opportunities
           </span>
         </div>
 
-        {/* Name */}
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-4 leading-none tracking-tight">
+        {/* Name — monumental */}
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-[0.92]">
           <span style={{ color: darkMode ? '#e2e8f0' : '#0f172a' }}>Hi, I'm </span>
           <span className="shimmer-text">Deepak</span>
         </h1>
@@ -285,22 +309,22 @@ export default function Hero({ darkMode }) {
           <span style={{ color: '#ff9900' }} className="font-medium">scalable infrastructure</span>.
         </p>
 
-        {/* CTAs */}
+        {/* CTAs — premium */}
         <div className="flex gap-4 justify-center flex-wrap mb-10">
           <a
             href="#projects"
-            className="group flex items-center gap-2 px-8 py-4 rounded-xl font-semibold hover:shadow-2xl hover:scale-105 transition-all duration-300"
-            style={{ background: 'linear-gradient(to right, #ff9900, #60a0ff)', color: '#fff', boxShadow: '0 4px 24px rgba(255,153,0,0.25)' }}
+            className="group btn-primary flex items-center gap-2 px-8 py-4 rounded-xl font-semibold"
+            style={{ background: 'linear-gradient(135deg, #ff9900, #60a0ff)', color: '#fff' }}
           >
             <Sparkles className="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" />
             View Projects
           </a>
           <a
             href="#contact"
-            className="px-8 py-4 rounded-xl font-semibold hover:scale-105 transition-all duration-300"
+            className="btn-ghost px-8 py-4 rounded-xl font-semibold"
             style={{
-              background: darkMode ? 'rgba(255,153,0,0.05)' : 'rgba(255,153,0,0.08)',
-              border: '2px solid rgba(255,153,0,0.2)',
+              background: darkMode ? 'rgba(255,153,0,0.05)' : 'rgba(255,153,0,0.06)',
+              border: '1.5px solid rgba(255,153,0,0.22)',
               color: darkMode ? '#e2e8f0' : '#374151',
             }}
           >
@@ -313,7 +337,7 @@ export default function Hero({ darkMode }) {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.5 }}
-          className="flex items-center justify-center gap-6 md:gap-10 mb-14"
+          className="flex items-center justify-center gap-6 md:gap-10 mb-16"
         >
           {[
             { value: '5+',  label: 'Projects' },
@@ -321,19 +345,29 @@ export default function Hero({ darkMode }) {
             { value: 'AWS', label: 'Cloud Stack' },
           ].map((stat, i) => (
             <div key={i} className="flex items-center gap-6 md:gap-10">
-              {i > 0 && <div className="w-px h-8" style={{ background: darkMode ? 'rgba(112,144,176,0.3)' : '#cbd5e1' }} />}
+              {i > 0 && (
+                <div
+                  className="w-px h-9"
+                  style={{ background: darkMode ? 'rgba(112,144,176,0.25)' : '#cbd5e1' }}
+                />
+              )}
               <div className="text-center">
-                <div className="text-xl md:text-2xl font-black" style={{ color: darkMode ? '#e2e8f0' : '#0f172a' }}>{stat.value}</div>
-                <div className="text-xs mt-0.5" style={{ color: '#7090b0' }}>{stat.label}</div>
+                <div
+                  className="text-xl md:text-2xl font-black"
+                  style={{ color: darkMode ? '#e2e8f0' : '#0f172a' }}
+                >
+                  {stat.value}
+                </div>
+                <div className="text-xs mt-1 tracking-wide" style={{ color: '#7090b0' }}>{stat.label}</div>
               </div>
             </div>
           ))}
         </motion.div>
 
-        {/* Scroll nudge */}
-        <div className="flex flex-col items-center gap-1.5 opacity-50 animate-bounce">
-          <span className="text-xs tracking-widest uppercase" style={{ color: '#7090b0' }}>Scroll</span>
-          <ArrowDown className="w-4 h-4" style={{ color: '#7090b0' }} />
+        {/* Scroll nudge — light and elegant */}
+        <div className="flex flex-col items-center gap-2 animate-bounce" style={{ opacity: 0.35 }}>
+          <span className="text-[10px] font-medium tracking-[0.24em] uppercase" style={{ color: '#7090b0' }}>Scroll</span>
+          <ArrowDown className="w-3.5 h-3.5" style={{ color: '#7090b0' }} />
         </div>
       </div>
     </section>

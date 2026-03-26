@@ -64,42 +64,59 @@ function App() {
 
       {/* Background layer */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {/* Subtle grid */}
+        {/* Refined grid — tighter cells for a more intricate infrastructure feel */}
         {darkMode && (
           <div
             className="absolute inset-0"
             style={{
               backgroundImage:
-                'linear-gradient(rgba(168,85,247,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(168,85,247,0.04) 1px, transparent 1px)',
-              backgroundSize: '72px 72px',
+                'linear-gradient(rgba(168,85,247,0.028) 1px, transparent 1px), linear-gradient(90deg, rgba(168,85,247,0.028) 1px, transparent 1px)',
+              backgroundSize: '52px 52px',
             }}
           />
         )}
-        {/* Orbs */}
+
+        {/* Orb 1 — top-left amber, deep and atmospheric */}
         <div
-          className="absolute w-[700px] h-[700px] rounded-full blur-3xl"
+          className="absolute rounded-full"
           style={{
-            background: darkMode ? 'radial-gradient(circle, rgba(255,153,0,0.08), transparent 70%)' : 'radial-gradient(circle, rgba(255,153,0,0.06), transparent 70%)',
-            top: '-15%',
-            left: '-10%',
+            width: 920, height: 920,
+            background: darkMode
+              ? 'radial-gradient(circle, rgba(255,153,0,0.11), transparent 62%)'
+              : 'radial-gradient(circle, rgba(255,153,0,0.07), transparent 62%)',
+            top: '-20%',
+            left: '-12%',
+            filter: 'blur(72px)',
             transform: `translateY(${scrollY * 0.07}px)`,
           }}
         />
+
+        {/* Orb 2 — bottom-right blue */}
         <div
-          className="absolute w-[600px] h-[600px] rounded-full blur-3xl"
+          className="absolute rounded-full"
           style={{
-            background: darkMode ? 'radial-gradient(circle, rgba(96,160,255,0.08), transparent 70%)' : 'radial-gradient(circle, rgba(96,160,255,0.05), transparent 70%)',
-            bottom: '10%',
-            right: '-5%',
+            width: 760, height: 760,
+            background: darkMode
+              ? 'radial-gradient(circle, rgba(96,160,255,0.1), transparent 62%)'
+              : 'radial-gradient(circle, rgba(96,160,255,0.06), transparent 62%)',
+            bottom: '4%',
+            right: '-8%',
+            filter: 'blur(72px)',
             transform: `translateY(${-scrollY * 0.05}px)`,
           }}
         />
+
+        {/* Orb 3 — center violet */}
         <div
-          className="absolute w-[450px] h-[450px] rounded-full blur-3xl"
+          className="absolute rounded-full"
           style={{
-            background: darkMode ? 'radial-gradient(circle, rgba(167,139,250,0.06), transparent 70%)' : 'radial-gradient(circle, rgba(167,139,250,0.04), transparent 70%)',
+            width: 560, height: 560,
+            background: darkMode
+              ? 'radial-gradient(circle, rgba(167,139,250,0.08), transparent 62%)'
+              : 'radial-gradient(circle, rgba(167,139,250,0.05), transparent 62%)',
             top: '45%',
             left: '35%',
+            filter: 'blur(72px)',
             transform: `translateY(${scrollY * 0.03}px)`,
           }}
         />
