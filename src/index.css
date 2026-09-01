@@ -266,8 +266,8 @@ body {
 }
 
 @keyframes mineral-glow {
-  0%, 100% { opacity: 0.14; filter: drop-shadow(0 0 2px rgba(255,100,0,0.10)); }
-  50%       { opacity: 0.22; filter: drop-shadow(0 0 5px rgba(255,100,0,0.26)); }
+  0%, 100% { opacity: 0.38; filter: drop-shadow(0 0 3px rgba(185,80,0,0.18)); }
+  50%       { opacity: 0.52; filter: drop-shadow(0 0 7px rgba(185,80,0,0.32)); }
 }
 
 /* ─── Lava animations ────────────────────────────────────────── */
