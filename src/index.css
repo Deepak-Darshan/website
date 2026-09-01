@@ -266,8 +266,17 @@ body {
 }
 
 @keyframes mineral-glow {
-  0%, 100% { opacity: 0.38; filter: drop-shadow(0 0 3px rgba(185,80,0,0.18)); }
-  50%       { opacity: 0.52; filter: drop-shadow(0 0 7px rgba(185,80,0,0.32)); }
+  0%, 100% { opacity: 0.62; filter: drop-shadow(0 0 4px rgba(210,120,40,0.28)); }
+  50%       { opacity: 0.78; filter: drop-shadow(0 0 10px rgba(235,150,55,0.45)); }
+}
+
+/* Brighter geological specimens — natural stone tones */
+.geo-rock {
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.28));
+}
+
+.geo-mineral {
+  filter: drop-shadow(0 2px 10px rgba(180, 90, 20, 0.35));
 }
 
 /* ─── Lava animations ────────────────────────────────────────── */

@@ -58,35 +58,25 @@ export default function Contact({ darkMode }) {
     : 'inset 0 1px 0 rgba(255,255,255,0.95), 0 4px 20px rgba(0,0,0,0.06)';
 
   return (
-    <section id="contact" className="relative py-28 px-6 w-full">
+    <section id="contact" className="relative py-28 px-6 w-full" style={{ marginTop: -1 }}>
       {/* ── Geological background: Mantle → Core ──────────────────────────── */}
       {darkMode && (
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* Fade-in from Projects — 200px smooth blend at section top */}
-          <div
-            className="absolute top-0 left-0 right-0 pointer-events-none"
-            style={{
-              height: 200,
-              background: 'linear-gradient(to bottom, rgba(35,12,4,0.30) 0%, transparent 100%)',
-              zIndex: 2,
-            }}
-          />
-
-          {/* MANTLE — dense topo lines fading in from top, out toward bottom */}
+          {/* MANTLE — dense topo lines fading in gently from top, out toward bottom */}
           <div style={{
             position: 'absolute',
             top: 0, bottom: '30%', left: 0, right: 0,
             backgroundImage: TOPO_MANTLE,
             backgroundSize: '350px 45px',
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 28%, black 68%, transparent 100%)',
-            maskImage: 'linear-gradient(to bottom, transparent 0%, black 28%, black 68%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.35) 18%, black 52%, black 68%, transparent 100%)',
+            maskImage: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.35) 18%, black 52%, black 68%, transparent 100%)',
           }} />
 
-          {/* Overall warm tint — clearly noticeable warmth, we're deep underground */}
+          {/* Overall warm tint — continues seamlessly from Projects bottom fade */}
           <div style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(to bottom, rgba(55,20,5,0.22) 0%, rgba(70,25,5,0.30) 100%)',
+            background: 'linear-gradient(to bottom, rgba(55,20,5,0.22) 0%, rgba(62,22,5,0.26) 35%, rgba(70,25,5,0.30) 100%)',
           }} />
 
           {/* CORE — radial glow emanating from center-bottom */}
@@ -102,25 +92,25 @@ export default function Contact({ darkMode }) {
           {/* ── CRYSTALLINE MINERAL ELEMENTS — upper mantle zone ─────────── */}
 
           {/* Crystal 1 — large amber shard, left — heat-glowing */}
-          <svg width="34" height="48" viewBox="0 0 34 48" fill="none" style={{position:'absolute',top:'10%',left:'12%',opacity:0.46,animation:'mineral-glow 6s ease-in-out 1s infinite, rock-drift-3 44s ease-in-out 3s infinite',filter:'drop-shadow(0 0 4px rgba(200,80,0,0.18))',pointerEvents:'none'}}>
-            <path d="M8 42L2 26L6 8L17 2L28 8L32 24L26 40L15 46Z" fill="rgba(85,42,10,0.82)"/>
-            <path d="M17 2L28 8L32 24L20 14Z" fill="rgba(130,72,20,0.46)"/>
-            <path d="M8 42L2 26L6 8L10 20Z" fill="rgba(42,20,5,0.75)"/>
-            <line x1="8" y1="36" x2="28" y2="10" stroke="rgba(165,115,38,0.40)" strokeWidth="1.0"/>
+          <svg width="34" height="48" viewBox="0 0 34 48" fill="none" style={{position:'absolute',top:'10%',left:'12%',opacity:0.70,animation:'mineral-glow 6s ease-in-out 1s infinite, rock-drift-3 44s ease-in-out 3s infinite',filter:'drop-shadow(0 0 4px rgba(200,80,0,0.18))',pointerEvents:'none'}}>
+            <path d="M8 42L2 26L6 8L17 2L28 8L32 24L26 40L15 46Z" fill="rgba(205,130,38,0.92)"/>
+            <path d="M17 2L28 8L32 24L20 14Z" fill="rgba(240,175,65,0.72)"/>
+            <path d="M8 42L2 26L6 8L10 20Z" fill="rgba(125,70,18,0.88)"/>
+            <line x1="8" y1="36" x2="28" y2="10" stroke="rgba(230,165,55,0.40)" strokeWidth="1.0"/>
             <line x1="10" y1="38" x2="30" y2="14" stroke="rgba(148,102,32,0.26)" strokeWidth="0.7"/>
-            <line x1="12" y1="24" x2="6" y2="14" stroke="rgba(158,110,35,0.30)" strokeWidth="0.6"/>
+            <line x1="12" y1="24" x2="6" y2="14" stroke="rgba(220,155,48,0.30)" strokeWidth="0.6"/>
             <line x1="18" y1="10" x2="26" y2="32" stroke="rgba(145,100,30,0.24)" strokeWidth="0.5"/>
-            <circle cx="22" cy="12" r="1.4" fill="rgba(175,128,45,0.45)"/>
+            <circle cx="22" cy="12" r="1.4" fill="rgba(245,185,70,0.45)"/>
             <circle cx="12" cy="26" r="1.0" fill="rgba(162,115,38,0.36)"/>
             <circle cx="26" cy="30" r="0.7" fill="rgba(155,108,35,0.30)"/>
             <path d="M17 2L28 8L32 24" fill="none" stroke="rgba(158,112,38,0.32)" strokeWidth="0.9"/>
           </svg>
 
           {/* Crystal 2 — warm amber chunk, upper right */}
-          <svg width="44" height="38" viewBox="0 0 44 38" fill="none" style={{position:'absolute',top:'22%',right:'15%',opacity:0.44,animation:'mineral-glow 7s ease-in-out 2s infinite, rock-drift-2 38s ease-in-out 5s infinite',filter:'drop-shadow(0 0 4px rgba(195,78,0,0.16))',pointerEvents:'none'}}>
-            <path d="M8 32L2 18L8 4L22 2L36 6L42 20L36 34L20 38Z" fill="rgba(78,38,10,0.82)"/>
-            <path d="M22 2L36 6L42 20L28 12Z" fill="rgba(122,68,18,0.46)"/>
-            <path d="M8 32L2 18L8 4L12 18Z" fill="rgba(38,18,5,0.75)"/>
+          <svg width="44" height="38" viewBox="0 0 44 38" fill="none" style={{position:'absolute',top:'22%',right:'15%',opacity:0.68,animation:'mineral-glow 7s ease-in-out 2s infinite, rock-drift-2 38s ease-in-out 5s infinite',filter:'drop-shadow(0 0 4px rgba(195,78,0,0.16))',pointerEvents:'none'}}>
+            <path d="M8 32L2 18L8 4L22 2L36 6L42 20L36 34L20 38Z" fill="rgba(198,125,35,0.92)"/>
+            <path d="M22 2L36 6L42 20L28 12Z" fill="rgba(122,68,18,0.72)"/>
+            <path d="M8 32L2 18L8 4L12 18Z" fill="rgba(38,18,5,0.88)"/>
             <line x1="10" y1="28" x2="36" y2="8" stroke="rgba(158,110,36,0.40)" strokeWidth="1.0"/>
             <line x1="14" y1="34" x2="40" y2="14" stroke="rgba(142,98,30,0.26)" strokeWidth="0.7"/>
             <line x1="8" y1="20" x2="28" y2="24" stroke="rgba(150,105,33,0.28)" strokeWidth="0.6"/>
@@ -132,24 +122,24 @@ export default function Contact({ darkMode }) {
           </svg>
 
           {/* Crystal 3 — elongated shard, left-center */}
-          <svg width="24" height="50" viewBox="0 0 24 50" fill="none" style={{position:'absolute',top:'35%',left:'65%',opacity:0.42,animation:'mineral-glow 8s ease-in-out 3s infinite, rock-drift-1 50s ease-in-out 10s infinite',filter:'drop-shadow(0 0 4px rgba(195,82,0,0.18))',pointerEvents:'none'}}>
-            <path d="M5 44L2 28L5 10L12 2L20 10L22 26L18 42L12 48Z" fill="rgba(88,44,10,0.82)"/>
+          <svg width="24" height="50" viewBox="0 0 24 50" fill="none" style={{position:'absolute',top:'35%',left:'65%',opacity:0.66,animation:'mineral-glow 8s ease-in-out 3s infinite, rock-drift-1 50s ease-in-out 10s infinite',filter:'drop-shadow(0 0 4px rgba(195,82,0,0.18))',pointerEvents:'none'}}>
+            <path d="M5 44L2 28L5 10L12 2L20 10L22 26L18 42L12 48Z" fill="rgba(210,138,42,0.92)"/>
             <path d="M12 2L20 10L22 26L14 16Z" fill="rgba(130,75,20,0.46)"/>
-            <path d="M5 44L2 28L5 10L8 22Z" fill="rgba(44,22,5,0.75)"/>
+            <path d="M5 44L2 28L5 10L8 22Z" fill="rgba(44,22,5,0.88)"/>
             <line x1="6" y1="38" x2="20" y2="10" stroke="rgba(168,115,38,0.42)" strokeWidth="1.1"/>
             <line x1="4" y1="28" x2="18" y2="20" stroke="rgba(150,102,32,0.28)" strokeWidth="0.7"/>
             <line x1="8" y1="44" x2="20" y2="30" stroke="rgba(158,108,34,0.25)" strokeWidth="0.6"/>
             <line x1="14" y1="6" x2="10" y2="32" stroke="rgba(145,100,30,0.22)" strokeWidth="0.5"/>
             <circle cx="16" cy="8" r="1.3" fill="rgba(178,128,44,0.46)"/>
-            <circle cx="8" cy="24" r="1.0" fill="rgba(165,115,38,0.38)"/>
+            <circle cx="8" cy="24" r="1.0" fill="rgba(230,165,55,0.38)"/>
             <path d="M12 2L20 10L22 26" fill="none" stroke="rgba(160,112,36,0.32)" strokeWidth="0.9"/>
           </svg>
 
           {/* Crystal 4 — broad angular chunk, right side */}
-          <svg width="50" height="36" viewBox="0 0 50 36" fill="none" style={{position:'absolute',top:'48%',right:'35%',opacity:0.48,animation:'rock-drift-3 46s ease-in-out 7s infinite',filter:'drop-shadow(0 0 4px rgba(195,80,0,0.18))',pointerEvents:'none'}}>
-            <path d="M6 30L2 16L8 4L22 2L38 6L48 18L42 32L24 34Z" fill="rgba(95,48,12,0.82)"/>
-            <path d="M22 2L38 6L48 18L30 10Z" fill="rgba(138,78,20,0.46)"/>
-            <path d="M6 30L2 16L8 4L12 18Z" fill="rgba(46,23,5,0.75)"/>
+          <svg width="50" height="36" viewBox="0 0 50 36" fill="none" style={{position:'absolute',top:'48%',right:'35%',opacity:0.72,animation:'rock-drift-3 46s ease-in-out 7s infinite',filter:'drop-shadow(0 0 4px rgba(195,80,0,0.18))',pointerEvents:'none'}}>
+            <path d="M6 30L2 16L8 4L22 2L38 6L48 18L42 32L24 34Z" fill="rgba(215,142,45,0.92)"/>
+            <path d="M22 2L38 6L48 18L30 10Z" fill="rgba(138,78,20,0.72)"/>
+            <path d="M6 30L2 16L8 4L12 18Z" fill="rgba(46,23,5,0.88)"/>
             <line x1="8" y1="26" x2="40" y2="6" stroke="rgba(170,118,38,0.42)" strokeWidth="1.1"/>
             <line x1="12" y1="30" x2="44" y2="12" stroke="rgba(152,105,33,0.28)" strokeWidth="0.7"/>
             <line x1="6" y1="18" x2="32" y2="22" stroke="rgba(160,110,35,0.30)" strokeWidth="0.6"/>
@@ -162,11 +152,11 @@ export default function Contact({ darkMode }) {
           </svg>
 
           {/* Crystal 5 — small amber nugget, center */}
-          <svg width="28" height="30" viewBox="0 0 28 30" fill="none" style={{position:'absolute',top:'55%',left:'40%',opacity:0.44,animation:'mineral-glow 5s ease-in-out 4s infinite, rock-drift-2 42s ease-in-out 14s infinite',filter:'drop-shadow(0 0 3px rgba(195,80,0,0.16))',pointerEvents:'none'}}>
-            <path d="M6 26L2 14L6 4L14 1L22 6L26 18L20 28Z" fill="rgba(88,44,10,0.82)"/>
-            <path d="M14 1L22 6L26 18L16 10Z" fill="rgba(132,76,20,0.46)"/>
+          <svg width="28" height="30" viewBox="0 0 28 30" fill="none" style={{position:'absolute',top:'55%',left:'40%',opacity:0.68,animation:'mineral-glow 5s ease-in-out 4s infinite, rock-drift-2 42s ease-in-out 14s infinite',filter:'drop-shadow(0 0 3px rgba(195,80,0,0.16))',pointerEvents:'none'}}>
+            <path d="M6 26L2 14L6 4L14 1L22 6L26 18L20 28Z" fill="rgba(210,138,42,0.92)"/>
+            <path d="M14 1L22 6L26 18L16 10Z" fill="rgba(132,76,20,0.72)"/>
             <path d="M6 26L2 14L6 4L10 14Z" fill="rgba(42,22,5,0.75)"/>
-            <line x1="6" y1="22" x2="24" y2="6" stroke="rgba(165,115,38,0.40)" strokeWidth="0.9"/>
+            <line x1="6" y1="22" x2="24" y2="6" stroke="rgba(230,165,55,0.40)" strokeWidth="0.9"/>
             <line x1="10" y1="26" x2="26" y2="12" stroke="rgba(148,103,32,0.26)" strokeWidth="0.6"/>
             <line x1="8" y1="16" x2="20" y2="20" stroke="rgba(155,108,34,0.28)" strokeWidth="0.5"/>
             <circle cx="18" cy="8" r="1.2" fill="rgba(175,125,42,0.44)"/>
