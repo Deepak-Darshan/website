@@ -1,6 +1,18 @@
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, ArrowUpRight, Zap } from 'lucide-react';
 
+// ─── Geological layer: mantle topo contour lines ─────────────────────────────
+const TOPO_MANTLE = (() => {
+  const svg =
+    `<svg xmlns='http://www.w3.org/2000/svg' width='350' height='36'>` +
+    `<path stroke='rgba(255,153,0,0.04)' stroke-width='1' fill='none'` +
+    ` d='M0,12 C88,4 175,20 263,12 C306,8 330,16 350,12'/>` +
+    `<path stroke='rgba(255,153,0,0.033)' stroke-width='1' fill='none'` +
+    ` d='M0,24 C88,16 175,32 263,24 C306,20 330,28 350,24'/>` +
+    `</svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+})();
+
 const contacts = [
   {
     icon: Mail,
@@ -42,6 +54,38 @@ export default function Contact({ darkMode }) {
 
   return (
     <section id="contact" className="relative py-28 px-6 w-full">
+      {/* ── Geological background: Mantle → Core ──────────────────────────── */}
+      {darkMode && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* MANTLE — dense topo lines fading out toward the bottom */}
+          <div style={{
+            position: 'absolute',
+            top: 0, bottom: '30%', left: 0, right: 0,
+            backgroundImage: TOPO_MANTLE,
+            backgroundSize: '350px 36px',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 45%, transparent 100%)',
+            maskImage: 'linear-gradient(to bottom, black 45%, transparent 100%)',
+          }} />
+
+          {/* Overall warm tint — we're deep underground now */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(to bottom, rgba(38,12,3,0.07) 0%, rgba(60,20,4,0.11) 100%)',
+          }} />
+
+          {/* CORE — radial glow emanating from center-bottom */}
+          <div style={{
+            position: 'absolute',
+            bottom: '-15%', left: '50%',
+            transform: 'translateX(-50%)',
+            width: '130%', height: '70%',
+            background: 'radial-gradient(ellipse at center bottom, rgba(255,90,0,0.08) 0%, rgba(255,130,0,0.04) 45%, transparent 70%)',
+            filter: 'blur(48px)',
+          }} />
+        </div>
+      )}
+
       <div className="max-w-4xl mx-auto w-full">
         {/* Header */}
         <div className="text-center mb-20">

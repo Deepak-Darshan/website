@@ -5,6 +5,29 @@ import tetherImg from '../photos/Tether.PNG';
 import viewTrendImg from '../photos/ViewTrend.png';
 import gamerStatsImg from '../photos/GamerStats.png';
 
+// ─── Geological layer patterns ────────────────────────────────────────────────
+// Crust: sparse gentle waves, 400×65 px tile
+const TOPO_CRUST = (() => {
+  const svg =
+    `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='65'>` +
+    `<path stroke='rgba(255,153,0,0.032)' stroke-width='1' fill='none'` +
+    ` d='M0,32 C100,18 200,46 300,36 C350,31 378,25 400,32'/>` +
+    `</svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+})();
+
+// Mantle: denser, two waves per 36px tile
+const TOPO_MANTLE = (() => {
+  const svg =
+    `<svg xmlns='http://www.w3.org/2000/svg' width='350' height='36'>` +
+    `<path stroke='rgba(255,153,0,0.04)' stroke-width='1' fill='none'` +
+    ` d='M0,12 C88,4 175,20 263,12 C306,8 330,16 350,12'/>` +
+    `<path stroke='rgba(255,153,0,0.033)' stroke-width='1' fill='none'` +
+    ` d='M0,24 C88,16 175,32 263,24 C306,20 330,28 350,24'/>` +
+    `</svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+})();
+
 // ─── Language color map ────────────────────────────────────────────────────────
 const LANG_COLORS = {
   JavaScript: '#f1e05a',
@@ -1121,6 +1144,45 @@ export default function Projects({ darkMode }) {
       id="projects"
       style={{ position: 'relative', paddingTop: 96, paddingBottom: 120, width: '100%', overflow: 'hidden' }}
     >
+      {/* ── Geological background: Crust → Mantle ──────────────────────────── */}
+      {darkMode && (
+        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
+          {/* CRUST — sparse topo lines over the Featured Projects area (top ~55%) */}
+          <div style={{
+            position: 'absolute',
+            top: 0, bottom: '45%', left: 0, right: 0,
+            backgroundImage: TOPO_CRUST,
+            backgroundSize: '400px 65px',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+            maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+          }} />
+
+          {/* MANTLE — denser topo lines over the repo feed area (bottom ~60%) */}
+          <div style={{
+            position: 'absolute',
+            top: '38%', bottom: 0, left: 0, right: 0,
+            backgroundImage: TOPO_MANTLE,
+            backgroundSize: '350px 36px',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)',
+            maskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)',
+          }} />
+
+          {/* Warm amber radial — mantle heat building in the lower portion */}
+          <div style={{
+            position: 'absolute',
+            top: '52%', bottom: 0, left: 0, right: 0,
+            background: 'radial-gradient(ellipse 90% 55% at 50% 85%, rgba(220,75,0,0.045) 0%, transparent 70%)',
+          }} />
+
+          {/* Dark warm tint at the very bottom — transition toward core */}
+          <div style={{
+            position: 'absolute',
+            bottom: 0, left: 0, right: 0, height: '22%',
+            background: 'linear-gradient(to bottom, transparent, rgba(50,18,4,0.08))',
+          }} />
+        </div>
+      )}
+
       {/* puzzleRef wraps only the header + puzzle stage so scroll progress is
           relative to this area and the pieces are fully assembled by the time
           the section top reaches the viewport top (via nav link or scroll). */}

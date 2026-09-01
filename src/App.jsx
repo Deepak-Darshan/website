@@ -7,41 +7,6 @@ import Contact from './sections/Contact';
 import Footer from './components/Footer';
 import './App.css';
 
-// Circuit-board PCB trace pattern — generated once at module load
-const CIRCUIT_BG = (() => {
-  const svg =
-    `<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>` +
-    `<g stroke-width='1' fill='none' stroke-linecap='square'>` +
-    // Amber traces — primary palette
-    `<path stroke='rgba(255,153,0,0.04)' d='M0,45 H80 V110 H155 V200'/>` +
-    `<path stroke='rgba(255,153,0,0.04)' d='M30,0 V70 H200'/>` +
-    `<path stroke='rgba(255,153,0,0.04)' d='M0,145 H50 V0'/>` +
-    `<path stroke='rgba(255,153,0,0.04)' d='M130,0 V35 H200'/>` +
-    `<path stroke='rgba(255,153,0,0.04)' d='M200,170 H100 V200'/>` +
-    // Blue accent trace
-    `<path stroke='rgba(96,160,255,0.03)' d='M0,115 H45 V175 H200'/>` +
-    // Violet accent trace
-    `<path stroke='rgba(167,139,250,0.03)' d='M65,0 V30 H95 V60 H200'/>` +
-    `</g>` +
-    // Nodes at turns and endpoints
-    `<g fill='rgba(255,153,0,0.085)'>` +
-    `<circle cx='80' cy='45' r='1.5'/>` +
-    `<circle cx='80' cy='110' r='1.5'/>` +
-    `<circle cx='155' cy='110' r='1.5'/>` +
-    `<circle cx='30' cy='70' r='1.5'/>` +
-    `<circle cx='50' cy='145' r='1.5'/>` +
-    `<circle cx='130' cy='35' r='1.5'/>` +
-    `<circle cx='100' cy='170' r='1.5'/>` +
-    `<circle cx='45' cy='115' r='1.5'/>` +
-    `<circle cx='45' cy='175' r='1.5'/>` +
-    `<circle cx='65' cy='30' r='1.5'/>` +
-    `<circle cx='95' cy='30' r='1.5'/>` +
-    `<circle cx='95' cy='60' r='1.5'/>` +
-    `</g>` +
-    `</svg>`;
-  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
-})();
-
 function App() {
   const [darkMode, setDarkMode] = useState(true);
   const [scrollY, setScrollY] = useState(0);
@@ -99,17 +64,6 @@ function App() {
 
       {/* Background layer */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {/* Circuit-board PCB trace pattern */}
-        {darkMode && (
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: CIRCUIT_BG,
-              backgroundSize: '200px 200px',
-            }}
-          />
-        )}
-
         {/* Orb 1 — top-left amber, deep and atmospheric */}
         <div
           className="absolute rounded-full"
@@ -166,6 +120,36 @@ function App() {
             transform: `translateY(${-scrollY * 0.04}px)`,
           }}
         />
+
+        {/* Orb 5 — mantle zone, lower-center burnt amber */}
+        {darkMode && (
+          <div
+            className="absolute rounded-full"
+            style={{
+              width: 700, height: 700,
+              background: 'radial-gradient(circle, rgba(220,80,0,0.06), transparent 65%)',
+              bottom: '18%',
+              left: '22%',
+              filter: 'blur(90px)',
+              transform: `translateY(${-scrollY * 0.02}px)`,
+            }}
+          />
+        )}
+
+        {/* Orb 6 — core, deep amber ellipse at very bottom */}
+        {darkMode && (
+          <div
+            className="absolute"
+            style={{
+              width: '120%', height: 420,
+              background: 'radial-gradient(ellipse at center bottom, rgba(255,90,0,0.07), transparent 68%)',
+              bottom: '-5%',
+              left: '-10%',
+              filter: 'blur(80px)',
+              transform: `translateY(${-scrollY * 0.01}px)`,
+            }}
+          />
+        )}
       </div>
 
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />

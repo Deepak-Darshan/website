@@ -1,6 +1,17 @@
 import { motion } from 'framer-motion';
 import { Code2, Server, Wrench, Cloud } from 'lucide-react';
 
+// ─── Geological layer: crust topo contour lines ──────────────────────────────
+// One gently-waving line per 65px tile; seamlessly tileable horizontally.
+const TOPO_CRUST = (() => {
+  const svg =
+    `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='65'>` +
+    `<path stroke='rgba(255,153,0,0.032)' stroke-width='1' fill='none'` +
+    ` d='M0,32 C100,18 200,46 300,36 C350,31 378,25 400,32'/>` +
+    `</svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+})();
+
 // Zone 1 — Frontend & Dev Tools
 const zone1Cards = [
   {
@@ -123,6 +134,46 @@ export default function Skills({ darkMode }) {
 
   return (
     <section id="skills" className="relative py-28 px-6 w-full">
+      {/* ── Geological background: Atmosphere → Crust ─────────────────────── */}
+      {darkMode && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* ATMOSPHERE — soft blue haze fading in from the top */}
+          <div style={{
+            position: 'absolute',
+            top: 0, left: 0, right: 0, height: '55%',
+            background: [
+              'radial-gradient(ellipse 75% 55% at 25% 0%, rgba(96,160,255,0.042) 0%, transparent 70%)',
+              'radial-gradient(ellipse 50% 40% at 80% 8%, rgba(180,215,255,0.022) 0%, transparent 65%)',
+            ].join(', '),
+          }} />
+          {/* Cirrus-like horizontal streaks */}
+          {[7, 14, 21].map((pct) => (
+            <div key={pct} style={{
+              position: 'absolute',
+              top: `${pct}%`, left: '4%', right: '4%', height: 1,
+              background: 'linear-gradient(to right, transparent, rgba(140,195,255,0.05) 25%, rgba(140,195,255,0.05) 75%, transparent)',
+            }} />
+          ))}
+
+          {/* CRUST — topographic contour lines, fade into the bottom half */}
+          <div style={{
+            position: 'absolute',
+            top: '42%', bottom: 0, left: 0, right: 0,
+            backgroundImage: TOPO_CRUST,
+            backgroundSize: '400px 65px',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 28%)',
+            maskImage: 'linear-gradient(to bottom, transparent 0%, black 28%)',
+          }} />
+
+          {/* Warm tint at the bottom — color temperature starts shifting */}
+          <div style={{
+            position: 'absolute',
+            bottom: 0, left: 0, right: 0, height: '28%',
+            background: 'linear-gradient(to bottom, transparent, rgba(40,14,4,0.07))',
+          }} />
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto w-full">
 
         {/* Header */}

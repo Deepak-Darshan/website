@@ -5,13 +5,29 @@ export default function Footer({ darkMode }) {
 
   return (
     <footer
-      className="w-full py-10"
+      className="w-full py-10 relative"
       style={{
         borderTop: '1px solid rgba(255,153,0,0.12)',
         boxShadow: '0 -1px 20px rgba(255,153,0,0.05)',
       }}
     >
-      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-5">
+      {/* ── Geological background: Core glow continuation ─────────────────── */}
+      {darkMode && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'radial-gradient(ellipse 100% 180% at 50% 100%, rgba(255,80,0,0.055) 0%, transparent 65%)',
+          }} />
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'rgba(42,14,4,0.09)',
+          }} />
+        </div>
+      )}
+
+      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-5 relative">
         <p className={`${sub} flex items-center gap-1.5 text-sm`}>
           Built with{' '}
           <Heart className="w-3 h-3 text-pink-400 fill-pink-400" />
