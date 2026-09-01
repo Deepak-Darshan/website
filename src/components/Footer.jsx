@@ -11,18 +11,20 @@ export default function Footer({ darkMode }) {
         boxShadow: '0 -1px 20px rgba(255,153,0,0.05)',
       }}
     >
-      {/* ── Geological background: Core glow continuation ─────────────────── */}
+      {/* ── Geological background: Core — hottest point ───────────────────── */}
       {darkMode && (
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* Core radial — warm glow rising from below */}
           <div style={{
             position: 'absolute',
             inset: 0,
-            background: 'radial-gradient(ellipse 100% 180% at 50% 100%, rgba(255,80,0,0.055) 0%, transparent 65%)',
+            background: 'radial-gradient(ellipse 110% 220% at 50% 100%, rgba(255,80,0,0.15) 0%, rgba(200,60,0,0.08) 50%, transparent 70%)',
           }} />
+          {/* Flat warm tint — footer is the warmest section */}
           <div style={{
             position: 'absolute',
             inset: 0,
-            background: 'rgba(42,14,4,0.09)',
+            background: 'rgba(50,16,4,0.18)',
           }} />
         </div>
       )}

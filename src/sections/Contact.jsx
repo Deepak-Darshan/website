@@ -2,13 +2,18 @@ import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, ArrowUpRight, Zap } from 'lucide-react';
 
 // ─── Geological layer: mantle topo contour lines ─────────────────────────────
+// 4 tightly-packed wavy lines, same tile as Projects.jsx TOPO_MANTLE
 const TOPO_MANTLE = (() => {
   const svg =
-    `<svg xmlns='http://www.w3.org/2000/svg' width='350' height='36'>` +
-    `<path stroke='rgba(255,153,0,0.04)' stroke-width='1' fill='none'` +
-    ` d='M0,12 C88,4 175,20 263,12 C306,8 330,16 350,12'/>` +
-    `<path stroke='rgba(255,153,0,0.033)' stroke-width='1' fill='none'` +
-    ` d='M0,24 C88,16 175,32 263,24 C306,20 330,28 350,24'/>` +
+    `<svg xmlns='http://www.w3.org/2000/svg' width='350' height='45'>` +
+    `<path stroke='rgba(255,153,0,0.11)' stroke-width='1' fill='none'` +
+    ` d='M0,10 C88,2 175,18 263,10 C306,6 330,14 350,10'/>` +
+    `<path stroke='rgba(255,153,0,0.13)' stroke-width='1.5' fill='none'` +
+    ` d='M0,22 C88,14 175,30 263,22 C306,18 330,26 350,22'/>` +
+    `<path stroke='rgba(255,153,0,0.10)' stroke-width='1' fill='none'` +
+    ` d='M0,33 C88,25 175,41 263,33 C306,29 330,37 350,33'/>` +
+    `<path stroke='rgba(96,160,255,0.07)' stroke-width='0.75' fill='none'` +
+    ` d='M0,43 C88,35 175,51 263,43 C306,39 330,47 350,43'/>` +
     `</svg>`;
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
 })();
@@ -62,16 +67,16 @@ export default function Contact({ darkMode }) {
             position: 'absolute',
             top: 0, bottom: '30%', left: 0, right: 0,
             backgroundImage: TOPO_MANTLE,
-            backgroundSize: '350px 36px',
-            WebkitMaskImage: 'linear-gradient(to bottom, black 45%, transparent 100%)',
-            maskImage: 'linear-gradient(to bottom, black 45%, transparent 100%)',
+            backgroundSize: '350px 45px',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 42%, transparent 100%)',
+            maskImage: 'linear-gradient(to bottom, black 42%, transparent 100%)',
           }} />
 
           {/* Overall warm tint — we're deep underground now */}
           <div style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(to bottom, rgba(38,12,3,0.07) 0%, rgba(60,20,4,0.11) 100%)',
+            background: 'linear-gradient(to bottom, rgba(60,20,5,0.18) 0%, rgba(80,25,5,0.25) 100%)',
           }} />
 
           {/* CORE — radial glow emanating from center-bottom */}
@@ -80,8 +85,8 @@ export default function Contact({ darkMode }) {
             bottom: '-15%', left: '50%',
             transform: 'translateX(-50%)',
             width: '130%', height: '70%',
-            background: 'radial-gradient(ellipse at center bottom, rgba(255,90,0,0.08) 0%, rgba(255,130,0,0.04) 45%, transparent 70%)',
-            filter: 'blur(48px)',
+            background: 'radial-gradient(ellipse at center bottom, rgba(255,90,0,0.18) 0%, rgba(255,130,0,0.10) 45%, transparent 70%)',
+            filter: 'blur(32px)',
           }} />
         </div>
       )}

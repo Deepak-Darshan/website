@@ -2,12 +2,25 @@ import { motion } from 'framer-motion';
 import { Code2, Server, Wrench, Cloud } from 'lucide-react';
 
 // ─── Geological layer: crust topo contour lines ──────────────────────────────
-// One gently-waving line per 65px tile; seamlessly tileable horizontally.
+// 5 wavy lines per 600×120 tile; amber + blue accent; seamlessly tileable.
 const TOPO_CRUST = (() => {
   const svg =
-    `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='65'>` +
-    `<path stroke='rgba(255,153,0,0.032)' stroke-width='1' fill='none'` +
-    ` d='M0,32 C100,18 200,46 300,36 C350,31 378,25 400,32'/>` +
+    `<svg xmlns='http://www.w3.org/2000/svg' width='600' height='120'>` +
+    // line 1 — thin amber
+    `<path stroke='rgba(255,153,0,0.075)' stroke-width='0.75' fill='none'` +
+    ` d='M0,22 C150,10 300,34 450,22 C525,16 562,26 600,22'/>` +
+    // line 2 — amber, slightly heavier
+    `<path stroke='rgba(255,153,0,0.095)' stroke-width='1.1' fill='none'` +
+    ` d='M0,48 C120,34 280,62 420,52 C510,46 556,54 600,48'/>` +
+    // line 3 — blue accent, thin
+    `<path stroke='rgba(96,160,255,0.07)' stroke-width='0.75' fill='none'` +
+    ` d='M0,70 C180,58 360,82 480,70 C540,64 574,76 600,70'/>` +
+    // line 4 — amber
+    `<path stroke='rgba(255,153,0,0.085)' stroke-width='1' fill='none'` +
+    ` d='M0,92 C150,78 300,106 450,96 C525,90 562,98 600,92'/>` +
+    // line 5 — thin amber
+    `<path stroke='rgba(255,153,0,0.065)' stroke-width='0.75' fill='none'` +
+    ` d='M0,110 C200,100 350,118 500,108 C550,104 578,112 600,110'/>` +
     `</svg>`;
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
 })();
@@ -137,13 +150,13 @@ export default function Skills({ darkMode }) {
       {/* ── Geological background: Atmosphere → Crust ─────────────────────── */}
       {darkMode && (
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* ATMOSPHERE — soft blue haze fading in from the top */}
+          {/* ATMOSPHERE — blue/violet haze at the top, echoing the hero sky */}
           <div style={{
             position: 'absolute',
             top: 0, left: 0, right: 0, height: '55%',
             background: [
-              'radial-gradient(ellipse 75% 55% at 25% 0%, rgba(96,160,255,0.042) 0%, transparent 70%)',
-              'radial-gradient(ellipse 50% 40% at 80% 8%, rgba(180,215,255,0.022) 0%, transparent 65%)',
+              'radial-gradient(ellipse 80% 60% at 25% 0%, rgba(96,160,255,0.12) 0%, transparent 68%)',
+              'radial-gradient(ellipse 60% 45% at 80% 5%, rgba(167,139,250,0.08) 0%, transparent 62%)',
             ].join(', '),
           }} />
           {/* Cirrus-like horizontal streaks */}
@@ -151,25 +164,25 @@ export default function Skills({ darkMode }) {
             <div key={pct} style={{
               position: 'absolute',
               top: `${pct}%`, left: '4%', right: '4%', height: 1,
-              background: 'linear-gradient(to right, transparent, rgba(140,195,255,0.05) 25%, rgba(140,195,255,0.05) 75%, transparent)',
+              background: 'linear-gradient(to right, transparent, rgba(140,195,255,0.13) 25%, rgba(140,195,255,0.13) 75%, transparent)',
             }} />
           ))}
 
           {/* CRUST — topographic contour lines, fade into the bottom half */}
           <div style={{
             position: 'absolute',
-            top: '42%', bottom: 0, left: 0, right: 0,
+            top: '40%', bottom: 0, left: 0, right: 0,
             backgroundImage: TOPO_CRUST,
-            backgroundSize: '400px 65px',
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 28%)',
-            maskImage: 'linear-gradient(to bottom, transparent 0%, black 28%)',
+            backgroundSize: '600px 120px',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 22%)',
+            maskImage: 'linear-gradient(to bottom, transparent 0%, black 22%)',
           }} />
 
           {/* Warm tint at the bottom — color temperature starts shifting */}
           <div style={{
             position: 'absolute',
-            bottom: 0, left: 0, right: 0, height: '28%',
-            background: 'linear-gradient(to bottom, transparent, rgba(40,14,4,0.07))',
+            bottom: 0, left: 0, right: 0, height: '32%',
+            background: 'linear-gradient(to bottom, transparent, rgba(60,20,5,0.18))',
           }} />
         </div>
       )}

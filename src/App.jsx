@@ -127,7 +127,7 @@ function App() {
             className="absolute rounded-full"
             style={{
               width: 700, height: 700,
-              background: 'radial-gradient(circle, rgba(220,80,0,0.06), transparent 65%)',
+              background: 'radial-gradient(circle, rgba(220,80,0,0.10), transparent 65%)',
               bottom: '18%',
               left: '22%',
               filter: 'blur(90px)',
@@ -142,7 +142,7 @@ function App() {
             className="absolute"
             style={{
               width: '120%', height: 420,
-              background: 'radial-gradient(ellipse at center bottom, rgba(255,90,0,0.07), transparent 68%)',
+              background: 'radial-gradient(ellipse at center bottom, rgba(255,80,0,0.13), transparent 68%)',
               bottom: '-5%',
               left: '-10%',
               filter: 'blur(80px)',

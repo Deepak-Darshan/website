@@ -6,24 +6,36 @@ import viewTrendImg from '../photos/ViewTrend.png';
 import gamerStatsImg from '../photos/GamerStats.png';
 
 // ─── Geological layer patterns ────────────────────────────────────────────────
-// Crust: sparse gentle waves, 400×65 px tile
+// Crust: 5 wavy lines, 600×120 tile — same as Skills.jsx
 const TOPO_CRUST = (() => {
   const svg =
-    `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='65'>` +
-    `<path stroke='rgba(255,153,0,0.032)' stroke-width='1' fill='none'` +
-    ` d='M0,32 C100,18 200,46 300,36 C350,31 378,25 400,32'/>` +
+    `<svg xmlns='http://www.w3.org/2000/svg' width='600' height='120'>` +
+    `<path stroke='rgba(255,153,0,0.075)' stroke-width='0.75' fill='none'` +
+    ` d='M0,22 C150,10 300,34 450,22 C525,16 562,26 600,22'/>` +
+    `<path stroke='rgba(255,153,0,0.095)' stroke-width='1.1' fill='none'` +
+    ` d='M0,48 C120,34 280,62 420,52 C510,46 556,54 600,48'/>` +
+    `<path stroke='rgba(96,160,255,0.07)' stroke-width='0.75' fill='none'` +
+    ` d='M0,70 C180,58 360,82 480,70 C540,64 574,76 600,70'/>` +
+    `<path stroke='rgba(255,153,0,0.085)' stroke-width='1' fill='none'` +
+    ` d='M0,92 C150,78 300,106 450,96 C525,90 562,98 600,92'/>` +
+    `<path stroke='rgba(255,153,0,0.065)' stroke-width='0.75' fill='none'` +
+    ` d='M0,110 C200,100 350,118 500,108 C550,104 578,112 600,110'/>` +
     `</svg>`;
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
 })();
 
-// Mantle: denser, two waves per 36px tile
+// Mantle: 4 tightly-packed lines, 350×45 tile — denser and warmer
 const TOPO_MANTLE = (() => {
   const svg =
-    `<svg xmlns='http://www.w3.org/2000/svg' width='350' height='36'>` +
-    `<path stroke='rgba(255,153,0,0.04)' stroke-width='1' fill='none'` +
-    ` d='M0,12 C88,4 175,20 263,12 C306,8 330,16 350,12'/>` +
-    `<path stroke='rgba(255,153,0,0.033)' stroke-width='1' fill='none'` +
-    ` d='M0,24 C88,16 175,32 263,24 C306,20 330,28 350,24'/>` +
+    `<svg xmlns='http://www.w3.org/2000/svg' width='350' height='45'>` +
+    `<path stroke='rgba(255,153,0,0.11)' stroke-width='1' fill='none'` +
+    ` d='M0,10 C88,2 175,18 263,10 C306,6 330,14 350,10'/>` +
+    `<path stroke='rgba(255,153,0,0.13)' stroke-width='1.5' fill='none'` +
+    ` d='M0,22 C88,14 175,30 263,22 C306,18 330,26 350,22'/>` +
+    `<path stroke='rgba(255,153,0,0.10)' stroke-width='1' fill='none'` +
+    ` d='M0,33 C88,25 175,41 263,33 C306,29 330,37 350,33'/>` +
+    `<path stroke='rgba(96,160,255,0.07)' stroke-width='0.75' fill='none'` +
+    ` d='M0,43 C88,35 175,51 263,43 C306,39 330,47 350,43'/>` +
     `</svg>`;
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
 })();
@@ -1147,38 +1159,38 @@ export default function Projects({ darkMode }) {
       {/* ── Geological background: Crust → Mantle ──────────────────────────── */}
       {darkMode && (
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
-          {/* CRUST — sparse topo lines over the Featured Projects area (top ~55%) */}
+          {/* CRUST — topo lines over Featured Projects (top portion) */}
           <div style={{
             position: 'absolute',
             top: 0, bottom: '45%', left: 0, right: 0,
             backgroundImage: TOPO_CRUST,
-            backgroundSize: '400px 65px',
+            backgroundSize: '600px 120px',
             WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
             maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
           }} />
 
-          {/* MANTLE — denser topo lines over the repo feed area (bottom ~60%) */}
+          {/* MANTLE — dense topo lines over the repo feed area */}
           <div style={{
             position: 'absolute',
             top: '38%', bottom: 0, left: 0, right: 0,
             backgroundImage: TOPO_MANTLE,
-            backgroundSize: '350px 36px',
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)',
-            maskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)',
+            backgroundSize: '350px 45px',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 16%, black 80%, transparent 100%)',
+            maskImage: 'linear-gradient(to bottom, transparent 0%, black 16%, black 80%, transparent 100%)',
           }} />
 
           {/* Warm amber radial — mantle heat building in the lower portion */}
           <div style={{
             position: 'absolute',
-            top: '52%', bottom: 0, left: 0, right: 0,
-            background: 'radial-gradient(ellipse 90% 55% at 50% 85%, rgba(220,75,0,0.045) 0%, transparent 70%)',
+            top: '50%', bottom: 0, left: 0, right: 0,
+            background: 'radial-gradient(ellipse 90% 60% at 50% 85%, rgba(220,75,0,0.13) 0%, transparent 70%)',
           }} />
 
           {/* Dark warm tint at the very bottom — transition toward core */}
           <div style={{
             position: 'absolute',
-            bottom: 0, left: 0, right: 0, height: '22%',
-            background: 'linear-gradient(to bottom, transparent, rgba(50,18,4,0.08))',
+            bottom: 0, left: 0, right: 0, height: '25%',
+            background: 'linear-gradient(to bottom, transparent, rgba(55,18,4,0.19))',
           }} />
         </div>
       )}
