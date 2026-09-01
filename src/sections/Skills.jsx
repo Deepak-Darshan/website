@@ -181,8 +181,8 @@ export default function Skills({ darkMode }) {
           {/* Warm tint at the bottom — color temperature starts shifting */}
           <div style={{
             position: 'absolute',
-            bottom: 0, left: 0, right: 0, height: '32%',
-            background: 'linear-gradient(to bottom, transparent, rgba(60,20,5,0.18))',
+            bottom: 0, left: 0, right: 0, height: '40%',
+            background: 'linear-gradient(to bottom, transparent, rgba(50,20,5,0.20))',
           }} />
         </div>
       )}

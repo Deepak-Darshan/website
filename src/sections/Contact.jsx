@@ -62,6 +62,14 @@ export default function Contact({ darkMode }) {
       {/* ── Geological background: Mantle → Core ──────────────────────────── */}
       {darkMode && (
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* Fade-in from Projects — smooth warm transition at section top */}
+          <div style={{
+            position: 'absolute',
+            top: 0, left: 0, right: 0, height: 128,
+            background: 'linear-gradient(to bottom, rgba(40,15,5,0.25), transparent)',
+            zIndex: 1,
+          }} />
+
           {/* MANTLE — dense topo lines fading out toward the bottom */}
           <div style={{
             position: 'absolute',
@@ -72,11 +80,11 @@ export default function Contact({ darkMode }) {
             maskImage: 'linear-gradient(to bottom, black 42%, transparent 100%)',
           }} />
 
-          {/* Overall warm tint — we're deep underground now */}
+          {/* Overall warm tint — clearly noticeable warmth, we're deep underground */}
           <div style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(to bottom, rgba(60,20,5,0.18) 0%, rgba(80,25,5,0.25) 100%)',
+            background: 'linear-gradient(to bottom, rgba(55,20,5,0.22) 0%, rgba(70,25,5,0.30) 100%)',
           }} />
 
           {/* CORE — radial glow emanating from center-bottom */}
@@ -92,14 +100,14 @@ export default function Contact({ darkMode }) {
           {/* ── CRYSTALLINE MINERAL ELEMENTS — upper mantle zone ─────────── */}
 
           {/* Crystal 1 — angular rhombus, left */}
-          <svg width="18" height="26" viewBox="0 0 18 26" fill="none" style={{position:'absolute',top:'7%',left:'6%',opacity:0.15,animation:'rock-drift-3 44s ease-in-out 3s infinite',filter:'drop-shadow(0 0 3px rgba(255,100,0,0.13))',pointerEvents:'none'}}>
+          <svg width="18" height="26" viewBox="0 0 18 26" fill="none" style={{position:'absolute',top:'7%',left:'6%',opacity:0.23,animation:'rock-drift-3 44s ease-in-out 3s infinite',filter:'drop-shadow(0 0 3px rgba(255,100,0,0.18))',pointerEvents:'none'}}>
             <path d="M9 1L17 10L9 25L1 10Z" fill="rgba(170,100,40,0.28)" stroke="rgba(255,140,0,0.24)" strokeWidth="0.5"/>
             <line x1="9" y1="2" x2="9" y2="24" stroke="rgba(255,153,0,0.11)" strokeWidth="0.3"/>
             <line x1="3" y1="10" x2="15" y2="10" stroke="rgba(255,153,0,0.08)" strokeWidth="0.3"/>
           </svg>
 
           {/* Crystal 2 — hexagonal olivine, upper right — glowing */}
-          <svg width="22" height="20" viewBox="0 0 22 20" fill="none" style={{position:'absolute',top:'12%',right:'9%',opacity:0.16,animation:'mineral-glow 6s ease-in-out 1s infinite, rock-drift-2 38s ease-in-out 5s infinite',pointerEvents:'none'}}>
+          <svg width="22" height="20" viewBox="0 0 22 20" fill="none" style={{position:'absolute',top:'12%',right:'9%',opacity:0.25,animation:'mineral-glow 6s ease-in-out 1s infinite, rock-drift-2 38s ease-in-out 5s infinite',pointerEvents:'none'}}>
             <path d="M11 1L21 6L21 14L11 19L1 14L1 6Z" fill="rgba(55,150,60,0.18)" stroke="rgba(100,200,80,0.24)" strokeWidth="0.5"/>
             <line x1="11" y1="1" x2="11" y2="19" stroke="rgba(100,200,80,0.11)" strokeWidth="0.3"/>
             <line x1="1" y1="10" x2="21" y2="10" stroke="rgba(100,200,80,0.09)" strokeWidth="0.3"/>
@@ -107,7 +115,7 @@ export default function Contact({ darkMode }) {
           </svg>
 
           {/* Crystal 3 — elongated shard, center — glowing */}
-          <svg width="14" height="32" viewBox="0 0 14 32" fill="none" style={{position:'absolute',top:'18%',left:'38%',opacity:0.14,animation:'mineral-glow 8s ease-in-out 2s infinite, rock-drift-1 50s ease-in-out 10s infinite',filter:'drop-shadow(0 0 4px rgba(255,100,0,0.14))',pointerEvents:'none'}}>
+          <svg width="14" height="32" viewBox="0 0 14 32" fill="none" style={{position:'absolute',top:'18%',left:'38%',opacity:0.22,animation:'mineral-glow 8s ease-in-out 2s infinite, rock-drift-1 50s ease-in-out 10s infinite',filter:'drop-shadow(0 0 4px rgba(255,100,0,0.20))',pointerEvents:'none'}}>
             <path d="M7 1L13 11L11 24L7 31L3 24L1 11Z" fill="rgba(175,110,45,0.30)" stroke="rgba(255,153,0,0.26)" strokeWidth="0.5"/>
             <line x1="7" y1="3" x2="7" y2="29" stroke="rgba(255,153,0,0.12)" strokeWidth="0.35"/>
             <line x1="2" y1="15" x2="12" y2="15" stroke="rgba(255,153,0,0.09)" strokeWidth="0.3"/>
@@ -115,7 +123,7 @@ export default function Contact({ darkMode }) {
           </svg>
 
           {/* Crystal 4 — warm angular chunk, right mid — glowing */}
-          <svg width="28" height="22" viewBox="0 0 28 22" fill="none" style={{position:'absolute',top:'26%',right:'7%',opacity:0.17,animation:'rock-drift-3 46s ease-in-out 7s infinite',filter:'drop-shadow(0 0 4px rgba(255,100,0,0.16))',pointerEvents:'none'}}>
+          <svg width="28" height="22" viewBox="0 0 28 22" fill="none" style={{position:'absolute',top:'26%',right:'7%',opacity:0.27,animation:'rock-drift-3 46s ease-in-out 7s infinite',filter:'drop-shadow(0 0 4px rgba(255,100,0,0.22))',pointerEvents:'none'}}>
             <path d="M4 20L1 9L7 1L19 2L26 10L23 20L13 21Z" fill="rgba(180,100,40,0.32)" stroke="rgba(255,140,0,0.26)" strokeWidth="0.5"/>
             <line x1="5" y1="15" x2="18" y2="5" stroke="rgba(255,153,0,0.13)" strokeWidth="0.4"/>
             <line x1="11" y1="19" x2="24" y2="9" stroke="rgba(255,130,0,0.09)" strokeWidth="0.35"/>
@@ -123,14 +131,14 @@ export default function Contact({ darkMode }) {
           </svg>
 
           {/* Crystal 5 — small olivine, upper center */}
-          <svg width="16" height="14" viewBox="0 0 16 14" fill="none" style={{position:'absolute',top:'8%',left:'52%',opacity:0.14,animation:'mineral-glow 7s ease-in-out 4s infinite, rock-drift-2 42s ease-in-out 14s infinite',pointerEvents:'none'}}>
+          <svg width="16" height="14" viewBox="0 0 16 14" fill="none" style={{position:'absolute',top:'8%',left:'52%',opacity:0.22,animation:'mineral-glow 7s ease-in-out 4s infinite, rock-drift-2 42s ease-in-out 14s infinite',pointerEvents:'none'}}>
             <path d="M3 12L1 6L5 1L11 2L15 7L12 13Z" fill="rgba(55,145,55,0.20)" stroke="rgba(80,200,80,0.22)" strokeWidth="0.5"/>
             <line x1="4" y1="10" x2="12" y2="3" stroke="rgba(100,200,80,0.11)" strokeWidth="0.3"/>
           </svg>
 
           {/* ── LAVA CRACKS — branching fissures, bottom half ────────────── */}
           <svg
-            style={{position:'absolute',bottom:0,left:0,width:'100%',height:'55%',pointerEvents:'none'}}
+            style={{position:'absolute',bottom:0,left:0,width:'100%',height:'55%',pointerEvents:'none',WebkitMaskImage:'linear-gradient(to bottom, transparent 0%, black 40%)',maskImage:'linear-gradient(to bottom, transparent 0%, black 40%)'}}
             viewBox="0 0 1200 360" preserveAspectRatio="none" fill="none"
           >
             {/* Main fissure — rises from center bottom */}
