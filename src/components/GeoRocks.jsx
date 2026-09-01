@@ -143,6 +143,51 @@ export const CONTACT_ROCKS = [
   { variant: 'olivine', top: '64%', right: '18%' },
 ];
 
+// ─── Sand texture — maroon / dark-red / magenta grit between rocks ───────────
+const SAND_TEXTURE = (() => {
+  const colors = [
+    'rgba(120,0,32,0.55)',   // deep maroon
+    'rgba(100,6,22,0.52)',   // dark maroon
+    'rgba(140,12,44,0.48)',  // crimson
+    'rgba(108,4,26,0.50)',   // near-black maroon
+    'rgba(158,28,68,0.42)',  // magenta-maroon
+    'rgba(130,10,38,0.46)',  // mid maroon
+    'rgba(170,38,80,0.36)',  // bright magenta
+    'rgba(95,2,18,0.54)',    // blackened maroon
+    'rgba(148,20,58,0.40)',  // muted magenta
+    'rgba(112,8,30,0.50)',   // maroon-red
+  ];
+  let seed = 0xdeadbeef;
+  const rand = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+  const grains = [];
+  for (let i = 0; i < 90; i++) {
+    const x = (rand() * 300).toFixed(1);
+    const y = (rand() * 300).toFixed(1);
+    const r = (0.5 + rand() * 1.6).toFixed(1);
+    const c = colors[Math.floor(rand() * colors.length)];
+    grains.push(`<circle cx='${x}' cy='${y}' r='${r}' fill='${c}'/>`);
+  }
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'>${grains.join('')}</svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+})();
+
+export function SandLayer({ opacity = 0.72 }) {
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        inset: 0,
+        backgroundImage: SAND_TEXTURE,
+        backgroundSize: '300px 300px',
+        backgroundRepeat: 'repeat',
+        opacity,
+        pointerEvents: 'none',
+        mixBlendMode: 'screen',
+      }}
+    />
+  );
+}
+
 export function GeoRockField({ rocks, baseDelay = 0 }) {
   const anims = ['rock-drift-1', 'rock-drift-2', 'rock-drift-3'];
   return rocks.map((rock, i) => (

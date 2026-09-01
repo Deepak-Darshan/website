@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Github, ExternalLink } from 'lucide-react';
-import { GeoRockField, PROJECTS_ROCKS } from '../components/GeoRocks';
+import { GeoRockField, PROJECTS_ROCKS, SandLayer } from '../components/GeoRocks';
 import tetherImg from '../photos/Tether.PNG';
 import viewTrendImg from '../photos/ViewTrend.png';
 import gamerStatsImg from '../photos/GamerStats.png';
@@ -1327,6 +1327,7 @@ export default function Projects({ darkMode }) {
             <path d="M10 4L24 2L38 6L42 18" fill="none" stroke="rgba(112,84,48,0.26)" strokeWidth="0.8"/>
           </svg>
 
+          <SandLayer opacity={0.68} />
           <GeoRockField rocks={PROJECTS_ROCKS} />
         </div>
       )}

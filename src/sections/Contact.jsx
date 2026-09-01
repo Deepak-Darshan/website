@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, ArrowUpRight, Zap } from 'lucide-react';
-import { GeoRockField, CONTACT_ROCKS } from '../components/GeoRocks';
+import { GeoRockField, CONTACT_ROCKS, SandLayer } from '../components/GeoRocks';
 
 const contacts = [
   {
@@ -222,6 +222,7 @@ export default function Contact({ darkMode }) {
           </svg>
 
           {/* ── ADDITIONAL MINERAL/ROCK ELEMENTS ─────────────────────────────── */}
+          <SandLayer opacity={0.58} />
           <GeoRockField rocks={CONTACT_ROCKS} />
         </div>
       )}
