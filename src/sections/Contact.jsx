@@ -99,41 +99,77 @@ export default function Contact({ darkMode }) {
 
           {/* ── CRYSTALLINE MINERAL ELEMENTS — upper mantle zone ─────────── */}
 
-          {/* Crystal 1 — angular rhombus, left */}
-          <svg width="18" height="26" viewBox="0 0 18 26" fill="none" style={{position:'absolute',top:'7%',left:'6%',opacity:0.23,animation:'rock-drift-3 44s ease-in-out 3s infinite',filter:'drop-shadow(0 0 3px rgba(255,100,0,0.18))',pointerEvents:'none'}}>
-            <path d="M9 1L17 10L9 25L1 10Z" fill="rgba(170,100,40,0.28)" stroke="rgba(255,140,0,0.24)" strokeWidth="0.5"/>
-            <line x1="9" y1="2" x2="9" y2="24" stroke="rgba(255,153,0,0.11)" strokeWidth="0.3"/>
-            <line x1="3" y1="10" x2="15" y2="10" stroke="rgba(255,153,0,0.08)" strokeWidth="0.3"/>
+          {/* Crystal 1 — large amber shard, left — heat-glowing */}
+          <svg width="34" height="48" viewBox="0 0 34 48" fill="none" style={{position:'absolute',top:'10%',left:'12%',opacity:0.46,animation:'mineral-glow 6s ease-in-out 1s infinite, rock-drift-3 44s ease-in-out 3s infinite',filter:'drop-shadow(0 0 5px rgba(255,100,0,0.22))',pointerEvents:'none'}}>
+            <path d="M8 42L2 26L6 8L17 2L28 8L32 24L26 40L15 46Z" fill="rgba(140,70,18,0.72)"/>
+            <path d="M17 2L28 8L32 24L20 14Z" fill="rgba(200,130,42,0.52)"/>
+            <path d="M8 42L2 26L6 8L10 20Z" fill="rgba(68,34,8,0.68)"/>
+            <line x1="8" y1="36" x2="28" y2="10" stroke="rgba(240,175,65,0.48)" strokeWidth="1.0"/>
+            <line x1="10" y1="38" x2="30" y2="14" stroke="rgba(218,155,52,0.30)" strokeWidth="0.7"/>
+            <line x1="12" y1="24" x2="6" y2="14" stroke="rgba(228,162,58,0.34)" strokeWidth="0.6"/>
+            <line x1="18" y1="10" x2="26" y2="32" stroke="rgba(212,148,50,0.28)" strokeWidth="0.5"/>
+            <circle cx="22" cy="12" r="1.4" fill="rgba(255,200,85,0.60)"/>
+            <circle cx="12" cy="26" r="1.0" fill="rgba(242,180,68,0.48)"/>
+            <circle cx="26" cy="30" r="0.7" fill="rgba(235,168,62,0.40)"/>
+            <path d="M17 2L28 8L32 24" fill="none" stroke="rgba(235,178,72,0.40)" strokeWidth="0.9"/>
           </svg>
 
-          {/* Crystal 2 — hexagonal olivine, upper right — glowing */}
-          <svg width="22" height="20" viewBox="0 0 22 20" fill="none" style={{position:'absolute',top:'12%',right:'9%',opacity:0.25,animation:'mineral-glow 6s ease-in-out 1s infinite, rock-drift-2 38s ease-in-out 5s infinite',pointerEvents:'none'}}>
-            <path d="M11 1L21 6L21 14L11 19L1 14L1 6Z" fill="rgba(55,150,60,0.18)" stroke="rgba(100,200,80,0.24)" strokeWidth="0.5"/>
-            <line x1="11" y1="1" x2="11" y2="19" stroke="rgba(100,200,80,0.11)" strokeWidth="0.3"/>
-            <line x1="1" y1="10" x2="21" y2="10" stroke="rgba(100,200,80,0.09)" strokeWidth="0.3"/>
-            <line x1="5" y1="3" x2="17" y2="17" stroke="rgba(100,200,80,0.06)" strokeWidth="0.3"/>
+          {/* Crystal 2 — warm hexagonal olivine chunk, upper right */}
+          <svg width="44" height="38" viewBox="0 0 44 38" fill="none" style={{position:'absolute',top:'22%',right:'15%',opacity:0.44,animation:'mineral-glow 7s ease-in-out 2s infinite, rock-drift-2 38s ease-in-out 5s infinite',filter:'drop-shadow(0 0 4px rgba(255,100,0,0.20))',pointerEvents:'none'}}>
+            <path d="M8 32L2 18L8 4L22 2L36 6L42 20L36 34L20 38Z" fill="rgba(130,65,18,0.72)"/>
+            <path d="M22 2L36 6L42 20L28 12Z" fill="rgba(192,118,38,0.52)"/>
+            <path d="M8 32L2 18L8 4L12 18Z" fill="rgba(62,30,8,0.68)"/>
+            <line x1="10" y1="28" x2="36" y2="8" stroke="rgba(235,168,58,0.46)" strokeWidth="1.0"/>
+            <line x1="14" y1="34" x2="40" y2="14" stroke="rgba(215,148,48,0.30)" strokeWidth="0.7"/>
+            <line x1="8" y1="20" x2="28" y2="24" stroke="rgba(225,158,54,0.32)" strokeWidth="0.6"/>
+            <line x1="20" y1="6" x2="14" y2="28" stroke="rgba(218,152,50,0.26)" strokeWidth="0.5"/>
+            <circle cx="30" cy="8" r="1.3" fill="rgba(252,198,82,0.58)"/>
+            <circle cx="18" cy="20" r="1.0" fill="rgba(238,172,65,0.46)"/>
+            <circle cx="36" cy="26" r="0.8" fill="rgba(228,162,60,0.38)"/>
+            <path d="M22 2L36 6L42 20" fill="none" stroke="rgba(228,170,68,0.38)" strokeWidth="0.9"/>
           </svg>
 
-          {/* Crystal 3 — elongated shard, center — glowing */}
-          <svg width="14" height="32" viewBox="0 0 14 32" fill="none" style={{position:'absolute',top:'18%',left:'38%',opacity:0.22,animation:'mineral-glow 8s ease-in-out 2s infinite, rock-drift-1 50s ease-in-out 10s infinite',filter:'drop-shadow(0 0 4px rgba(255,100,0,0.20))',pointerEvents:'none'}}>
-            <path d="M7 1L13 11L11 24L7 31L3 24L1 11Z" fill="rgba(175,110,45,0.30)" stroke="rgba(255,153,0,0.26)" strokeWidth="0.5"/>
-            <line x1="7" y1="3" x2="7" y2="29" stroke="rgba(255,153,0,0.12)" strokeWidth="0.35"/>
-            <line x1="2" y1="15" x2="12" y2="15" stroke="rgba(255,153,0,0.09)" strokeWidth="0.3"/>
-            <line x1="3" y1="8" x2="11" y2="23" stroke="rgba(255,120,0,0.07)" strokeWidth="0.3"/>
+          {/* Crystal 3 — elongated hot shard, left-center */}
+          <svg width="24" height="50" viewBox="0 0 24 50" fill="none" style={{position:'absolute',top:'35%',left:'65%',opacity:0.42,animation:'mineral-glow 8s ease-in-out 3s infinite, rock-drift-1 50s ease-in-out 10s infinite',filter:'drop-shadow(0 0 5px rgba(255,110,0,0.22))',pointerEvents:'none'}}>
+            <path d="M5 44L2 28L5 10L12 2L20 10L22 26L18 42L12 48Z" fill="rgba(148,72,16,0.72)"/>
+            <path d="M12 2L20 10L22 26L14 16Z" fill="rgba(205,132,40,0.52)"/>
+            <path d="M5 44L2 28L5 10L8 22Z" fill="rgba(70,35,8,0.68)"/>
+            <line x1="6" y1="38" x2="20" y2="10" stroke="rgba(245,178,68,0.50)" strokeWidth="1.1"/>
+            <line x1="4" y1="28" x2="18" y2="20" stroke="rgba(222,158,54,0.32)" strokeWidth="0.7"/>
+            <line x1="8" y1="44" x2="20" y2="30" stroke="rgba(232,165,58,0.28)" strokeWidth="0.6"/>
+            <line x1="14" y1="6" x2="10" y2="32" stroke="rgba(218,152,50,0.26)" strokeWidth="0.5"/>
+            <circle cx="16" cy="8" r="1.3" fill="rgba(255,205,88,0.62)"/>
+            <circle cx="8" cy="24" r="1.0" fill="rgba(242,182,70,0.50)"/>
+            <path d="M12 2L20 10L22 26" fill="none" stroke="rgba(238,180,70,0.40)" strokeWidth="0.9"/>
           </svg>
 
-          {/* Crystal 4 — warm angular chunk, right mid — glowing */}
-          <svg width="28" height="22" viewBox="0 0 28 22" fill="none" style={{position:'absolute',top:'26%',right:'7%',opacity:0.27,animation:'rock-drift-3 46s ease-in-out 7s infinite',filter:'drop-shadow(0 0 4px rgba(255,100,0,0.22))',pointerEvents:'none'}}>
-            <path d="M4 20L1 9L7 1L19 2L26 10L23 20L13 21Z" fill="rgba(180,100,40,0.32)" stroke="rgba(255,140,0,0.26)" strokeWidth="0.5"/>
-            <line x1="5" y1="15" x2="18" y2="5" stroke="rgba(255,153,0,0.13)" strokeWidth="0.4"/>
-            <line x1="11" y1="19" x2="24" y2="9" stroke="rgba(255,130,0,0.09)" strokeWidth="0.35"/>
-            <line x1="3" y1="11" x2="20" y2="16" stroke="rgba(255,120,0,0.07)" strokeWidth="0.3"/>
+          {/* Crystal 4 — broad angular chunk, right side */}
+          <svg width="50" height="36" viewBox="0 0 50 36" fill="none" style={{position:'absolute',top:'48%',right:'35%',opacity:0.48,animation:'rock-drift-3 46s ease-in-out 7s infinite',filter:'drop-shadow(0 0 5px rgba(255,105,0,0.24))',pointerEvents:'none'}}>
+            <path d="M6 30L2 16L8 4L22 2L38 6L48 18L42 32L24 34Z" fill="rgba(155,78,20,0.72)"/>
+            <path d="M22 2L38 6L48 18L30 10Z" fill="rgba(210,132,42,0.52)"/>
+            <path d="M6 30L2 16L8 4L12 18Z" fill="rgba(72,36,8,0.68)"/>
+            <line x1="8" y1="26" x2="40" y2="6" stroke="rgba(248,180,68,0.50)" strokeWidth="1.1"/>
+            <line x1="12" y1="30" x2="44" y2="12" stroke="rgba(225,158,54,0.32)" strokeWidth="0.7"/>
+            <line x1="6" y1="18" x2="32" y2="22" stroke="rgba(235,165,58,0.34)" strokeWidth="0.6"/>
+            <line x1="24" y1="4" x2="20" y2="28" stroke="rgba(222,155,52,0.28)" strokeWidth="0.6"/>
+            <line x1="36" y1="8" x2="42" y2="26" stroke="rgba(215,150,50,0.24)" strokeWidth="0.5"/>
+            <circle cx="34" cy="8" r="1.5" fill="rgba(255,205,88,0.62)"/>
+            <circle cx="20" cy="18" r="1.1" fill="rgba(242,182,70,0.50)"/>
+            <circle cx="40" cy="22" r="0.8" fill="rgba(232,168,62,0.40)"/>
+            <path d="M22 2L38 6L48 18" fill="none" stroke="rgba(235,178,70,0.40)" strokeWidth="1.0"/>
           </svg>
 
-          {/* Crystal 5 — small olivine, upper center */}
-          <svg width="16" height="14" viewBox="0 0 16 14" fill="none" style={{position:'absolute',top:'8%',left:'52%',opacity:0.22,animation:'mineral-glow 7s ease-in-out 4s infinite, rock-drift-2 42s ease-in-out 14s infinite',pointerEvents:'none'}}>
-            <path d="M3 12L1 6L5 1L11 2L15 7L12 13Z" fill="rgba(55,145,55,0.20)" stroke="rgba(80,200,80,0.22)" strokeWidth="0.5"/>
-            <line x1="4" y1="10" x2="12" y2="3" stroke="rgba(100,200,80,0.11)" strokeWidth="0.3"/>
+          {/* Crystal 5 — small glowing amber nugget, upper center */}
+          <svg width="28" height="30" viewBox="0 0 28 30" fill="none" style={{position:'absolute',top:'55%',left:'40%',opacity:0.44,animation:'mineral-glow 5s ease-in-out 4s infinite, rock-drift-2 42s ease-in-out 14s infinite',filter:'drop-shadow(0 0 4px rgba(255,115,0,0.22))',pointerEvents:'none'}}>
+            <path d="M6 26L2 14L6 4L14 1L22 6L26 18L20 28Z" fill="rgba(145,72,18,0.72)"/>
+            <path d="M14 1L22 6L26 18L16 10Z" fill="rgba(205,130,42,0.52)"/>
+            <path d="M6 26L2 14L6 4L10 14Z" fill="rgba(68,34,8,0.68)"/>
+            <line x1="6" y1="22" x2="24" y2="6" stroke="rgba(242,175,65,0.48)" strokeWidth="0.9"/>
+            <line x1="10" y1="26" x2="26" y2="12" stroke="rgba(220,155,52,0.30)" strokeWidth="0.6"/>
+            <line x1="8" y1="16" x2="20" y2="20" stroke="rgba(230,162,56,0.32)" strokeWidth="0.5"/>
+            <circle cx="18" cy="8" r="1.2" fill="rgba(252,200,84,0.58)"/>
+            <circle cx="10" cy="18" r="0.9" fill="rgba(238,175,66,0.46)"/>
+            <path d="M14 1L22 6L26 18" fill="none" stroke="rgba(232,172,68,0.38)" strokeWidth="0.8"/>
           </svg>
 
           {/* ── LAVA CRACKS — branching fissures, bottom half ────────────── */}
