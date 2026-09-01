@@ -248,6 +248,34 @@ body {
   animation: packet-travel var(--pdur, 4s) linear var(--pdel, 0s) infinite;
 }
 
+/* ─── Geological rock drift animations ──────────────────────── */
+@keyframes rock-drift-1 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50%       { transform: translateY(-10px) rotate(3deg); }
+}
+
+@keyframes rock-drift-2 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50%       { transform: translateY(7px) rotate(-2.5deg); }
+}
+
+@keyframes rock-drift-3 {
+  0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+  33%       { transform: translateY(-6px) rotate(1.5deg) scale(1.02); }
+  66%       { transform: translateY(4px) rotate(-1deg) scale(0.98); }
+}
+
+@keyframes mineral-glow {
+  0%, 100% { opacity: 0.14; filter: drop-shadow(0 0 2px rgba(255,100,0,0.10)); }
+  50%       { opacity: 0.22; filter: drop-shadow(0 0 5px rgba(255,100,0,0.26)); }
+}
+
+/* ─── Lava animations ────────────────────────────────────────── */
+@keyframes lava-pulse {
+  0%, 100% { opacity: 0.65; filter: drop-shadow(0 0 4px rgba(255,80,0,0.28)); }
+  50%       { opacity: 1;    filter: drop-shadow(0 0 10px rgba(255,100,0,0.58)); }
+}
+
 /* ─── Hover accent link ──────────────────────────────────────── */
 .hover-accent { transition: color 0.15s ease; }
 .hover-accent:hover { color: #ff9900; }

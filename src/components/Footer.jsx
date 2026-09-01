@@ -26,6 +26,24 @@ export default function Footer({ darkMode }) {
             inset: 0,
             background: 'rgba(50,16,4,0.18)',
           }} />
+          {/* Lava veins bleeding in from Contact above */}
+          <svg
+            style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',pointerEvents:'none'}}
+            viewBox="0 0 1200 80" preserveAspectRatio="none" fill="none"
+          >
+            {/* Left vein — continuation of Contact branch 4/5 */}
+            <path d="M413 0 Q382 22 351 44 Q318 64 284 80"
+                  stroke="rgba(255,100,0,0.14)" strokeWidth="0.8" strokeLinecap="round"
+                  style={{animation:'lava-pulse 8s ease-in-out 4s infinite'}}/>
+            {/* Center vein — continuation of main fissure */}
+            <path d="M594 0 Q590 22 588 44 Q586 62 585 80"
+                  stroke="rgba(255,110,0,0.17)" strokeWidth="1.1" strokeLinecap="round"
+                  style={{animation:'lava-pulse 4.5s ease-in-out 1s infinite'}}/>
+            {/* Right vein — continuation of Contact branch 1/3 */}
+            <path d="M782 0 Q813 22 842 44 Q866 62 892 80"
+                  stroke="rgba(255,100,0,0.12)" strokeWidth="0.7" strokeLinecap="round"
+                  style={{animation:'lava-pulse 7s ease-in-out 3s infinite'}}/>
+          </svg>
         </div>
       )}
 

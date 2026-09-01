@@ -1192,6 +1192,57 @@ export default function Projects({ darkMode }) {
             bottom: 0, left: 0, right: 0, height: '25%',
             background: 'linear-gradient(to bottom, transparent, rgba(55,18,4,0.19))',
           }} />
+
+          {/* ── ROCK ELEMENTS — floating geological specimens ─────────────── */}
+
+          {/* Rock 1 — angular chunk, crust zone top-left */}
+          <svg width="24" height="20" viewBox="0 0 24 20" fill="none" style={{position:'absolute',top:'14%',left:'7%',opacity:0.17,animation:'rock-drift-2 34s ease-in-out infinite',pointerEvents:'none'}}>
+            <path d="M4 18L1 7L7 1L17 2L23 9L19 19Z" fill="rgba(150,90,40,0.32)" stroke="rgba(255,153,0,0.24)" strokeWidth="0.5"/>
+            <line x1="5" y1="13" x2="14" y2="4" stroke="rgba(255,153,0,0.12)" strokeWidth="0.35"/>
+            <line x1="9" y1="17" x2="20" y2="7" stroke="rgba(255,153,0,0.08)" strokeWidth="0.3"/>
+          </svg>
+
+          {/* Rock 2 — small fragment, crust zone right */}
+          <svg width="14" height="12" viewBox="0 0 14 12" fill="none" style={{position:'absolute',top:'22%',right:'11%',opacity:0.14,animation:'rock-drift-1 27s ease-in-out 4s infinite',pointerEvents:'none'}}>
+            <path d="M2 10L1 4L5 1L11 2L13 7L10 11Z" fill="rgba(140,85,35,0.28)" stroke="rgba(255,153,0,0.20)" strokeWidth="0.5"/>
+            <line x1="3" y1="8" x2="10" y2="2" stroke="rgba(255,153,0,0.10)" strokeWidth="0.3"/>
+          </svg>
+
+          {/* Rock 3 — narrow crystalline shard, crust/mantle transition */}
+          <svg width="10" height="28" viewBox="0 0 10 28" fill="none" style={{position:'absolute',top:'38%',left:'19%',opacity:0.15,animation:'rock-drift-3 39s ease-in-out 2s infinite',pointerEvents:'none'}}>
+            <path d="M5 1L9 8L8 20L5 27L2 20L1 8Z" fill="rgba(155,95,45,0.30)" stroke="rgba(255,153,0,0.22)" strokeWidth="0.5"/>
+            <line x1="5" y1="4" x2="5" y2="24" stroke="rgba(255,153,0,0.10)" strokeWidth="0.3"/>
+            <line x1="2" y1="13" x2="8" y2="13" stroke="rgba(255,153,0,0.07)" strokeWidth="0.3"/>
+          </svg>
+
+          {/* Rock 4 — larger irregular chunk, mantle zone left — more opaque = closer */}
+          <svg width="32" height="26" viewBox="0 0 32 26" fill="none" style={{position:'absolute',top:'56%',left:'5%',opacity:0.20,animation:'rock-drift-1 43s ease-in-out 9s infinite',pointerEvents:'none'}}>
+            <path d="M5 24L1 11L8 2L21 1L29 8L31 20L23 25L10 25Z" fill="rgba(170,100,45,0.32)" stroke="rgba(255,153,0,0.26)" strokeWidth="0.5"/>
+            <line x1="6" y1="17" x2="19" y2="5" stroke="rgba(255,153,0,0.12)" strokeWidth="0.4"/>
+            <line x1="13" y1="23" x2="28" y2="11" stroke="rgba(255,153,0,0.09)" strokeWidth="0.35"/>
+            <line x1="4" y1="13" x2="22" y2="19" stroke="rgba(255,120,0,0.07)" strokeWidth="0.3"/>
+          </svg>
+
+          {/* Rock 5 — olivine mineral, mantle zone right — greenish tint */}
+          <svg width="18" height="16" viewBox="0 0 18 16" fill="none" style={{position:'absolute',top:'62%',right:'8%',opacity:0.17,animation:'rock-drift-2 31s ease-in-out 6s infinite',pointerEvents:'none'}}>
+            <path d="M3 14L1 7L5 1L13 2L17 8L14 14L8 15Z" fill="rgba(55,140,60,0.20)" stroke="rgba(80,185,80,0.22)" strokeWidth="0.5"/>
+            <line x1="4" y1="11" x2="13" y2="4" stroke="rgba(100,200,80,0.11)" strokeWidth="0.35"/>
+            <line x1="8" y1="13" x2="15" y2="7" stroke="rgba(100,200,80,0.07)" strokeWidth="0.3"/>
+          </svg>
+
+          {/* Rock 6 — hexagonal crystal, deep mantle */}
+          <svg width="22" height="24" viewBox="0 0 22 24" fill="none" style={{position:'absolute',top:'73%',left:'30%',opacity:0.16,animation:'rock-drift-3 37s ease-in-out 12s infinite',filter:'drop-shadow(0 0 3px rgba(255,100,0,0.12))',pointerEvents:'none'}}>
+            <path d="M11 1L21 7L21 17L11 23L1 17L1 7Z" fill="rgba(165,100,40,0.28)" stroke="rgba(255,140,0,0.24)" strokeWidth="0.5"/>
+            <line x1="11" y1="1" x2="11" y2="23" stroke="rgba(255,153,0,0.10)" strokeWidth="0.3"/>
+            <line x1="1" y1="12" x2="21" y2="12" stroke="rgba(255,153,0,0.10)" strokeWidth="0.3"/>
+            <line x1="4" y1="4" x2="18" y2="20" stroke="rgba(255,153,0,0.07)" strokeWidth="0.3"/>
+          </svg>
+
+          {/* Rock 7 — small flint, mantle right */}
+          <svg width="16" height="13" viewBox="0 0 16 13" fill="none" style={{position:'absolute',top:'79%',right:'23%',opacity:0.15,animation:'rock-drift-1 29s ease-in-out 16s infinite',pointerEvents:'none'}}>
+            <path d="M2 11L1 5L6 1L12 2L15 7L12 12Z" fill="rgba(145,88,38,0.30)" stroke="rgba(255,140,0,0.22)" strokeWidth="0.5"/>
+            <line x1="3" y1="9" x2="12" y2="3" stroke="rgba(255,153,0,0.10)" strokeWidth="0.3"/>
+          </svg>
         </div>
       )}
 
