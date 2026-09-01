@@ -6,20 +6,20 @@ import { Code2, Server, Wrench, Cloud } from 'lucide-react';
 const TOPO_CRUST = (() => {
   const svg =
     `<svg xmlns='http://www.w3.org/2000/svg' width='600' height='120'>` +
-    // line 1 — thin amber
-    `<path stroke='rgba(255,153,0,0.075)' stroke-width='0.75' fill='none'` +
+    // line 1 — slate blue-grey
+    `<path stroke='rgba(70,100,130,0.13)' stroke-width='0.75' fill='none'` +
     ` d='M0,22 C150,10 300,34 450,22 C525,16 562,26 600,22'/>` +
-    // line 2 — amber, slightly heavier
-    `<path stroke='rgba(255,153,0,0.095)' stroke-width='1.1' fill='none'` +
+    // line 2 — forest green
+    `<path stroke='rgba(40,80,52,0.11)' stroke-width='1.1' fill='none'` +
     ` d='M0,48 C120,34 280,62 420,52 C510,46 556,54 600,48'/>` +
-    // line 3 — blue accent, thin
-    `<path stroke='rgba(96,160,255,0.07)' stroke-width='0.75' fill='none'` +
+    // line 3 — oceanic blue
+    `<path stroke='rgba(28,75,115,0.10)' stroke-width='0.75' fill='none'` +
     ` d='M0,70 C180,58 360,82 480,70 C540,64 574,76 600,70'/>` +
-    // line 4 — amber
-    `<path stroke='rgba(255,153,0,0.085)' stroke-width='1' fill='none'` +
+    // line 4 — earthy brown
+    `<path stroke='rgba(80,58,38,0.10)' stroke-width='1' fill='none'` +
     ` d='M0,92 C150,78 300,106 450,96 C525,90 562,98 600,92'/>` +
-    // line 5 — thin amber
-    `<path stroke='rgba(255,153,0,0.065)' stroke-width='0.75' fill='none'` +
+    // line 5 — forest green
+    `<path stroke='rgba(48,80,50,0.09)' stroke-width='0.75' fill='none'` +
     ` d='M0,110 C200,100 350,118 500,108 C550,104 578,112 600,110'/>` +
     `</svg>`;
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
@@ -147,42 +147,56 @@ export default function Skills({ darkMode }) {
 
   return (
     <section id="skills" className="relative py-28 px-6 w-full">
-      {/* ── Geological background: Atmosphere → Crust ─────────────────────── */}
+      {/* ── Geological background: The Crust ────────────────────────────────── */}
       {darkMode && (
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* ATMOSPHERE — blue/violet haze at the top, echoing the hero sky */}
+          {/* Crust base overlay — oceanic blue → forest green → earthy brown */}
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: 'linear-gradient(to bottom, rgba(12,38,62,0.12) 0%, rgba(22,52,38,0.16) 48%, rgba(48,30,15,0.20) 100%)',
+          }} />
+
+          {/* OCEANIC BLUE — open ocean above continental crust */}
           <div style={{
             position: 'absolute',
             top: 0, left: 0, right: 0, height: '55%',
             background: [
-              'radial-gradient(ellipse 80% 60% at 25% 0%, rgba(96,160,255,0.12) 0%, transparent 68%)',
-              'radial-gradient(ellipse 60% 45% at 80% 5%, rgba(167,139,250,0.08) 0%, transparent 62%)',
+              'radial-gradient(ellipse 80% 60% at 25% 0%, rgba(14,65,108,0.16) 0%, transparent 68%)',
+              'radial-gradient(ellipse 60% 45% at 80% 5%, rgba(18,75,48,0.12) 0%, transparent 62%)',
             ].join(', '),
           }} />
-          {/* Cirrus-like horizontal streaks */}
+
+          {/* Oceanic-blue streaks — surface shimmer */}
           {[7, 14, 21].map((pct) => (
             <div key={pct} style={{
               position: 'absolute',
               top: `${pct}%`, left: '4%', right: '4%', height: 1,
-              background: 'linear-gradient(to right, transparent, rgba(140,195,255,0.13) 25%, rgba(140,195,255,0.13) 75%, transparent)',
+              background: 'linear-gradient(to right, transparent, rgba(45,130,185,0.15) 25%, rgba(45,130,185,0.15) 75%, transparent)',
             }} />
           ))}
 
-          {/* CRUST — topographic contour lines, fade into the bottom half */}
+          {/* FOREST GREEN — continental landmass mid-section */}
           <div style={{
             position: 'absolute',
-            top: '40%', bottom: 0, left: 0, right: 0,
+            top: '28%', left: 0, right: 0, height: '38%',
+            background: 'radial-gradient(ellipse 100% 65% at 62% 50%, rgba(22,68,38,0.14) 0%, transparent 70%)',
+          }} />
+
+          {/* CRUST TOPO — slate grey, oceanic blue, forest green contour lines */}
+          <div style={{
+            position: 'absolute',
+            top: '38%', bottom: 0, left: 0, right: 0,
             backgroundImage: TOPO_CRUST,
             backgroundSize: '600px 120px',
             WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 22%)',
             maskImage: 'linear-gradient(to bottom, transparent 0%, black 22%)',
           }} />
 
-          {/* Warm tint at the bottom — color temperature starts shifting */}
+          {/* TRANSITION — earthy brown deepening, bleeding into mantle below */}
           <div style={{
             position: 'absolute',
             bottom: 0, left: 0, right: 0, height: '40%',
-            background: 'linear-gradient(to bottom, transparent, rgba(50,20,5,0.20))',
+            background: 'linear-gradient(to bottom, transparent, rgba(55,25,10,0.24))',
           }} />
         </div>
       )}

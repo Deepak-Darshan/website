@@ -2,23 +2,6 @@ import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, ArrowUpRight, Zap } from 'lucide-react';
 import { GeoRockField, CONTACT_ROCKS } from '../components/GeoRocks';
 
-// ─── Geological layer: mantle topo contour lines ─────────────────────────────
-// 4 tightly-packed wavy lines, same tile as Projects.jsx TOPO_MANTLE
-const TOPO_MANTLE = (() => {
-  const svg =
-    `<svg xmlns='http://www.w3.org/2000/svg' width='350' height='45'>` +
-    `<path stroke='rgba(255,153,0,0.11)' stroke-width='1' fill='none'` +
-    ` d='M0,10 C88,2 175,18 263,10 C306,6 330,14 350,10'/>` +
-    `<path stroke='rgba(255,153,0,0.13)' stroke-width='1.5' fill='none'` +
-    ` d='M0,22 C88,14 175,30 263,22 C306,18 330,26 350,22'/>` +
-    `<path stroke='rgba(255,153,0,0.10)' stroke-width='1' fill='none'` +
-    ` d='M0,33 C88,25 175,41 263,33 C306,29 330,37 350,33'/>` +
-    `<path stroke='rgba(96,160,255,0.07)' stroke-width='0.75' fill='none'` +
-    ` d='M0,43 C88,35 175,51 263,43 C306,39 330,47 350,43'/>` +
-    `</svg>`;
-  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
-})();
-
 const contacts = [
   {
     icon: Mail,
@@ -60,34 +43,47 @@ export default function Contact({ darkMode }) {
 
   return (
     <section id="contact" className="relative py-28 px-6 w-full" style={{ marginTop: -1 }}>
-      {/* ── Geological background: Mantle → Core ──────────────────────────── */}
+      {/* ── Geological background: The Outer Core ───────────────────────────── */}
       {darkMode && (
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* MANTLE — dense topo lines fading in gently from top, out toward bottom */}
+          {/* OUTER CORE base — bright orange fading in from top, building to vibrant yellow */}
           <div style={{
-            position: 'absolute',
-            top: 0, bottom: '30%', left: 0, right: 0,
-            backgroundImage: TOPO_MANTLE,
-            backgroundSize: '350px 45px',
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.35) 18%, black 52%, black 68%, transparent 100%)',
-            maskImage: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.35) 18%, black 52%, black 68%, transparent 100%)',
+            position: 'absolute', inset: 0,
+            background: 'linear-gradient(to bottom, rgba(155,48,0,0) 0%, rgba(155,48,0,0.18) 22%, rgba(205,85,0,0.28) 62%, rgba(232,128,0,0.34) 100%)',
           }} />
 
-          {/* Overall warm tint — fades in from transparent at the top to avoid hard boundary */}
+          {/* Churning liquid iron — large orange radial, left side */}
           <div style={{
             position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(to bottom, rgba(55,20,5,0) 0%, rgba(55,20,5,0.18) 22%, rgba(62,22,5,0.24) 55%, rgba(70,25,5,0.30) 100%)',
+            top: '10%', left: '-8%', width: '65%', height: '58%',
+            background: 'radial-gradient(ellipse, rgba(195,72,0,0.20) 0%, transparent 70%)',
+            filter: 'blur(45px)',
           }} />
 
-          {/* CORE — radial glow emanating from center-bottom */}
+          {/* Churning liquid iron — large orange radial, right side */}
+          <div style={{
+            position: 'absolute',
+            top: '22%', right: '-8%', width: '58%', height: '50%',
+            background: 'radial-gradient(ellipse, rgba(215,88,0,0.18) 0%, transparent 70%)',
+            filter: 'blur(40px)',
+          }} />
+
+          {/* CORE GLOW — yellow-orange rising from below */}
           <div style={{
             position: 'absolute',
             bottom: '-15%', left: '50%',
             transform: 'translateX(-50%)',
-            width: '130%', height: '70%',
-            background: 'radial-gradient(ellipse at center bottom, rgba(255,90,0,0.18) 0%, rgba(255,130,0,0.10) 45%, transparent 70%)',
-            filter: 'blur(32px)',
+            width: '130%', height: '75%',
+            background: 'radial-gradient(ellipse at center bottom, rgba(255,175,0,0.24) 0%, rgba(240,105,0,0.14) 45%, transparent 70%)',
+            filter: 'blur(38px)',
+          }} />
+
+          {/* Vivid yellow center — extreme heat, liquid iron churning */}
+          <div style={{
+            position: 'absolute',
+            bottom: '-5%', left: '22%', right: '22%', height: '52%',
+            background: 'radial-gradient(ellipse at bottom, rgba(255,210,0,0.16) 0%, rgba(255,148,0,0.10) 52%, transparent 80%)',
+            filter: 'blur(48px)',
           }} />
 
           {/* ── CRYSTALLINE MINERAL ELEMENTS — upper mantle zone ─────────── */}

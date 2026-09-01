@@ -11,15 +11,20 @@ import gamerStatsImg from '../photos/GamerStats.png';
 const TOPO_CRUST = (() => {
   const svg =
     `<svg xmlns='http://www.w3.org/2000/svg' width='600' height='120'>` +
-    `<path stroke='rgba(255,153,0,0.075)' stroke-width='0.75' fill='none'` +
+    // line 1 — upper mantle brownish-red
+    `<path stroke='rgba(105,42,18,0.14)' stroke-width='0.75' fill='none'` +
     ` d='M0,22 C150,10 300,34 450,22 C525,16 562,26 600,22'/>` +
-    `<path stroke='rgba(255,153,0,0.095)' stroke-width='1.1' fill='none'` +
+    // line 2 — dark reddish-brown
+    `<path stroke='rgba(125,38,15,0.16)' stroke-width='1.1' fill='none'` +
     ` d='M0,48 C120,34 280,62 420,52 C510,46 556,54 600,48'/>` +
-    `<path stroke='rgba(96,160,255,0.07)' stroke-width='0.75' fill='none'` +
+    // line 3 — deep red
+    `<path stroke='rgba(85,28,10,0.13)' stroke-width='0.75' fill='none'` +
     ` d='M0,70 C180,58 360,82 480,70 C540,64 574,76 600,70'/>` +
-    `<path stroke='rgba(255,153,0,0.085)' stroke-width='1' fill='none'` +
+    // line 4 — brownish-red
+    `<path stroke='rgba(115,35,14,0.14)' stroke-width='1' fill='none'` +
     ` d='M0,92 C150,78 300,106 450,96 C525,90 562,98 600,92'/>` +
-    `<path stroke='rgba(255,153,0,0.065)' stroke-width='0.75' fill='none'` +
+    // line 5 — deep red
+    `<path stroke='rgba(95,30,12,0.11)' stroke-width='0.75' fill='none'` +
     ` d='M0,110 C200,100 350,118 500,108 C550,104 578,112 600,110'/>` +
     `</svg>`;
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
@@ -29,13 +34,17 @@ const TOPO_CRUST = (() => {
 const TOPO_MANTLE = (() => {
   const svg =
     `<svg xmlns='http://www.w3.org/2000/svg' width='350' height='45'>` +
-    `<path stroke='rgba(255,153,0,0.11)' stroke-width='1' fill='none'` +
+    // deep mantle — dark red
+    `<path stroke='rgba(155,30,12,0.17)' stroke-width='1' fill='none'` +
     ` d='M0,10 C88,2 175,18 263,10 C306,6 330,14 350,10'/>` +
-    `<path stroke='rgba(255,153,0,0.13)' stroke-width='1.5' fill='none'` +
+    // brownish-red, heavier
+    `<path stroke='rgba(175,45,15,0.21)' stroke-width='1.5' fill='none'` +
     ` d='M0,22 C88,14 175,30 263,22 C306,18 330,26 350,22'/>` +
-    `<path stroke='rgba(255,153,0,0.10)' stroke-width='1' fill='none'` +
+    // dark red
+    `<path stroke='rgba(135,25,10,0.16)' stroke-width='1' fill='none'` +
     ` d='M0,33 C88,25 175,41 263,33 C306,29 330,37 350,33'/>` +
-    `<path stroke='rgba(96,160,255,0.07)' stroke-width='0.75' fill='none'` +
+    // orange-red approaching core
+    `<path stroke='rgba(195,70,18,0.13)' stroke-width='0.75' fill='none'` +
     ` d='M0,43 C88,35 175,51 263,43 C306,39 330,47 350,43'/>` +
     `</svg>`;
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
@@ -1157,26 +1166,26 @@ export default function Projects({ darkMode }) {
       id="projects"
       style={{ position: 'relative', paddingTop: 96, paddingBottom: 160, width: '100%', overflow: 'hidden' }}
     >
-      {/* ── Geological background: Crust → Mantle ──────────────────────────── */}
+      {/* ── Geological background: The Mantle ───────────────────────────────── */}
       {darkMode && (
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
-          {/* Progressive warm overlay — gentle depth, no hard band at section bottom */}
+          {/* MANTLE base overlay — dark red deepening to brownish-red */}
           <div style={{
             position: 'absolute', inset: 0,
-            background: 'linear-gradient(to bottom, rgba(40,15,5,0.04) 0%, rgba(50,18,5,0.08) 55%, rgba(55,20,5,0.12) 100%)',
+            background: 'linear-gradient(to bottom, rgba(52,10,5,0.08) 0%, rgba(95,18,8,0.18) 50%, rgba(138,32,10,0.28) 100%)',
           }} />
 
-          {/* CRUST — topo lines over Featured Projects (top portion) */}
+          {/* Upper mantle topo — crust-mantle boundary brownish-red strata */}
           <div style={{
             position: 'absolute',
             top: 0, bottom: '45%', left: 0, right: 0,
             backgroundImage: TOPO_CRUST,
             backgroundSize: '600px 120px',
-            WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
-            maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',
+            maskImage: 'linear-gradient(to bottom, black 55%, transparent 100%)',
           }} />
 
-          {/* MANTLE — dense topo lines over the repo feed area */}
+          {/* Deep mantle topo — intense dark red silicate rock */}
           <div style={{
             position: 'absolute',
             top: '38%', bottom: 0, left: 0, right: 0,
@@ -1186,11 +1195,25 @@ export default function Projects({ darkMode }) {
             maskImage: 'linear-gradient(to bottom, transparent 0%, black 16%, black 68%, rgba(0,0,0,0.25) 82%, transparent 100%)',
           }} />
 
-          {/* Warm amber radial — subtle, no concentrated orange band */}
+          {/* Dark red radial — upper mantle heat rising */}
+          <div style={{
+            position: 'absolute',
+            top: '20%', left: 0, right: 0, height: '45%',
+            background: 'radial-gradient(ellipse 80% 60% at 28% 45%, rgba(128,22,8,0.16) 0%, transparent 70%)',
+          }} />
+
+          {/* Brownish-red radial — lower mantle intensifying */}
           <div style={{
             position: 'absolute',
             top: '55%', bottom: 0, left: 0, right: 0,
-            background: 'radial-gradient(ellipse 90% 70% at 50% 95%, rgba(220,75,0,0.07) 0%, transparent 72%)',
+            background: 'radial-gradient(ellipse 90% 70% at 72% 62%, rgba(158,38,10,0.20) 0%, transparent 72%)',
+          }} />
+
+          {/* Transition toward outer core — brightening orange at the very bottom */}
+          <div style={{
+            position: 'absolute',
+            bottom: 0, left: 0, right: 0, height: '28%',
+            background: 'linear-gradient(to bottom, transparent, rgba(175,55,8,0.24))',
           }} />
 
           {/* ── ROCK ELEMENTS — floating geological specimens ─────────────── */}
