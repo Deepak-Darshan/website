@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, ArrowUpRight, Zap } from 'lucide-react';
+import { GeoRockField, CONTACT_ROCKS } from '../components/GeoRocks';
 
 // ─── Geological layer: mantle topo contour lines ─────────────────────────────
 // 4 tightly-packed wavy lines, same tile as Projects.jsx TOPO_MANTLE
@@ -72,11 +73,11 @@ export default function Contact({ darkMode }) {
             maskImage: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.35) 18%, black 52%, black 68%, transparent 100%)',
           }} />
 
-          {/* Overall warm tint — continues seamlessly from Projects bottom fade */}
+          {/* Overall warm tint — fades in from transparent at the top to avoid hard boundary */}
           <div style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(to bottom, rgba(55,20,5,0.22) 0%, rgba(62,22,5,0.26) 35%, rgba(70,25,5,0.30) 100%)',
+            background: 'linear-gradient(to bottom, rgba(55,20,5,0) 0%, rgba(55,20,5,0.18) 22%, rgba(62,22,5,0.24) 55%, rgba(70,25,5,0.30) 100%)',
           }} />
 
           {/* CORE — radial glow emanating from center-bottom */}
@@ -223,6 +224,9 @@ export default function Contact({ darkMode }) {
             <circle cx="506" cy="158" r="2.5" fill="rgba(255,140,0,0.28)" style={{animation:'lava-pulse 5s ease-in-out 2s infinite',filter:'drop-shadow(0 0 4px rgba(255,80,0,0.37))'}}/>
             <circle cx="600" cy="357" r="5.5" fill="rgba(255,120,0,0.42)" style={{animation:'lava-pulse 2.5s ease-in-out 0.2s infinite',filter:'drop-shadow(0 0 9px rgba(255,100,0,0.58))'}}/>
           </svg>
+
+          {/* ── ADDITIONAL MINERAL/ROCK ELEMENTS ─────────────────────────────── */}
+          <GeoRockField rocks={CONTACT_ROCKS} />
         </div>
       )}
 

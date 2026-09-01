@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Github, ExternalLink } from 'lucide-react';
+import { GeoRockField, PROJECTS_ROCKS } from '../components/GeoRocks';
 import tetherImg from '../photos/Tether.PNG';
 import viewTrendImg from '../photos/ViewTrend.png';
 import gamerStatsImg from '../photos/GamerStats.png';
@@ -1154,15 +1155,15 @@ export default function Projects({ darkMode }) {
     <section
       ref={sectionRef}
       id="projects"
-      style={{ position: 'relative', paddingTop: 96, paddingBottom: 120, width: '100%', overflow: 'hidden' }}
+      style={{ position: 'relative', paddingTop: 96, paddingBottom: 160, width: '100%', overflow: 'hidden' }}
     >
       {/* ── Geological background: Crust → Mantle ──────────────────────────── */}
       {darkMode && (
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
-          {/* Progressive warm overlay — entire section warms top→bottom */}
+          {/* Progressive warm overlay — gentle depth, no hard band at section bottom */}
           <div style={{
             position: 'absolute', inset: 0,
-            background: 'linear-gradient(to bottom, rgba(40,15,5,0.06), rgba(60,22,5,0.20))',
+            background: 'linear-gradient(to bottom, rgba(40,15,5,0.04) 0%, rgba(50,18,5,0.08) 55%, rgba(55,20,5,0.12) 100%)',
           }} />
 
           {/* CRUST — topo lines over Featured Projects (top portion) */}
@@ -1181,26 +1182,16 @@ export default function Projects({ darkMode }) {
             top: '38%', bottom: 0, left: 0, right: 0,
             backgroundImage: TOPO_MANTLE,
             backgroundSize: '350px 45px',
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 16%, black 72%, rgba(0,0,0,0.4) 88%, transparent 100%)',
-            maskImage: 'linear-gradient(to bottom, transparent 0%, black 16%, black 72%, rgba(0,0,0,0.4) 88%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 16%, black 68%, rgba(0,0,0,0.25) 82%, transparent 100%)',
+            maskImage: 'linear-gradient(to bottom, transparent 0%, black 16%, black 68%, rgba(0,0,0,0.25) 82%, transparent 100%)',
           }} />
 
-          {/* Warm amber radial — mantle heat building in the lower portion */}
+          {/* Warm amber radial — subtle, no concentrated orange band */}
           <div style={{
             position: 'absolute',
-            top: '50%', bottom: 0, left: 0, right: 0,
-            background: 'radial-gradient(ellipse 90% 60% at 50% 85%, rgba(220,75,0,0.13) 0%, transparent 70%)',
+            top: '55%', bottom: 0, left: 0, right: 0,
+            background: 'radial-gradient(ellipse 90% 70% at 50% 95%, rgba(220,75,0,0.07) 0%, transparent 72%)',
           }} />
-
-          {/* Gradient fade at the bottom — long soft blend into Contact (no hard seam) */}
-          <div
-            className="absolute bottom-0 left-0 right-0 pointer-events-none"
-            style={{
-              height: 320,
-              background: 'linear-gradient(to bottom, transparent 0%, rgba(45,15,5,0.05) 30%, rgba(55,18,5,0.12) 60%, rgba(55,20,5,0.20) 85%, rgba(55,20,5,0.22) 100%)',
-              zIndex: 2,
-            }}
-          />
 
           {/* ── ROCK ELEMENTS — floating geological specimens ─────────────── */}
 
@@ -1312,6 +1303,8 @@ export default function Projects({ darkMode }) {
             <circle cx="18" cy="16" r="0.8" fill="rgba(140,105,62,0.32)"/>
             <path d="M10 4L24 2L38 6L42 18" fill="none" stroke="rgba(112,84,48,0.26)" strokeWidth="0.8"/>
           </svg>
+
+          <GeoRockField rocks={PROJECTS_ROCKS} />
         </div>
       )}
 
