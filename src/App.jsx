@@ -121,35 +121,6 @@ function App() {
           }}
         />
 
-        {/* Orb 5 — mantle zone, lower-center burnt amber */}
-        {darkMode && (
-          <div
-            className="absolute rounded-full"
-            style={{
-              width: 700, height: 700,
-              background: 'radial-gradient(circle, rgba(138,22,8,0.13), transparent 65%)',
-              bottom: '18%',
-              left: '22%',
-              filter: 'blur(90px)',
-              transform: `translateY(${-scrollY * 0.02}px)`,
-            }}
-          />
-        )}
-
-        {/* Orb 6 — core, deep amber ellipse at very bottom */}
-        {darkMode && (
-          <div
-            className="absolute"
-            style={{
-              width: '120%', height: 420,
-              background: 'radial-gradient(ellipse at center bottom, rgba(162,48,12,0.18), transparent 68%)',
-              bottom: '-5%',
-              left: '-10%',
-              filter: 'blur(80px)',
-              transform: `translateY(${-scrollY * 0.01}px)`,
-            }}
-          />
-        )}
       </div>
 
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
