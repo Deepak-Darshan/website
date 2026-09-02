@@ -1,5 +1,64 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Code2, Server, Wrench, Cloud } from 'lucide-react';
+
+// ─── Shooting Star component (dark mode + desktop only) ───────────────────────
+function ShootingStar({ darkMode }) {
+  const [isWide, setIsWide] = useState(false);
+  useEffect(() => {
+    const check = () => setIsWide(window.innerWidth >= 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+  if (!darkMode || !isWide) return null;
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
+      <div
+        className="shooting-star"
+        style={{ animation: 'shooting-star-path 14s ease-in-out 2s infinite', animationFillMode: 'backwards' }}
+      >
+        {/* Star head — white core with warm glow rings */}
+        <div style={{
+          width: 10, height: 10, borderRadius: '50%', position: 'relative', zIndex: 1,
+          background: 'radial-gradient(circle, #ffffff 0%, #fff8e7 30%, rgba(255,220,150,0.7) 60%, transparent 100%)',
+          boxShadow: '0 0 6px 2px rgba(255,255,255,0.9), 0 0 16px 5px rgba(255,255,255,0.5), 0 0 34px 10px rgba(255,200,100,0.3), 0 0 68px 20px rgba(255,150,50,0.15)',
+        }} />
+        {/* Primary tail — sharp white core trail */}
+        <div style={{
+          position: 'absolute', top: '50%', right: '100%', transform: 'translateY(-50%)',
+          width: 80, height: 2,
+          background: 'linear-gradient(to left, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.6) 20%, rgba(255,230,180,0.3) 50%, transparent 100%)',
+          borderRadius: 1,
+          animation: 'tail-shimmer 0.9s ease-in-out infinite',
+        }} />
+        {/* Wide glow tail — soft atmospheric halo */}
+        <div style={{
+          position: 'absolute', top: '50%', right: '100%', transform: 'translateY(-50%)',
+          width: 110, height: 8,
+          background: 'linear-gradient(to left, rgba(255,255,255,0.4) 0%, rgba(255,220,150,0.2) 30%, rgba(255,180,80,0.08) 60%, transparent 100%)',
+          borderRadius: 4, filter: 'blur(2px)',
+        }} />
+        {/* Outer diffuse glow */}
+        <div style={{
+          position: 'absolute', top: '50%', right: '100%', transform: 'translateY(-50%)',
+          width: 140, height: 14,
+          background: 'linear-gradient(to left, rgba(255,255,255,0.15) 0%, rgba(255,200,100,0.06) 40%, transparent 100%)',
+          borderRadius: 7, filter: 'blur(5px)',
+        }} />
+        {/* Sparkle particles trailing behind */}
+        <div style={{
+          position: 'absolute', top: '50%', right: 'calc(100% + 12px)', transform: 'translateY(-50%)',
+          width: 3, height: 3, borderRadius: '50%',
+          background: 'rgba(255,255,255,0.7)',
+          boxShadow: '0 0 4px 1px rgba(255,255,255,0.5), -16px 3px 2px 0px rgba(255,255,255,0.3), -34px -2px 2px 0px rgba(255,255,255,0.2), -52px 4px 1px 0px rgba(255,230,180,0.15)',
+          animation: 'tail-shimmer 0.6s ease-in-out infinite',
+        }} />
+      </div>
+    </div>
+  );
+}
 
 // ─── Geological layer: crust topo contour lines ──────────────────────────────
 // 5 wavy lines per 600×120 tile; amber + blue accent; seamlessly tileable.
@@ -94,7 +153,7 @@ function SkillCard({ card, chipDark, chipLight, badgeDark, badgeLight, darkMode,
       transition={{ delay, duration: 0.5, ease: 'easeOut' }}
       whileHover={{ y: -4 }}
       className={`group gradient-border ${cardBg} backdrop-blur-xl rounded-2xl p-7 border ${border} ${card.glow} transition-shadow duration-[220ms]`}
-      style={{ boxShadow: normalShadow }}
+      style={{ boxShadow: normalShadow, position: 'relative', zIndex: 20 }}
       onMouseEnter={(e) => { e.currentTarget.style.boxShadow = hoverShadow; }}
       onMouseLeave={(e) => { e.currentTarget.style.boxShadow = normalShadow; }}
     >
@@ -147,6 +206,9 @@ export default function Skills({ darkMode }) {
 
   return (
     <section id="skills" className="relative py-28 px-6 w-full">
+      {/* ── Shooting star ──────────────────────────────────────────────────── */}
+      <ShootingStar darkMode={darkMode} />
+
       {/* ── Geological background: The Crust ────────────────────────────────── */}
       {darkMode && (
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
