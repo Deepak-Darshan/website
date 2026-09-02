@@ -80,38 +80,128 @@ function ShootingStar({ darkMode, sectionRef }) {
         ref={starRef}
         style={{ position: 'absolute', top: 0, left: 0, opacity: 0, willChange: 'transform, opacity, filter' }}
       >
-        {/* Star head — bright white core */}
+        {/* === METEOR CORE — pulsing hot white/blue center === */}
         <div style={{
-          width: 10, height: 10, borderRadius: '50%', position: 'relative', zIndex: 1,
-          background: 'radial-gradient(circle, #ffffff 0%, #fff8e7 30%, rgba(255,220,150,0.7) 60%, transparent 100%)',
-          boxShadow: '0 0 6px 2px rgba(255,255,255,0.9), 0 0 16px 5px rgba(255,255,255,0.5), 0 0 34px 10px rgba(255,200,100,0.3), 0 0 68px 20px rgba(255,150,50,0.15)',
+          width: '9px', height: '9px', borderRadius: '50%',
+          background: 'radial-gradient(circle, #ffffff 0%, #e0f0ff 25%, #ffcc66 55%, rgba(255,120,30,0.6) 80%, transparent 100%)',
+          boxShadow: [
+            '0 0 4px 2px rgba(255,255,255,1)',
+            '0 0 10px 4px rgba(200,220,255,0.8)',
+            '0 0 20px 8px rgba(255,180,60,0.5)',
+            '0 0 40px 15px rgba(255,100,20,0.25)',
+          ].join(', '),
+          position: 'relative', zIndex: 10,
+          animation: 'meteor-core-pulse 0.3s ease-in-out infinite alternate',
         }} />
-        {/* Primary tail — sharp white gradient */}
+
+        {/* === HEAT ENVELOPE — fiery glow wrapping the core === */}
         <div style={{
-          position: 'absolute', top: '50%', right: '100%', transform: 'translateY(-50%)',
-          width: 80, height: 2,
-          background: 'linear-gradient(to left, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.6) 20%, rgba(255,230,180,0.3) 50%, transparent 100%)',
-          borderRadius: 1,
+          position: 'absolute', top: '50%', left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '22px', height: '18px', borderRadius: '50%',
+          background: 'radial-gradient(ellipse, rgba(255,200,80,0.3) 0%, rgba(255,120,20,0.15) 40%, transparent 70%)',
+          animation: 'meteor-heat-flicker 0.15s ease-in-out infinite alternate',
+          zIndex: 5,
         }} />
-        {/* Wide glow tail */}
+
+        {/* === PRIMARY TAIL — hot plasma trail === */}
         <div style={{
-          position: 'absolute', top: '50%', right: '100%', transform: 'translateY(-50%)',
-          width: 110, height: 8,
-          background: 'linear-gradient(to left, rgba(255,255,255,0.4) 0%, rgba(255,220,150,0.2) 30%, rgba(255,180,80,0.08) 60%, transparent 100%)',
-          borderRadius: 4, filter: 'blur(2px)',
+          position: 'absolute', top: '50%', right: '100%',
+          transform: 'translateY(-50%)',
+          width: '90px', height: '3px',
+          background: 'linear-gradient(to left, rgba(255,255,255,0.95) 0%, rgba(255,220,140,0.8) 10%, rgba(255,160,50,0.5) 30%, rgba(255,100,20,0.25) 55%, rgba(200,60,10,0.1) 75%, transparent 100%)',
+          borderRadius: '1.5px',
+          animation: 'meteor-tail-breathe 0.4s ease-in-out infinite alternate',
+          zIndex: 4,
         }} />
-        {/* Outer atmospheric glow */}
+
+        {/* === SECONDARY TAIL — wider diffuse heat trail === */}
         <div style={{
-          position: 'absolute', top: '50%', right: '100%', transform: 'translateY(-50%)',
-          width: 140, height: 14,
-          background: 'linear-gradient(to left, rgba(255,255,255,0.15) 0%, rgba(255,200,100,0.06) 40%, transparent 100%)',
-          borderRadius: 7, filter: 'blur(5px)',
+          position: 'absolute', top: '50%', right: '100%',
+          transform: 'translateY(-50%)',
+          width: '130px', height: '8px',
+          background: 'linear-gradient(to left, rgba(255,200,100,0.4) 0%, rgba(255,140,40,0.2) 20%, rgba(255,80,10,0.08) 50%, transparent 80%)',
+          borderRadius: '4px', filter: 'blur(2px)',
+          animation: 'meteor-tail-breathe 0.55s ease-in-out infinite alternate-reverse',
+          zIndex: 3,
         }} />
-        {/* Sparkle particle dots */}
+
+        {/* === OUTER GLOW TRAIL — atmospheric ionization === */}
         <div style={{
-          position: 'absolute', top: '50%', right: 'calc(100% + 12px)', transform: 'translateY(-50%)',
-          width: 3, height: 3, borderRadius: '50%', background: 'rgba(255,255,255,0.7)',
-          boxShadow: '0 0 4px 1px rgba(255,255,255,0.5), -16px 3px 2px 0 rgba(255,255,255,0.3), -34px -2px 2px 0 rgba(255,255,255,0.2), -52px 4px 1px 0 rgba(255,230,180,0.15)',
+          position: 'absolute', top: '50%', right: '100%',
+          transform: 'translateY(-50%)',
+          width: '180px', height: '16px',
+          background: 'linear-gradient(to left, rgba(255,180,80,0.15) 0%, rgba(255,120,40,0.06) 30%, rgba(200,80,20,0.02) 60%, transparent 100%)',
+          borderRadius: '8px', filter: 'blur(5px)',
+          animation: 'meteor-tail-breathe 0.7s ease-in-out infinite alternate',
+          zIndex: 2,
+        }} />
+
+        {/* === IONIZATION TRAIL — faint blue/violet edge glow === */}
+        <div style={{
+          position: 'absolute', top: '50%', right: '100%',
+          transform: 'translateY(-50%)',
+          width: '60px', height: '12px',
+          background: 'linear-gradient(to left, rgba(150,180,255,0.2) 0%, rgba(120,140,255,0.08) 40%, transparent 100%)',
+          borderRadius: '6px', filter: 'blur(3px)',
+          animation: 'meteor-tail-breathe 0.35s ease-in-out infinite alternate-reverse',
+          zIndex: 1,
+        }} />
+
+        {/* === FIRE FRAGMENTS — sparks breaking off the body === */}
+        <div style={{
+          position: 'absolute', top: '30%', right: 'calc(100% + 10px)',
+          width: '3px', height: '3px', borderRadius: '50%',
+          background: 'rgba(255,200,80,0.9)',
+          boxShadow: '0 0 4px 1px rgba(255,150,30,0.6)',
+          animation: 'spark-drift-1 0.8s ease-out infinite',
+          zIndex: 6,
+        }} />
+        <div style={{
+          position: 'absolute', top: '70%', right: 'calc(100% + 6px)',
+          width: '2.5px', height: '2.5px', borderRadius: '50%',
+          background: 'rgba(255,180,60,0.85)',
+          boxShadow: '0 0 3px 1px rgba(255,120,20,0.5)',
+          animation: 'spark-drift-2 0.65s ease-out infinite',
+          animationDelay: '0.15s',
+          zIndex: 6,
+        }} />
+        <div style={{
+          position: 'absolute', top: '20%', right: 'calc(100% + 20px)',
+          width: '2px', height: '2px', borderRadius: '50%',
+          background: 'rgba(255,240,200,0.8)',
+          boxShadow: '0 0 3px 1px rgba(255,200,100,0.4)',
+          animation: 'spark-drift-3 1.1s ease-out infinite',
+          animationDelay: '0.3s',
+          zIndex: 6,
+        }} />
+        <div style={{
+          position: 'absolute', top: '80%', right: 'calc(100% + 16px)',
+          width: '2px', height: '2px', borderRadius: '50%',
+          background: 'rgba(255,140,30,0.75)',
+          boxShadow: '0 0 3px 1px rgba(255,80,10,0.4)',
+          animation: 'spark-drift-1 0.9s ease-out infinite',
+          animationDelay: '0.5s',
+          zIndex: 6,
+        }} />
+
+        {/* === DEBRIS TRAIL — tiny twinkling dots scattered behind === */}
+        <div style={{
+          position: 'absolute', top: '50%', right: 'calc(100% + 5px)',
+          transform: 'translateY(-50%)',
+          width: '2px', height: '2px', borderRadius: '50%',
+          background: 'rgba(255,255,255,0.7)',
+          boxShadow: [
+            '-8px -3px 0 0 rgba(255,220,150,0.5)',
+            '-18px 4px 0 0 rgba(255,180,80,0.35)',
+            '-30px -2px 0 0 rgba(255,150,50,0.25)',
+            '-42px 5px 0 0 rgba(255,120,30,0.18)',
+            '-56px -4px 0 0 rgba(255,100,20,0.12)',
+            '-72px 2px 0 0 rgba(255,80,10,0.08)',
+            '-90px -3px 0 0 rgba(200,60,10,0.05)',
+          ].join(', '),
+          animation: 'debris-twinkle 0.5s ease-in-out infinite alternate',
+          zIndex: 5,
         }} />
       </div>
     </div>
