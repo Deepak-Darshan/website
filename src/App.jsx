@@ -142,7 +142,7 @@ function App() {
             className="absolute"
             style={{
               width: '120%', height: 420,
-              background: 'radial-gradient(ellipse at center bottom, rgba(218,108,0,0.16), transparent 68%)',
+              background: 'radial-gradient(ellipse at center bottom, rgba(162,48,12,0.18), transparent 68%)',
               bottom: '-5%',
               left: '-10%',
               filter: 'blur(80px)',

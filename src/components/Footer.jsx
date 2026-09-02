@@ -7,8 +7,8 @@ export default function Footer({ darkMode }) {
     <footer
       className="w-full py-10 relative"
       style={{
-        borderTop: '1px solid rgba(255,168,0,0.16)',
-        boxShadow: '0 -1px 20px rgba(255,168,0,0.08)',
+        borderTop: '1px solid rgba(165,48,14,0.20)',
+        boxShadow: '0 -1px 20px rgba(145,32,8,0.10)',
       }}
     >
       {/* ── Geological background: Core — hottest point ───────────────────── */}
@@ -18,7 +18,7 @@ export default function Footer({ darkMode }) {
           <div style={{
             position: 'absolute',
             inset: 0,
-            background: 'radial-gradient(ellipse 110% 220% at 50% 100%, rgba(238,152,0,0.22) 0%, rgba(215,100,0,0.12) 50%, transparent 70%)',
+            background: 'radial-gradient(ellipse 110% 220% at 50% 100%, rgba(162,52,16,0.24) 0%, rgba(138,36,10,0.14) 50%, transparent 70%)',
           }} />
           {/* Flat warm tint — footer is the warmest section */}
           <div style={{
@@ -33,15 +33,15 @@ export default function Footer({ darkMode }) {
           >
             {/* Left vein — continuation of Contact branch 4/5 */}
             <path d="M413 0 Q382 22 351 44 Q318 64 284 80"
-                  stroke="rgba(255,168,0,0.20)" strokeWidth="0.8" strokeLinecap="round"
+                  stroke="rgba(175,58,16,0.22)" strokeWidth="0.8" strokeLinecap="round"
                   style={{animation:'lava-pulse 8s ease-in-out 4s infinite'}}/>
             {/* Center vein — continuation of main fissure */}
             <path d="M594 0 Q590 22 588 44 Q586 62 585 80"
-                  stroke="rgba(255,182,0,0.24)" strokeWidth="1.1" strokeLinecap="round"
+                  stroke="rgba(192,68,18,0.28)" strokeWidth="1.1" strokeLinecap="round"
                   style={{animation:'lava-pulse 4.5s ease-in-out 1s infinite'}}/>
             {/* Right vein — continuation of Contact branch 1/3 */}
             <path d="M782 0 Q813 22 842 44 Q866 62 892 80"
-                  stroke="rgba(255,160,0,0.18)" strokeWidth="0.7" strokeLinecap="round"
+                  stroke="rgba(168,52,14,0.20)" strokeWidth="0.7" strokeLinecap="round"
                   style={{animation:'lava-pulse 7s ease-in-out 3s infinite'}}/>
           </svg>
         </div>

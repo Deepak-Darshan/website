@@ -51,44 +51,36 @@ export default function Contact({ darkMode }) {
       {/* ── Geological background: The Outer Core ───────────────────────────── */}
       {darkMode && (
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* OUTER CORE base — bright orange fading in from top, building to vibrant yellow */}
+          {/* OUTER CORE base — dark red building to deep brownish-orange */}
           <div style={{
             position: 'absolute', inset: 0,
-            background: 'linear-gradient(to bottom, rgba(155,48,0,0) 0%, rgba(155,48,0,0.18) 22%, rgba(205,85,0,0.28) 62%, rgba(232,128,0,0.34) 100%)',
+            background: 'linear-gradient(to bottom, rgba(105,18,5,0) 0%, rgba(118,24,8,0.20) 22%, rgba(145,40,12,0.30) 62%, rgba(162,52,16,0.36) 100%)',
           }} />
 
-          {/* Churning liquid iron — large orange radial, left side */}
+          {/* Molten iron — dark red radial, left side */}
           <div style={{
             position: 'absolute',
             top: '10%', left: '-8%', width: '65%', height: '58%',
-            background: 'radial-gradient(ellipse, rgba(195,72,0,0.20) 0%, transparent 70%)',
+            background: 'radial-gradient(ellipse, rgba(148,28,8,0.22) 0%, transparent 70%)',
             filter: 'blur(45px)',
           }} />
 
-          {/* Churning liquid iron — large orange radial, right side */}
+          {/* Molten iron — brownish-red radial, right side */}
           <div style={{
             position: 'absolute',
             top: '22%', right: '-8%', width: '58%', height: '50%',
-            background: 'radial-gradient(ellipse, rgba(215,88,0,0.18) 0%, transparent 70%)',
+            background: 'radial-gradient(ellipse, rgba(135,32,10,0.20) 0%, transparent 70%)',
             filter: 'blur(40px)',
           }} />
 
-          {/* CORE GLOW — yellow-orange rising from below */}
+          {/* Deep core glow — brownish-orange rising from below */}
           <div style={{
             position: 'absolute',
             bottom: '-15%', left: '50%',
             transform: 'translateX(-50%)',
             width: '130%', height: '75%',
-            background: 'radial-gradient(ellipse at center bottom, rgba(255,175,0,0.24) 0%, rgba(240,105,0,0.14) 45%, transparent 70%)',
+            background: 'radial-gradient(ellipse at center bottom, rgba(178,62,14,0.24) 0%, rgba(148,36,10,0.14) 45%, transparent 70%)',
             filter: 'blur(38px)',
-          }} />
-
-          {/* Vivid yellow center — extreme heat, liquid iron churning */}
-          <div style={{
-            position: 'absolute',
-            bottom: '-5%', left: '22%', right: '22%', height: '52%',
-            background: 'radial-gradient(ellipse at bottom, rgba(255,210,0,0.16) 0%, rgba(255,148,0,0.10) 52%, transparent 80%)',
-            filter: 'blur(48px)',
           }} />
 
           {/* ── CRYSTALLINE MINERAL ELEMENTS — upper mantle zone ─────────── */}
