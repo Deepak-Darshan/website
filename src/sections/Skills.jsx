@@ -1,59 +1,137 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Code2, Server, Wrench, Cloud } from 'lucide-react';
 
-// ─── Shooting Star component (dark mode + desktop only) ───────────────────────
-function ShootingStar({ darkMode }) {
-  const [isWide, setIsWide] = useState(false);
+// ─── Shooting Star — offset-path for buttery smooth motion ───────────────────
+function ShootingStar({ darkMode, sectionRef }) {
+  const [path, setPath]       = useState('');
+  const [visible, setVisible] = useState(false);
+  const [isWide, setIsWide]   = useState(false);
+
+  // Responsive gate — only show on ≥768px
   useEffect(() => {
     const check = () => setIsWide(window.innerWidth >= 768);
     check();
     window.addEventListener('resize', check);
     return () => window.removeEventListener('resize', check);
   }, []);
-  if (!darkMode || !isWide) return null;
+
+  // Build the pixel-precise path once the section has been laid out
+  useEffect(() => {
+    if (!darkMode || !isWide || !sectionRef?.current) return;
+
+    const w = sectionRef.current.offsetWidth;
+    const h = sectionRef.current.offsetHeight;
+
+    // Card centres (fractions of section dimensions)
+    const fe = { x: w * 0.27, y: h * 0.42 }; // Frontend   (Zone 1 left)
+    const dt = { x: w * 0.73, y: h * 0.42 }; // Dev Tools  (Zone 1 right)
+    const be = { x: w * 0.27, y: h * 0.75 }; // Backend    (Zone 2 left)
+    const cl = { x: w * 0.73, y: h * 0.75 }; // Cloud      (Zone 2 right)
+
+    // Orbit ellipse half-axes
+    const rx  = w  * 0.10;  // horizontal half-width
+    const ry  = h  * 0.055; // vertical half-height
+    const cpy = ry * 2.6;   // bezier control-point arm for smooth oval
+
+    // Two bezier arcs that form a closed oval.
+    // The star enters and exits from the RIGHT side (cx+rx, cy).
+    const oval = (cx, cy) =>
+      `C ${cx + rx} ${cy - cpy} ${cx - rx} ${cy - cpy} ${cx - rx} ${cy} ` +
+      `C ${cx - rx} ${cy + cpy} ${cx + rx} ${cy + cpy} ${cx + rx} ${cy}`;
+
+    const p = [
+      // ── START: bottom-right corner ──────────────────────────────
+      `M ${w * 0.93} ${h * 0.91}`,
+
+      // ── Fly to Frontend orbit entry (right side of oval) ────────
+      `C ${w * 0.68} ${h * 0.72} ${w * 0.50} ${h * 0.54} ${fe.x + rx} ${fe.y}`,
+
+      // ── Orbit Frontend ──────────────────────────────────────────
+      oval(fe.x, fe.y),
+
+      // ── Fly to Dev Tools (sweep right across top zone) ──────────
+      `C ${fe.x + rx} ${fe.y - ry * 2.2} ${dt.x - rx} ${dt.y - ry * 2.2} ${dt.x + rx} ${dt.y}`,
+
+      // ── Orbit Dev Tools ─────────────────────────────────────────
+      oval(dt.x, dt.y),
+
+      // ── Fly to Backend (curve down-left) ────────────────────────
+      `C ${dt.x + rx} ${dt.y + h * 0.12} ${be.x + rx} ${be.y - h * 0.08} ${be.x + rx} ${be.y}`,
+
+      // ── Orbit Backend ───────────────────────────────────────────
+      oval(be.x, be.y),
+
+      // ── Fly to Cloud & Database (sweep right across bottom zone) ─
+      `C ${be.x + rx} ${be.y - ry * 2.2} ${cl.x - rx} ${cl.y - ry * 2.2} ${cl.x + rx} ${cl.y}`,
+
+      // ── Orbit Cloud & Database ───────────────────────────────────
+      oval(cl.x, cl.y),
+
+      // ── EXIT: fly toward top-left corner ─────────────────────────
+      `C ${cl.x + rx} ${cl.y - h * 0.20} ${w * 0.30} ${h * 0.22} ${w * 0.04} ${h * 0.03}`,
+    ].join(' ');
+
+    setPath(p);
+
+    // First appearance after 2 s
+    const t = setTimeout(() => setVisible(true), 2000);
+    return () => clearTimeout(t);
+  }, [darkMode, isWide, sectionRef]);
+
+  // After each run: hide, then re-show 60 s later
+  const handleAnimationEnd = () => {
+    setVisible(false);
+    setTimeout(() => setVisible(true), 60000);
+  };
+
+  if (!darkMode || !isWide || !visible || !path) return null;
 
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
+    <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 40 }}>
       <div
-        className="shooting-star"
-        style={{ animation: 'shooting-star-path 14s ease-in-out 2s infinite', animationFillMode: 'backwards' }}
+        onAnimationEnd={handleAnimationEnd}
+        style={{
+          position: 'absolute',
+          offsetPath: `path('${path}')`,
+          offsetDistance: '0%',
+          offsetRotate: 'auto',
+          animation: 'shooting-star-fly 12s ease-in-out forwards',
+          willChange: 'offset-distance, opacity, transform',
+        }}
       >
-        {/* Star head — white core with warm glow rings */}
+        {/* Star head — bright white core */}
         <div style={{
           width: 10, height: 10, borderRadius: '50%', position: 'relative', zIndex: 1,
           background: 'radial-gradient(circle, #ffffff 0%, #fff8e7 30%, rgba(255,220,150,0.7) 60%, transparent 100%)',
           boxShadow: '0 0 6px 2px rgba(255,255,255,0.9), 0 0 16px 5px rgba(255,255,255,0.5), 0 0 34px 10px rgba(255,200,100,0.3), 0 0 68px 20px rgba(255,150,50,0.15)',
         }} />
-        {/* Primary tail — sharp white core trail */}
+        {/* Primary tail — sharp white gradient */}
         <div style={{
           position: 'absolute', top: '50%', right: '100%', transform: 'translateY(-50%)',
           width: 80, height: 2,
           background: 'linear-gradient(to left, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.6) 20%, rgba(255,230,180,0.3) 50%, transparent 100%)',
           borderRadius: 1,
-          animation: 'tail-shimmer 0.9s ease-in-out infinite',
         }} />
-        {/* Wide glow tail — soft atmospheric halo */}
+        {/* Wide glow tail */}
         <div style={{
           position: 'absolute', top: '50%', right: '100%', transform: 'translateY(-50%)',
           width: 110, height: 8,
           background: 'linear-gradient(to left, rgba(255,255,255,0.4) 0%, rgba(255,220,150,0.2) 30%, rgba(255,180,80,0.08) 60%, transparent 100%)',
           borderRadius: 4, filter: 'blur(2px)',
         }} />
-        {/* Outer diffuse glow */}
+        {/* Outer atmospheric glow */}
         <div style={{
           position: 'absolute', top: '50%', right: '100%', transform: 'translateY(-50%)',
           width: 140, height: 14,
           background: 'linear-gradient(to left, rgba(255,255,255,0.15) 0%, rgba(255,200,100,0.06) 40%, transparent 100%)',
           borderRadius: 7, filter: 'blur(5px)',
         }} />
-        {/* Sparkle particles trailing behind */}
+        {/* Sparkle particle dots */}
         <div style={{
           position: 'absolute', top: '50%', right: 'calc(100% + 12px)', transform: 'translateY(-50%)',
-          width: 3, height: 3, borderRadius: '50%',
-          background: 'rgba(255,255,255,0.7)',
-          boxShadow: '0 0 4px 1px rgba(255,255,255,0.5), -16px 3px 2px 0px rgba(255,255,255,0.3), -34px -2px 2px 0px rgba(255,255,255,0.2), -52px 4px 1px 0px rgba(255,230,180,0.15)',
-          animation: 'tail-shimmer 0.6s ease-in-out infinite',
+          width: 3, height: 3, borderRadius: '50%', background: 'rgba(255,255,255,0.7)',
+          boxShadow: '0 0 4px 1px rgba(255,255,255,0.5), -16px 3px 2px 0 rgba(255,255,255,0.3), -34px -2px 2px 0 rgba(255,255,255,0.2), -52px 4px 1px 0 rgba(255,230,180,0.15)',
         }} />
       </div>
     </div>
@@ -191,6 +269,7 @@ function SkillCard({ card, chipDark, chipLight, badgeDark, badgeLight, darkMode,
 }
 
 export default function Skills({ darkMode }) {
+  const sectionRef = useRef(null);
 
   // Zone 1 chip/badge styles — violet
   const z1ChipDark  = { bg: 'rgba(167,139,250,0.12)', color: '#a78bfa' };
@@ -205,9 +284,9 @@ export default function Skills({ darkMode }) {
   const z2BadgeLight = { bg: '#fff7ed', color: '#ea580c' };
 
   return (
-    <section id="skills" className="relative py-28 px-6 w-full">
+    <section ref={sectionRef} id="skills" className="relative py-28 px-6 w-full">
       {/* ── Shooting star ──────────────────────────────────────────────────── */}
-      <ShootingStar darkMode={darkMode} />
+      <ShootingStar darkMode={darkMode} sectionRef={sectionRef} />
 
       {/* ── Geological background: The Crust ────────────────────────────────── */}
       {darkMode && (
