@@ -1,24 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
-export function useScrollVelocity() {
-  const [velocity, setVelocity] = useState(0);
+// Accumulates rotation from scroll delta — rocks stay where they stopped.
+// scale: degrees per pixel scrolled (0.4 = a 250px scroll ≈ 100°)
+export function useScrollRotation(scale = 0.4) {
+  const accumulated = useRef(0);
+  const [rotation, setRotation] = useState(0);
   useEffect(() => {
     let lastY = window.scrollY;
-    let lastTime = performance.now();
-    let decayTimer = null;
     const onScroll = () => {
-      const now = performance.now();
-      const dt = now - lastTime;
-      if (dt > 0) setVelocity((window.scrollY - lastY) / dt);
+      const dy = window.scrollY - lastY;
+      accumulated.current += dy * scale;
+      setRotation(accumulated.current);
       lastY = window.scrollY;
-      lastTime = now;
-      clearTimeout(decayTimer);
-      decayTimer = setTimeout(() => setVelocity(0), 140);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => { window.removeEventListener('scroll', onScroll); clearTimeout(decayTimer); };
-  }, []);
-  return velocity;
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [scale]);
+  return rotation;
 }
 
 const ROCKS = {
@@ -109,7 +107,6 @@ export function GeoRock({ variant, top, left, right, bottom, opacity = 0.68, ani
         position: 'absolute', top, left, right, bottom,
         opacity, pointerEvents: 'none',
         transform: `rotate(${rotation}deg)`,
-        transition: 'transform 0.55s cubic-bezier(0.22, 1, 0.36, 1)',
         willChange: 'transform',
       }}
     >
@@ -224,9 +221,7 @@ export function SandLayer({ opacity = 0.72 }) {
 const ROTATION_MULTS = [0.7, 1.0, 1.3, 0.5, 1.6, 0.9, 1.2, 0.6, 1.4, 0.8];
 
 export function GeoRockField({ rocks, baseDelay = 0 }) {
-  const velocity = useScrollVelocity(); // px/ms
-  // Scale: 1 px/ms fast scroll → ~18°; clamp to ±65°
-  const baseRot = Math.max(-65, Math.min(65, velocity * 18));
+  const baseRot = useScrollRotation(0.4);
 
   const anims = ['rock-drift-1', 'rock-drift-2', 'rock-drift-3'];
   return rocks.map((rock, i) => {

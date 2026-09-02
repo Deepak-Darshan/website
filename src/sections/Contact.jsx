@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, ArrowUpRight, Zap } from 'lucide-react';
-import { GeoRockField, CONTACT_ROCKS, SandLayer, useScrollVelocity } from '../components/GeoRocks';
+import { GeoRockField, CONTACT_ROCKS, SandLayer, useScrollRotation } from '../components/GeoRocks';
 
 const contacts = [
   {
@@ -36,8 +36,7 @@ const contacts = [
 const MINERAL_MULTS = [0.8, 1.3, 0.6, 1.5, 1.0];
 
 export default function Contact({ darkMode }) {
-  const velocity = useScrollVelocity();
-  const baseRot  = Math.max(-65, Math.min(65, velocity * 18));
+  const baseRot = useScrollRotation(0.4);
 
   const card   = darkMode ? 'bg-[rgba(255,255,255,0.025)]' : 'bg-white/88';
   const border = darkMode ? 'border-white/[0.065]' : 'border-slate-200/80';
@@ -95,7 +94,7 @@ export default function Contact({ darkMode }) {
           {/* ── CRYSTALLINE MINERAL ELEMENTS — upper mantle zone ─────────── */}
 
           {/* Crystal 1 — large amber shard, left — heat-glowing */}
-          <div style={{position:'absolute',top:'10%',left:'12%',opacity:0.70,pointerEvents:'none',transform:`rotate(${baseRot * MINERAL_MULTS[0]}deg)`,transition:'transform 0.55s cubic-bezier(0.22,1,0.36,1)',willChange:'transform'}}>
+          <div style={{position:'absolute',top:'10%',left:'12%',opacity:0.70,pointerEvents:'none',transform:`rotate(${baseRot * MINERAL_MULTS[0]}deg)`,willChange:'transform'}}>
             <svg width="34" height="48" viewBox="0 0 34 48" fill="none" style={{animation:'mineral-glow 6s ease-in-out 1s infinite, rock-drift-3 44s ease-in-out 3s infinite',filter:'drop-shadow(0 0 4px rgba(200,80,0,0.18))',display:'block'}}>
               <path d="M8 42L2 26L6 8L17 2L28 8L32 24L26 40L15 46Z" fill="rgba(205,130,38,0.92)"/>
               <path d="M17 2L28 8L32 24L20 14Z" fill="rgba(240,175,65,0.72)"/>
@@ -112,7 +111,7 @@ export default function Contact({ darkMode }) {
           </div>
 
           {/* Crystal 2 — warm amber chunk, upper right */}
-          <div style={{position:'absolute',top:'22%',right:'15%',opacity:0.68,pointerEvents:'none',transform:`rotate(${baseRot * MINERAL_MULTS[1]}deg)`,transition:'transform 0.55s cubic-bezier(0.22,1,0.36,1)',willChange:'transform'}}>
+          <div style={{position:'absolute',top:'22%',right:'15%',opacity:0.68,pointerEvents:'none',transform:`rotate(${baseRot * MINERAL_MULTS[1]}deg)`,willChange:'transform'}}>
             <svg width="44" height="38" viewBox="0 0 44 38" fill="none" style={{animation:'mineral-glow 7s ease-in-out 2s infinite, rock-drift-2 38s ease-in-out 5s infinite',filter:'drop-shadow(0 0 4px rgba(195,78,0,0.16))',display:'block'}}>
               <path d="M8 32L2 18L8 4L22 2L36 6L42 20L36 34L20 38Z" fill="rgba(198,125,35,0.92)"/>
               <path d="M22 2L36 6L42 20L28 12Z" fill="rgba(122,68,18,0.72)"/>
@@ -129,7 +128,7 @@ export default function Contact({ darkMode }) {
           </div>
 
           {/* Crystal 3 — elongated shard, left-center */}
-          <div style={{position:'absolute',top:'35%',left:'65%',opacity:0.66,pointerEvents:'none',transform:`rotate(${baseRot * MINERAL_MULTS[2]}deg)`,transition:'transform 0.55s cubic-bezier(0.22,1,0.36,1)',willChange:'transform'}}>
+          <div style={{position:'absolute',top:'35%',left:'65%',opacity:0.66,pointerEvents:'none',transform:`rotate(${baseRot * MINERAL_MULTS[2]}deg)`,willChange:'transform'}}>
             <svg width="24" height="50" viewBox="0 0 24 50" fill="none" style={{animation:'mineral-glow 8s ease-in-out 3s infinite, rock-drift-1 50s ease-in-out 10s infinite',filter:'drop-shadow(0 0 4px rgba(195,82,0,0.18))',display:'block'}}>
               <path d="M5 44L2 28L5 10L12 2L20 10L22 26L18 42L12 48Z" fill="rgba(210,138,42,0.92)"/>
               <path d="M12 2L20 10L22 26L14 16Z" fill="rgba(130,75,20,0.46)"/>
@@ -145,7 +144,7 @@ export default function Contact({ darkMode }) {
           </div>
 
           {/* Crystal 4 — broad angular chunk, right side */}
-          <div style={{position:'absolute',top:'48%',right:'35%',opacity:0.72,pointerEvents:'none',transform:`rotate(${baseRot * MINERAL_MULTS[3]}deg)`,transition:'transform 0.55s cubic-bezier(0.22,1,0.36,1)',willChange:'transform'}}>
+          <div style={{position:'absolute',top:'48%',right:'35%',opacity:0.72,pointerEvents:'none',transform:`rotate(${baseRot * MINERAL_MULTS[3]}deg)`,willChange:'transform'}}>
             <svg width="50" height="36" viewBox="0 0 50 36" fill="none" style={{animation:'rock-drift-3 46s ease-in-out 7s infinite',filter:'drop-shadow(0 0 4px rgba(195,80,0,0.18))',display:'block'}}>
               <path d="M6 30L2 16L8 4L22 2L38 6L48 18L42 32L24 34Z" fill="rgba(215,142,45,0.92)"/>
               <path d="M22 2L38 6L48 18L30 10Z" fill="rgba(138,78,20,0.72)"/>
@@ -163,7 +162,7 @@ export default function Contact({ darkMode }) {
           </div>
 
           {/* Crystal 5 — small amber nugget, center */}
-          <div style={{position:'absolute',top:'55%',left:'40%',opacity:0.68,pointerEvents:'none',transform:`rotate(${baseRot * MINERAL_MULTS[4]}deg)`,transition:'transform 0.55s cubic-bezier(0.22,1,0.36,1)',willChange:'transform'}}>
+          <div style={{position:'absolute',top:'55%',left:'40%',opacity:0.68,pointerEvents:'none',transform:`rotate(${baseRot * MINERAL_MULTS[4]}deg)`,willChange:'transform'}}>
             <svg width="28" height="30" viewBox="0 0 28 30" fill="none" style={{animation:'mineral-glow 5s ease-in-out 4s infinite, rock-drift-2 42s ease-in-out 14s infinite',filter:'drop-shadow(0 0 3px rgba(195,80,0,0.16))',display:'block'}}>
               <path d="M6 26L2 14L6 4L14 1L22 6L26 18L20 28Z" fill="rgba(210,138,42,0.92)"/>
               <path d="M14 1L22 6L26 18L16 10Z" fill="rgba(132,76,20,0.72)"/>
