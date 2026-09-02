@@ -1,14 +1,18 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Code2, Server, Wrench, Cloud } from 'lucide-react';
+import gsap from 'gsap';
+import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 
-// ─── Shooting Star — offset-path for buttery smooth motion ───────────────────
+gsap.registerPlugin(MotionPathPlugin);
+
+// ─── Shooting Star — GSAP MotionPathPlugin for buttery smooth motion ─────────
 function ShootingStar({ darkMode, sectionRef }) {
-  const [path, setPath]       = useState('');
-  const [visible, setVisible] = useState(false);
-  const [isWide, setIsWide]   = useState(false);
+  const starRef  = useRef(null);
+  const tlRef    = useRef(null);
+  const timerRef = useRef(null);
+  const [isWide, setIsWide] = useState(false);
 
-  // Responsive gate — only show on ≥768px
   useEffect(() => {
     const check = () => setIsWide(window.innerWidth >= 768);
     check();
@@ -16,89 +20,123 @@ function ShootingStar({ darkMode, sectionRef }) {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  // Build the pixel-precise path once the section has been laid out
   useEffect(() => {
-    if (!darkMode || !isWide || !sectionRef?.current) return;
+    if (!darkMode || !isWide) return;
 
-    const w = sectionRef.current.offsetWidth;
-    const h = sectionRef.current.offsetHeight;
+    function run() {
+      const star    = starRef.current;
+      const section = sectionRef?.current;
+      if (!star || !section) return;
 
-    // Card centres (fractions of section dimensions)
-    const fe = { x: w * 0.27, y: h * 0.42 }; // Frontend   (Zone 1 left)
-    const dt = { x: w * 0.73, y: h * 0.42 }; // Dev Tools  (Zone 1 right)
-    const be = { x: w * 0.27, y: h * 0.75 }; // Backend    (Zone 2 left)
-    const cl = { x: w * 0.73, y: h * 0.75 }; // Cloud      (Zone 2 right)
+      const w = section.offsetWidth;
+      const h = section.offsetHeight;
 
-    // Orbit ellipse half-axes
-    const rx  = w  * 0.10;  // horizontal half-width
-    const ry  = h  * 0.055; // vertical half-height
-    const cpy = ry * 2.6;   // bezier control-point arm for smooth oval
+      // Card centres
+      const fe = { x: w * 0.27, y: h * 0.42 };
+      const dt = { x: w * 0.73, y: h * 0.42 };
+      const be = { x: w * 0.27, y: h * 0.75 };
+      const cl = { x: w * 0.73, y: h * 0.75 };
 
-    // Two bezier arcs that form a closed oval.
-    // The star enters and exits from the RIGHT side (cx+rx, cy).
-    const oval = (cx, cy) =>
-      `C ${cx + rx} ${cy - cpy} ${cx - rx} ${cy - cpy} ${cx - rx} ${cy} ` +
-      `C ${cx - rx} ${cy + cpy} ${cx + rx} ${cy + cpy} ${cx + rx} ${cy}`;
+      // Tilted ellipse orbit points around a centre
+      const orx  = w * 0.09;
+      const ory  = h * 0.055;
+      const TILT = Math.PI / 5;
+      const ellipse = (cx, cy, steps = 20) => {
+        const pts = [];
+        for (let i = 0; i <= steps; i++) {
+          const a  = (i / steps) * Math.PI * 2;
+          const px = orx * Math.cos(a);
+          const py = ory * Math.sin(a);
+          pts.push({
+            x: cx + px * Math.cos(TILT) - py * Math.sin(TILT),
+            y: cy + px * Math.sin(TILT) + py * Math.cos(TILT),
+          });
+        }
+        return pts;
+      };
 
-    const p = [
-      // ── START: bottom-right corner ──────────────────────────────
-      `M ${w * 0.93} ${h * 0.91}`,
+      // Full path: entry → orbit FE → travel → orbit DT → travel → orbit BE → travel → orbit CL → exit
+      const path = [
+        { x: w * 0.93, y: h * 0.91 },                          // start — bottom-right
+        { x: w * 0.68, y: h * 0.70 },                          // sweep in
+        { x: w * 0.50, y: h * 0.54 },                          // approach FE
+        ...ellipse(fe.x, fe.y),                                 // orbit Frontend
+        { x: w * 0.38, y: h * 0.36 },                          // exit FE, sweep right
+        { x: w * 0.60, y: h * 0.34 },                          // approach DT
+        ...ellipse(dt.x, dt.y),                                 // orbit Dev Tools
+        { x: w * 0.62, y: h * 0.56 },                          // exit DT, sweep down-left
+        { x: w * 0.42, y: h * 0.64 },                          // approach BE
+        ...ellipse(be.x, be.y),                                 // orbit Backend
+        { x: w * 0.38, y: h * 0.72 },                          // exit BE, sweep right
+        { x: w * 0.60, y: h * 0.70 },                          // approach CL
+        ...ellipse(cl.x, cl.y),                                 // orbit Cloud
+        { x: w * 0.52, y: h * 0.55 },                          // turn toward exit
+        { x: w * 0.28, y: h * 0.30 },                          // climbing
+        { x: w * 0.05, y: h * 0.04 },                          // exit — top-left
+      ];
 
-      // ── Fly to Frontend orbit entry (right side of oval) ────────
-      `C ${w * 0.68} ${h * 0.72} ${w * 0.50} ${h * 0.54} ${fe.x + rx} ${fe.y}`,
+      const TOTAL      = 20;                                    // seconds for full journey
+      const N          = path.length;
+      const tPt        = TOTAL / (N - 1);
+      // Approximate segment counts: 3 approach pts, 21 orbit pts, 2 travel pts
+      const approachPts = 3;
+      const orbitPts    = 21;
+      const travelPts   = 2;
+      const motionStart = 0.3;                                  // fade-in overlap offset
 
-      // ── Orbit Frontend ──────────────────────────────────────────
-      oval(fe.x, fe.y),
+      // Timestamps (in timeline seconds) where each orbit back-pass begins
+      const orbitStarts = [0, 1, 2, 3].map(i =>
+        motionStart + (approachPts + i * (orbitPts + travelPts)) * tPt
+      );
 
-      // ── Fly to Dev Tools (sweep right across top zone) ──────────
-      `C ${fe.x + rx} ${fe.y - ry * 2.2} ${dt.x - rx} ${dt.y - ry * 2.2} ${dt.x + rx} ${dt.y}`,
+      gsap.set(star, { x: path[0].x, y: path[0].y, opacity: 0, scale: 0.3, filter: 'blur(0px)' });
 
-      // ── Orbit Dev Tools ─────────────────────────────────────────
-      oval(dt.x, dt.y),
+      const tl = gsap.timeline({
+        onComplete() {
+          gsap.set(star, { opacity: 0 });
+          timerRef.current = setTimeout(run, 60000);
+        },
+      });
 
-      // ── Fly to Backend (curve down-left) ────────────────────────
-      `C ${dt.x + rx} ${dt.y + h * 0.12} ${be.x + rx} ${be.y - h * 0.08} ${be.x + rx} ${be.y}`,
+      // Fade in
+      tl.to(star, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' });
 
-      // ── Orbit Backend ───────────────────────────────────────────
-      oval(be.x, be.y),
+      // Main motion — single smooth tween through all waypoints
+      tl.to(star, {
+        motionPath: { path, curviness: 1.4, autoRotate: true },
+        duration: TOTAL,
+        ease: 'power1.inOut',
+      }, `<${motionStart}`);
 
-      // ── Fly to Cloud & Database (sweep right across bottom zone) ─
-      `C ${be.x + rx} ${be.y - ry * 2.2} ${cl.x - rx} ${cl.y - ry * 2.2} ${cl.x + rx} ${cl.y}`,
+      // Glass distortion during each orbit's back-pass (behind the card)
+      orbitStarts.forEach(t0 => {
+        const backStart = t0 + orbitPts * tPt * 0.30;
+        const blurIn    = orbitPts * tPt * 0.20;
+        const blurOut   = orbitPts * tPt * 0.25;
+        tl.to(star, { filter: 'blur(4px)', scale: 0.65, opacity: 0.28, duration: blurIn,  ease: 'power2.in'  }, backStart);
+        tl.to(star, { filter: 'blur(0px)', scale: 1,    opacity: 1,    duration: blurOut, ease: 'power2.out' }, backStart + blurIn);
+      });
 
-      // ── Orbit Cloud & Database ───────────────────────────────────
-      oval(cl.x, cl.y),
+      // Fade out at end
+      tl.to(star, { opacity: 0, scale: 0.2, duration: 0.8, ease: 'power2.in' }, '-=1');
 
-      // ── EXIT: fly toward top-left corner ─────────────────────────
-      `C ${cl.x + rx} ${cl.y - h * 0.20} ${w * 0.30} ${h * 0.22} ${w * 0.04} ${h * 0.03}`,
-    ].join(' ');
+      tlRef.current = tl;
+    }
 
-    setPath(p);
-
-    // First appearance after 2 s
-    const t = setTimeout(() => setVisible(true), 2000);
-    return () => clearTimeout(t);
+    timerRef.current = setTimeout(run, 2000);
+    return () => {
+      clearTimeout(timerRef.current);
+      tlRef.current?.kill();
+    };
   }, [darkMode, isWide, sectionRef]);
 
-  // After each run: hide, then re-show 60 s later
-  const handleAnimationEnd = () => {
-    setVisible(false);
-    setTimeout(() => setVisible(true), 60000);
-  };
-
-  if (!darkMode || !isWide || !visible || !path) return null;
+  if (!darkMode || !isWide) return null;
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 40 }}>
       <div
-        onAnimationEnd={handleAnimationEnd}
-        style={{
-          position: 'absolute',
-          offsetPath: `path('${path}')`,
-          offsetDistance: '0%',
-          offsetRotate: 'auto',
-          animation: 'shooting-star-fly 18s ease-in-out forwards',
-          willChange: 'offset-distance, opacity, transform',
-        }}
+        ref={starRef}
+        style={{ position: 'absolute', top: 0, left: 0, opacity: 0, willChange: 'transform, opacity, filter' }}
       >
         {/* Star head — bright white core */}
         <div style={{

@@ -285,69 +285,6 @@ body {
   50%       { opacity: 1;    filter: drop-shadow(0 0 10px rgba(255,100,0,0.58)); }
 }
 
-/* ─── Shooting Star — Technical Arsenal (offset-path, smooth) ────────── */
-@keyframes shooting-star-fly {
-  /* ── Entry ─────────────────────────────────────── */
-  0%  { offset-distance: 0%;   opacity: 0;   scale: 0.4; filter: blur(0px); }
-  2%  {                        opacity: 1;   scale: 1;                       }
-
-  /* ── Travel → Frontend ─────────────────────────── */
-  10% { offset-distance: 15%;  opacity: 1;   scale: 1;   filter: blur(0px); }
-
-  /* ── Frontend orbit — slow, deliberate ─────────── */
-  14% { offset-distance: 18%;                scale: 1.05;                    }
-  17% { offset-distance: 21%;  opacity: 1;   scale: 1.1; filter: blur(0px); }
-  /* going behind card — glass distortion */
-  20% { offset-distance: 24%;  opacity: 0.35; scale: 0.75; filter: blur(3px); }
-  23% { offset-distance: 27%;  opacity: 0.3;  scale: 0.65; filter: blur(4px); }
-  /* emerging */
-  26% { offset-distance: 30%;  opacity: 0.7;  scale: 0.85; filter: blur(1px); }
-  28% { offset-distance: 32%;  opacity: 1;    scale: 1;    filter: blur(0px); }
-
-  /* ── Travel → Dev Tools ────────────────────────── */
-  34% { offset-distance: 42%;  opacity: 1;   scale: 1;   filter: blur(0px); }
-
-  /* ── Dev Tools orbit ───────────────────────────── */
-  38% { offset-distance: 45%;               scale: 1.05;                    }
-  41% { offset-distance: 48%;  opacity: 1;  scale: 1.1;  filter: blur(0px); }
-  /* going behind */
-  44% { offset-distance: 51%;  opacity: 0.35; scale: 0.75; filter: blur(3px); }
-  47% { offset-distance: 53%;  opacity: 0.3;  scale: 0.65; filter: blur(4px); }
-  /* emerging */
-  50% { offset-distance: 55%;  opacity: 0.7;  scale: 0.85; filter: blur(1px); }
-  52% { offset-distance: 56%;  opacity: 1;    scale: 1;    filter: blur(0px); }
-
-  /* ── Travel → Backend ──────────────────────────── */
-  58% { offset-distance: 64%;  opacity: 1;   scale: 1;   filter: blur(0px); }
-
-  /* ── Backend orbit ─────────────────────────────── */
-  61% { offset-distance: 67%;               scale: 1.05;                    }
-  63% { offset-distance: 70%;  opacity: 1;  scale: 1.1;  filter: blur(0px); }
-  /* going behind */
-  66% { offset-distance: 73%;  opacity: 0.35; scale: 0.75; filter: blur(3px); }
-  69% { offset-distance: 75%;  opacity: 0.3;  scale: 0.65; filter: blur(4px); }
-  /* emerging */
-  72% { offset-distance: 77%;  opacity: 0.7;  scale: 0.85; filter: blur(1px); }
-  73% { offset-distance: 78%;  opacity: 1;    scale: 1;    filter: blur(0px); }
-
-  /* ── Travel → Cloud & Database ─────────────────── */
-  78% { offset-distance: 84%;  opacity: 1;   scale: 1;   filter: blur(0px); }
-
-  /* ── Cloud & Database orbit ────────────────────── */
-  80% { offset-distance: 86%;               scale: 1.05;                    }
-  82% { offset-distance: 88%;  opacity: 1;  scale: 1.1;  filter: blur(0px); }
-  /* going behind */
-  85% { offset-distance: 90%;  opacity: 0.35; scale: 0.75; filter: blur(3px); }
-  87% { offset-distance: 92%;  opacity: 0.3;  scale: 0.65; filter: blur(4px); }
-  /* emerging */
-  90% { offset-distance: 94%;  opacity: 0.7;  scale: 0.85; filter: blur(1px); }
-  91% { offset-distance: 95%;  opacity: 1;    scale: 1;    filter: blur(0px); }
-
-  /* ── Exit → top-left ───────────────────────────── */
-  96% { offset-distance: 99%;  opacity: 0.4; scale: 0.5; filter: blur(0px); }
-  100%{ offset-distance: 100%; opacity: 0;   scale: 0.2; filter: blur(0px); }
-}
-
 /* ─── Hover accent link ──────────────────────────────────────── */
 .hover-accent { transition: color 0.15s ease; }
 .hover-accent:hover { color: #ff9900; }
