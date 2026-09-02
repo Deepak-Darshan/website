@@ -96,7 +96,7 @@ function ShootingStar({ darkMode, sectionRef }) {
           offsetPath: `path('${path}')`,
           offsetDistance: '0%',
           offsetRotate: 'auto',
-          animation: 'shooting-star-fly 12s ease-in-out forwards',
+          animation: 'shooting-star-fly 18s ease-in-out forwards',
           willChange: 'offset-distance, opacity, transform',
         }}
       >
