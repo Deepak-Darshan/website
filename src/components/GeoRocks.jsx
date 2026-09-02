@@ -1,3 +1,26 @@
+import { useState, useEffect } from 'react';
+
+export function useScrollVelocity() {
+  const [velocity, setVelocity] = useState(0);
+  useEffect(() => {
+    let lastY = window.scrollY;
+    let lastTime = performance.now();
+    let decayTimer = null;
+    const onScroll = () => {
+      const now = performance.now();
+      const dt = now - lastTime;
+      if (dt > 0) setVelocity((window.scrollY - lastY) / dt);
+      lastY = window.scrollY;
+      lastTime = now;
+      clearTimeout(decayTimer);
+      decayTimer = setTimeout(() => setVelocity(0), 140);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => { window.removeEventListener('scroll', onScroll); clearTimeout(decayTimer); };
+  }, []);
+  return velocity;
+}
+
 const ROCKS = {
   granite: (
     <>
@@ -77,21 +100,30 @@ const SIZES = {
   crystal: [34, 48],
 };
 
-export function GeoRock({ variant, top, left, right, bottom, opacity = 0.68, animation = 'rock-drift-1', delay = '0s', duration = '34s', className = '' }) {
+export function GeoRock({ variant, top, left, right, bottom, opacity = 0.68, animation = 'rock-drift-1', delay = '0s', duration = '34s', className = '', rotation = 0 }) {
   const [w, h] = SIZES[variant] || [36, 36];
-  const pos = { position: 'absolute', top, left, right, bottom, opacity, pointerEvents: 'none' };
 
   return (
-    <svg
-      width={w}
-      height={h}
-      viewBox={`0 0 ${w} ${h}`}
-      fill="none"
-      className={`geo-rock ${className}`}
-      style={{ ...pos, animation: `${animation} ${duration} ease-in-out ${delay} infinite` }}
+    <div
+      style={{
+        position: 'absolute', top, left, right, bottom,
+        opacity, pointerEvents: 'none',
+        transform: `rotate(${rotation}deg)`,
+        transition: 'transform 0.55s cubic-bezier(0.22, 1, 0.36, 1)',
+        willChange: 'transform',
+      }}
     >
-      {ROCKS[variant]}
-    </svg>
+      <svg
+        width={w}
+        height={h}
+        viewBox={`0 0 ${w} ${h}`}
+        fill="none"
+        className={`geo-rock ${className}`}
+        style={{ animation: `${animation} ${duration} ease-in-out ${delay} infinite`, display: 'block' }}
+      >
+        {ROCKS[variant]}
+      </svg>
+    </div>
   );
 }
 
@@ -188,16 +220,27 @@ export function SandLayer({ opacity = 0.72 }) {
   );
 }
 
+// Multipliers spread across rocks so they tumble at different rates
+const ROTATION_MULTS = [0.7, 1.0, 1.3, 0.5, 1.6, 0.9, 1.2, 0.6, 1.4, 0.8];
+
 export function GeoRockField({ rocks, baseDelay = 0 }) {
+  const velocity = useScrollVelocity(); // px/ms
+  // Scale: 1 px/ms fast scroll → ~18°; clamp to ±65°
+  const baseRot = Math.max(-65, Math.min(65, velocity * 18));
+
   const anims = ['rock-drift-1', 'rock-drift-2', 'rock-drift-3'];
-  return rocks.map((rock, i) => (
-    <GeoRock
-      key={`${rock.variant}-${i}`}
-      {...rock}
-      opacity={rock.opacity ?? 0.62 + (i % 3) * 0.04}
-      animation={anims[i % 3]}
-      delay={`${baseDelay + (i % 5) * 2.5}s`}
-      duration={`${30 + (i % 4) * 4}s`}
-    />
-  ));
+  return rocks.map((rock, i) => {
+    const mult = ROTATION_MULTS[i % ROTATION_MULTS.length];
+    return (
+      <GeoRock
+        key={`${rock.variant}-${i}`}
+        {...rock}
+        opacity={rock.opacity ?? 0.62 + (i % 3) * 0.04}
+        animation={anims[i % 3]}
+        delay={`${baseDelay + (i % 5) * 2.5}s`}
+        duration={`${30 + (i % 4) * 4}s`}
+        rotation={baseRot * mult}
+      />
+    );
+  });
 }
