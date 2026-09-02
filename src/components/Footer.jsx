@@ -12,6 +12,20 @@ export default function Footer({ darkMode }) {
       }}
     >
 
+      {/* Lava veins bleeding in from Contact above */}
+      {darkMode && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <svg
+            style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',pointerEvents:'none'}}
+            viewBox="0 0 1200 80" preserveAspectRatio="none" fill="none"
+          >
+            <path d="M413 0 Q382 22 351 44 Q318 64 284 80" stroke="rgba(175,58,16,0.22)" strokeWidth="0.8" strokeLinecap="round" style={{animation:'lava-pulse 8s ease-in-out 4s infinite'}}/>
+            <path d="M594 0 Q590 22 588 44 Q586 62 585 80" stroke="rgba(192,68,18,0.28)" strokeWidth="1.1" strokeLinecap="round" style={{animation:'lava-pulse 4.5s ease-in-out 1s infinite'}}/>
+            <path d="M782 0 Q813 22 842 44 Q866 62 892 80" stroke="rgba(168,52,14,0.20)" strokeWidth="0.7" strokeLinecap="round" style={{animation:'lava-pulse 7s ease-in-out 3s infinite'}}/>
+          </svg>
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-5 relative">
         <p className={`${sub} flex items-center gap-1.5 text-sm`}>
           Built with{' '}

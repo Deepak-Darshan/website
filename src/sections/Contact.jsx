@@ -1,5 +1,9 @@
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, ArrowUpRight, Zap } from 'lucide-react';
+import { GeoRockField, CONTACT_ROCKS, SandLayer, useScrollRotation } from '../components/GeoRocks';
+
+const MINERAL_MULTS = [0.8, 1.3, 0.6, 1.5, 1.0];
+
 const contacts = [
   {
     icon: Mail,
@@ -31,6 +35,8 @@ const contacts = [
 ];
 
 export default function Contact({ darkMode }) {
+  const baseRot = useScrollRotation(0.4);
+
   const card   = darkMode ? 'bg-[rgba(255,255,255,0.025)]' : 'bg-white/88';
   const border = darkMode ? 'border-white/[0.065]' : 'border-slate-200/80';
   const sub    = darkMode ? 'text-slate-400' : 'text-slate-600';
@@ -41,6 +47,110 @@ export default function Contact({ darkMode }) {
 
   return (
     <section id="contact" className="relative py-28 px-6 w-full" style={{ marginTop: -1 }}>
+      {/* ── Crystal minerals, lava cracks & sand ─────────────────────────────── */}
+      {darkMode && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* Crystal 1 — large amber shard, left */}
+          <div style={{position:'absolute',top:'10%',left:'12%',opacity:0.70,pointerEvents:'none',transform:`rotate(${baseRot * MINERAL_MULTS[0]}deg)`,willChange:'transform'}}>
+            <svg width="34" height="48" viewBox="0 0 34 48" fill="none" style={{animation:'mineral-glow 6s ease-in-out 1s infinite, rock-drift-3 44s ease-in-out 3s infinite',filter:'drop-shadow(0 0 4px rgba(200,80,0,0.18))',display:'block'}}>
+              <path d="M8 42L2 26L6 8L17 2L28 8L32 24L26 40L15 46Z" fill="rgba(205,130,38,0.92)"/>
+              <path d="M17 2L28 8L32 24L20 14Z" fill="rgba(240,175,65,0.72)"/>
+              <path d="M8 42L2 26L6 8L10 20Z" fill="rgba(125,70,18,0.88)"/>
+              <line x1="8" y1="36" x2="28" y2="10" stroke="rgba(230,165,55,0.40)" strokeWidth="1.0"/>
+              <line x1="10" y1="38" x2="30" y2="14" stroke="rgba(148,102,32,0.26)" strokeWidth="0.7"/>
+              <line x1="12" y1="24" x2="6" y2="14" stroke="rgba(220,155,48,0.30)" strokeWidth="0.6"/>
+              <line x1="18" y1="10" x2="26" y2="32" stroke="rgba(145,100,30,0.24)" strokeWidth="0.5"/>
+              <circle cx="22" cy="12" r="1.4" fill="rgba(245,185,70,0.45)"/>
+              <circle cx="12" cy="26" r="1.0" fill="rgba(162,115,38,0.36)"/>
+              <circle cx="26" cy="30" r="0.7" fill="rgba(155,108,35,0.30)"/>
+              <path d="M17 2L28 8L32 24" fill="none" stroke="rgba(158,112,38,0.32)" strokeWidth="0.9"/>
+            </svg>
+          </div>
+          {/* Crystal 2 — warm amber chunk, upper right */}
+          <div style={{position:'absolute',top:'22%',right:'15%',opacity:0.68,pointerEvents:'none',transform:`rotate(${baseRot * MINERAL_MULTS[1]}deg)`,willChange:'transform'}}>
+            <svg width="44" height="38" viewBox="0 0 44 38" fill="none" style={{animation:'mineral-glow 7s ease-in-out 2s infinite, rock-drift-2 38s ease-in-out 5s infinite',filter:'drop-shadow(0 0 4px rgba(195,78,0,0.16))',display:'block'}}>
+              <path d="M8 32L2 18L8 4L22 2L36 6L42 20L36 34L20 38Z" fill="rgba(198,125,35,0.92)"/>
+              <path d="M22 2L36 6L42 20L28 12Z" fill="rgba(122,68,18,0.72)"/>
+              <path d="M8 32L2 18L8 4L12 18Z" fill="rgba(38,18,5,0.88)"/>
+              <line x1="10" y1="28" x2="36" y2="8" stroke="rgba(158,110,36,0.40)" strokeWidth="1.0"/>
+              <line x1="14" y1="34" x2="40" y2="14" stroke="rgba(142,98,30,0.26)" strokeWidth="0.7"/>
+              <line x1="8" y1="20" x2="28" y2="24" stroke="rgba(150,105,33,0.28)" strokeWidth="0.6"/>
+              <line x1="20" y1="6" x2="14" y2="28" stroke="rgba(140,98,30,0.22)" strokeWidth="0.5"/>
+              <circle cx="30" cy="8" r="1.3" fill="rgba(172,122,40,0.44)"/>
+              <circle cx="18" cy="20" r="1.0" fill="rgba(160,112,36,0.36)"/>
+              <circle cx="36" cy="26" r="0.8" fill="rgba(152,106,34,0.30)"/>
+              <path d="M22 2L36 6L42 20" fill="none" stroke="rgba(152,108,35,0.30)" strokeWidth="0.9"/>
+            </svg>
+          </div>
+          {/* Crystal 3 — elongated shard, right-center */}
+          <div style={{position:'absolute',top:'35%',left:'65%',opacity:0.66,pointerEvents:'none',transform:`rotate(${baseRot * MINERAL_MULTS[2]}deg)`,willChange:'transform'}}>
+            <svg width="24" height="50" viewBox="0 0 24 50" fill="none" style={{animation:'mineral-glow 8s ease-in-out 3s infinite, rock-drift-1 50s ease-in-out 10s infinite',filter:'drop-shadow(0 0 4px rgba(195,82,0,0.18))',display:'block'}}>
+              <path d="M5 44L2 28L5 10L12 2L20 10L22 26L18 42L12 48Z" fill="rgba(210,138,42,0.92)"/>
+              <path d="M12 2L20 10L22 26L14 16Z" fill="rgba(130,75,20,0.46)"/>
+              <path d="M5 44L2 28L5 10L8 22Z" fill="rgba(44,22,5,0.88)"/>
+              <line x1="6" y1="38" x2="20" y2="10" stroke="rgba(168,115,38,0.42)" strokeWidth="1.1"/>
+              <line x1="4" y1="28" x2="18" y2="20" stroke="rgba(150,102,32,0.28)" strokeWidth="0.7"/>
+              <line x1="8" y1="44" x2="20" y2="30" stroke="rgba(158,108,34,0.25)" strokeWidth="0.6"/>
+              <line x1="14" y1="6" x2="10" y2="32" stroke="rgba(145,100,30,0.22)" strokeWidth="0.5"/>
+              <circle cx="16" cy="8" r="1.3" fill="rgba(178,128,44,0.46)"/>
+              <circle cx="8" cy="24" r="1.0" fill="rgba(230,165,55,0.38)"/>
+              <path d="M12 2L20 10L22 26" fill="none" stroke="rgba(160,112,36,0.32)" strokeWidth="0.9"/>
+            </svg>
+          </div>
+          {/* Crystal 4 — broad angular chunk */}
+          <div style={{position:'absolute',top:'48%',right:'35%',opacity:0.72,pointerEvents:'none',transform:`rotate(${baseRot * MINERAL_MULTS[3]}deg)`,willChange:'transform'}}>
+            <svg width="50" height="36" viewBox="0 0 50 36" fill="none" style={{animation:'rock-drift-3 46s ease-in-out 7s infinite',filter:'drop-shadow(0 0 4px rgba(195,80,0,0.18))',display:'block'}}>
+              <path d="M6 30L2 16L8 4L22 2L38 6L48 18L42 32L24 34Z" fill="rgba(215,142,45,0.92)"/>
+              <path d="M22 2L38 6L48 18L30 10Z" fill="rgba(138,78,20,0.72)"/>
+              <path d="M6 30L2 16L8 4L12 18Z" fill="rgba(46,23,5,0.88)"/>
+              <line x1="8" y1="26" x2="40" y2="6" stroke="rgba(170,118,38,0.42)" strokeWidth="1.1"/>
+              <line x1="12" y1="30" x2="44" y2="12" stroke="rgba(152,105,33,0.28)" strokeWidth="0.7"/>
+              <line x1="6" y1="18" x2="32" y2="22" stroke="rgba(160,110,35,0.30)" strokeWidth="0.6"/>
+              <line x1="24" y1="4" x2="20" y2="28" stroke="rgba(148,102,32,0.25)" strokeWidth="0.6"/>
+              <line x1="36" y1="8" x2="42" y2="26" stroke="rgba(142,98,30,0.20)" strokeWidth="0.5"/>
+              <circle cx="34" cy="8" r="1.5" fill="rgba(180,130,45,0.48)"/>
+              <circle cx="20" cy="18" r="1.1" fill="rgba(168,118,40,0.38)"/>
+              <circle cx="40" cy="22" r="0.8" fill="rgba(158,110,36,0.32)"/>
+              <path d="M22 2L38 6L48 18" fill="none" stroke="rgba(158,112,36,0.32)" strokeWidth="1.0"/>
+            </svg>
+          </div>
+          {/* Crystal 5 — small amber nugget */}
+          <div style={{position:'absolute',top:'55%',left:'40%',opacity:0.68,pointerEvents:'none',transform:`rotate(${baseRot * MINERAL_MULTS[4]}deg)`,willChange:'transform'}}>
+            <svg width="28" height="30" viewBox="0 0 28 30" fill="none" style={{animation:'mineral-glow 5s ease-in-out 4s infinite, rock-drift-2 42s ease-in-out 14s infinite',filter:'drop-shadow(0 0 3px rgba(195,80,0,0.16))',display:'block'}}>
+              <path d="M6 26L2 14L6 4L14 1L22 6L26 18L20 28Z" fill="rgba(210,138,42,0.92)"/>
+              <path d="M14 1L22 6L26 18L16 10Z" fill="rgba(132,76,20,0.72)"/>
+              <path d="M6 26L2 14L6 4L10 14Z" fill="rgba(42,22,5,0.75)"/>
+              <line x1="6" y1="22" x2="24" y2="6" stroke="rgba(230,165,55,0.40)" strokeWidth="0.9"/>
+              <line x1="10" y1="26" x2="26" y2="12" stroke="rgba(148,103,32,0.26)" strokeWidth="0.6"/>
+              <line x1="8" y1="16" x2="20" y2="20" stroke="rgba(155,108,34,0.28)" strokeWidth="0.5"/>
+              <circle cx="18" cy="8" r="1.2" fill="rgba(175,125,42,0.44)"/>
+              <circle cx="10" cy="18" r="0.9" fill="rgba(162,115,38,0.36)"/>
+              <path d="M14 1L22 6L26 18" fill="none" stroke="rgba(155,110,35,0.30)" strokeWidth="0.8"/>
+            </svg>
+          </div>
+          {/* Lava cracks — branching fissures */}
+          <svg
+            style={{position:'absolute',bottom:0,left:0,width:'100%',height:'55%',pointerEvents:'none',WebkitMaskImage:'linear-gradient(to bottom, transparent 0%, black 40%)',maskImage:'linear-gradient(to bottom, transparent 0%, black 40%)'}}
+            viewBox="0 0 1200 360" preserveAspectRatio="none" fill="none"
+          >
+            <path d="M600 360 Q588 320 594 280 Q608 240 582 200 Q565 175 572 140 Q580 110 560 80" stroke="rgba(255,100,0,0.30)" strokeWidth="2.5" strokeLinecap="round" style={{animation:'lava-pulse 4s ease-in-out infinite'}}/>
+            <path d="M594 280 Q632 265 668 248 Q704 236 734 210 Q758 196 782 170" stroke="rgba(255,120,0,0.23)" strokeWidth="1.8" strokeLinecap="round" style={{animation:'lava-pulse 5s ease-in-out 0.8s infinite'}}/>
+            <path d="M582 200 Q540 183 506 158 Q476 137 450 108 Q433 88 413 64" stroke="rgba(255,128,0,0.21)" strokeWidth="1.5" strokeLinecap="round" style={{animation:'lava-pulse 6s ease-in-out 1.2s infinite'}}/>
+            <path d="M734 210 Q770 198 803 174 Q833 155 863 130" stroke="rgba(255,140,0,0.17)" strokeWidth="1.2" strokeLinecap="round" style={{animation:'lava-pulse 4.5s ease-in-out 2s infinite'}}/>
+            <path d="M506 158 Q470 147 438 130 Q410 115 388 88" stroke="rgba(255,118,0,0.16)" strokeWidth="1" strokeLinecap="round" style={{animation:'lava-pulse 5.5s ease-in-out 1.5s infinite'}}/>
+            <path d="M413 64 Q383 52 352 40 Q318 29 284 20" stroke="rgba(255,108,0,0.13)" strokeWidth="0.8" strokeLinecap="round" style={{animation:'lava-pulse 7s ease-in-out 3s infinite'}}/>
+            <path d="M863 130 Q902 114 942 94 Q982 78 1013 54" stroke="rgba(255,120,0,0.13)" strokeWidth="0.8" strokeLinecap="round" style={{animation:'lava-pulse 6.5s ease-in-out 2.5s infinite'}}/>
+            <path d="M340 360 Q470 346 600 360 Q730 346 860 360" stroke="rgba(255,90,0,0.24)" strokeWidth="2.2" strokeLinecap="round" style={{animation:'lava-pulse 3.5s ease-in-out 0.3s infinite'}}/>
+            <circle cx="594" cy="280" r="4" fill="rgba(255,150,0,0.38)" style={{animation:'lava-pulse 3s ease-in-out infinite',filter:'drop-shadow(0 0 7px rgba(255,100,0,0.52))'}}/>
+            <circle cx="582" cy="200" r="3.5" fill="rgba(255,140,0,0.33)" style={{animation:'lava-pulse 4s ease-in-out 1s infinite',filter:'drop-shadow(0 0 6px rgba(255,90,0,0.44))'}}/>
+            <circle cx="734" cy="210" r="3" fill="rgba(255,160,0,0.30)" style={{animation:'lava-pulse 3.5s ease-in-out 0.6s infinite',filter:'drop-shadow(0 0 5px rgba(255,100,0,0.42))'}}/>
+            <circle cx="506" cy="158" r="2.5" fill="rgba(255,140,0,0.28)" style={{animation:'lava-pulse 5s ease-in-out 2s infinite',filter:'drop-shadow(0 0 4px rgba(255,80,0,0.37))'}}/>
+            <circle cx="600" cy="357" r="5.5" fill="rgba(255,120,0,0.42)" style={{animation:'lava-pulse 2.5s ease-in-out 0.2s infinite',filter:'drop-shadow(0 0 9px rgba(255,100,0,0.58))'}}/>
+          </svg>
+          <SandLayer opacity={0.58} />
+          <GeoRockField rocks={CONTACT_ROCKS} />
+        </div>
+      )}
 
       <div className="max-w-4xl mx-auto w-full">
         {/* Header */}
